@@ -1,0 +1,146 @@
+[core]
+    # Default editor. Make sure to have the editor in PATH
+    editor = vim
+    #editor = code --wait ;`--wait` Wait for window to be closed before returning
+
+[user]
+    # Author and commiter info
+    email = {{ (bitwardenSecrets "11498450-285a-4ab7-a73c-b12d0030df28" .accessToken).value }}
+    name = Carlos Farid Nogales López
+
+    # Default GPG key to use when creating signed tags and commits
+    signingkey = {{ (bitwardenSecrets "11498450-285a-4ab7-a73c-b12d0030df28" .accessToken).value }}
+
+[merge]
+    # Tool used during merges
+    tool = vscode
+
+    # Style used for conflicted hunks
+    conflictstyle = zdiff3
+
+[mergetool]
+    # Whether or not to prompt before each invocation
+    #prompt = false
+
+[mergetool "vscode"]
+    # Command to invoke
+    cmd = code --wait $REMOTE $LOCAL $BASE $MERGED
+
+[diff]
+    # Tool used during diff
+    tool = vscode
+
+    # Moved lines of code are colored differently
+    colormoved = zebra
+
+    # Use different prefixes = (i)ndex | (c)ommit | (w)orking tree | (o)bject
+    mnemonicprefix = true
+
+[difftool]
+    # Whether or not to prompt before each invocation
+    prompt = false
+
+[difftool "vscode"]
+    # Command to invoke
+    cmd = code --wait --diff $LOCAL $REMOTE
+
+[pull]
+    # Only update to the new history if there is no divergent local history
+    ff = only
+
+    #rebase = true
+
+[init]
+    # Default branch name
+    defaultBranch = main
+
+[commit]
+    # Whether or not to always GPG-sign commits
+    gpgsign = true
+
+[tag]
+    # Whether or not to always GPG-sign tags
+    gpgsign = true
+
+[fetch]
+    # Cleans up unreachable or orphaned git objects on fetch
+    prune = true
+
+# Useful aliases
+[alias]
+    s = status
+    Acm = !git add -A && git commit -m
+    acm = !git add . && git commit -m
+    fd = !git fetch && git difftool
+    sw = switch
+    st = stash
+    stpop = stash pop
+    stpush = stash push
+    diffstash = difftool stash@{0}^!
+    cge = config --global -e
+    aliases = !git config --get-regexp ^alias\\. | less
+
+    # Values for log:
+        # Color => %C(attribute color) => Colors: normal, black, red, green, yellow, blue, magenta, cyan, white. | Attributes: bold, dim, ul, blink, reverse, italic, strike
+        # Color_reset => %C(reset)
+        # New_line => %n
+        # Hash => %h
+        # Author_date => %aD
+        # Author_date (relative) => %ar
+        # Commiter_date => %cD
+        # Branches => %d
+        # Message => %s
+        # Name_author => %an
+        # Email_author => %ae
+        # Name_commiter => %cn
+        # Email_commiter => %ce
+
+    #lg = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) %C(auto)%d%C(reset) %C(bold green)(%ar)%C(reset)%n''          %C(white)%s%C(reset)%n''          %C(dim white)[A] %an: %aD <%ae>%C(reset)%n''          %C(dim white)[C] %cn: %cD <%ce>%C(reset)%n'
+    #lg2 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) %C(auto)%d%C(reset) %C(bold green)(%ar)%C(reset)%n''          %C(white)%s%C(reset)%n''          %C(bold cyan)[A]%an: %aD%C(reset) %C(dim white)<%ae>%C(reset)%n''          %C(bold cyan)[C]%cn: %cD%C(reset) %C(dim white)<%ce>%C(reset)%n'
+
+
+[color]
+    ui = auto
+
+# Dracula Theme
+[color "branch"]
+    current = cyan bold reverse
+    local = white
+    plain =
+    remote = cyan
+
+[color "diff"]
+    commit =
+    func = cyan
+    plain =
+    whitespace = magenta reverse
+    meta = white
+    frag = cyan bold reverse
+    old = red
+    new = green
+
+[color "grep"]
+    context =
+    filename =
+    function =
+    linenumber = white
+    match =
+    selected =
+    separator =
+
+[color "interactive"]
+    error =
+    header =
+    help =
+    prompt =
+
+[color "status"]
+    added = green
+    changed = yellow
+    header =
+    localBranch =
+    nobranch =
+    remoteBranch = cyan bold
+    unmerged = magenta bold reverse
+    untracked = red
+    updated = green bold

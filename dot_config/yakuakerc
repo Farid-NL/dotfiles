@@ -1,0 +1,11 @@
+[Appearance]
+Blur=true
+Skin=dracula
+SkinInstalledWithKns=true
+Translucency=true
+
+[Desktop Entry]
+DefaultProfile=Farid.profile
+
+[Dialogs]
+FirstRun=false
