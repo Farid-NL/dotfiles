@@ -9,6 +9,8 @@ Personal dotfiles managed by [chezmoi](https://www.chezmoi.io)
 
 ## How to use
 
+Remember to backup your config file: `~/.config/chezmoi/chezmoi.yml` in order to use the secrets from Bitwarden
+
 Initialize the source directory
 ```sh
 chezmoi init https://github.com/$GITHUB_USERNAME/dotfiles.git
