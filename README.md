@@ -4,8 +4,14 @@ Personal dotfiles managed by [chezmoi](https://www.chezmoi.io)
 
 ## TODOS
 
-- [ ] Create init script for setting up Bitwarden, SSH and GPG Keys
+- [x] Store SSH Keys in Bitwarden and retrieve then with templates
+- [ ] Create init script for setting up Bitwarden
+- [ ] Create init script for setting up Ansible
 - [ ] Create ansible playbook for software installation
+- [ ] Add Firefox installation (.tar.bz2) to `software.sh`
+    - [ ] Detect installation through snap and remove it
+- [ ] Add Firefox installation (.tar.bz2) to ansible playbook
+    - [ ] Detect installation through snap and remove it
 
 ## How to use
 
