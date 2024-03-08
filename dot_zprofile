@@ -1,1 +1,5 @@
 # Stuff
+
+
+# Added by Toolbox App
+export PATH="$PATH:/home/farid/.local/share/JetBrains/Toolbox/scripts"
