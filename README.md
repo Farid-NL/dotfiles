@@ -2,6 +2,11 @@
 
 Personal dotfiles managed by [chezmoi](https://www.chezmoi.io)
 
+## TODOS
+
+- [ ] Create init script for setting up Bitwarden, SSH and GPG Keys
+- [ ] Create ansible playbook for software installation
+
 ## How to use
 
 Initialize the source directory
