@@ -287,3 +287,67 @@
           ansible.builtin.command: newgrp docker
           register: docker_apply_script
           changed_when: docker_apply_script.rc != 0
+
+    - name: Fonts
+      block:
+        - name: "Fonts: Creating target directory"
+          when: fonts_dir_exists.stat.isdir is undefined
+          ansible.builtin.file:
+            path: ~/.local/share/fonts
+            state: directory
+            mode: "775"
+            owner: "{{ ansible_user_id }}"
+            group: "{{ ansible_user_id }}"
+
+    - name: Jetbrains Mono Font
+      block:
+        - name: "Jetbrains Font: Checking if font is installed"
+          ansible.builtin.shell:
+            cmd: |
+              set -o pipefail
+              fc-list | grep JetBrainsMono-
+            executable: /bin/bash
+          register: jetbrains_font_exists
+          ignore_errors: true
+          changed_when: jetbrains_font_exists.rc != 0
+
+        - name: "Jetbrains Font: Getting effective url"
+          when: jetbrains_font_exists.rc != 0
+          ansible.builtin.uri:
+            url: https://api.github.com/repos/JetBrains/JetBrainsMono/releases/latest
+          register: result
+
+        - name: "Jetbrains Font: Downloading"
+          when: jetbrains_font_exists.rc != 0
+          ansible.builtin.get_url:
+            url: "{{ result.json.assets[0].browser_download_url }}"
+            dest: /tmp
+            mode: "644"
+            owner: "{{ ansible_user_id }}"
+            group: "{{ ansible_user_id }}"
+
+        - name: "Jetbrains Font: Unzipping zip"
+          when: jetbrains_font_exists.rc != 0
+          ansible.builtin.unarchive:
+            src: "/tmp/{{ result.json.assets[0].browser_download_url | basename }}"
+            dest: "/tmp"
+            owner: "{{ ansible_user_id }}"
+            group: "{{ ansible_user_id }}"
+
+        - name: "Jetbrains Font: Copying files"
+          when: jetbrains_font_exists.rc != 0
+          ansible.builtin.copy:
+            src: "{{ item }}"
+            dest: ~/.local/share/fonts
+            mode: "644"
+            owner: "{{ ansible_user_id }}"
+            group: "{{ ansible_user_id }}"
+          with_fileglob:
+            - "/tmp/fonts/ttf/JetBrainsMono-*"
+
+        - name: "Jetbrains Font: Checking if font is installed"
+          ansible.builtin.shell:
+            cmd: fc-cache -f -v
+            executable: /bin/bash
+          register: font_cache
+          changed_when: font_cache.rc != 0
