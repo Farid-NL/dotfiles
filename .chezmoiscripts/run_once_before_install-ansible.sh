@@ -2,6 +2,11 @@
 
 if dpkg --get-selections | grep -wq ansible; then
   echo -e "Ansible already installed"
+
+  echo "Running Ansible"
+  ansible-playbook ~/.bootstrap/setup.yml --ask-become-pass
+  echo "Ansible configuration done"
+
   exit
 fi
 
