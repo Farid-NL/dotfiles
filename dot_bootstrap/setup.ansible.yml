@@ -267,3 +267,23 @@
               - docker-compose-plugin
             state: present
           become: true
+
+        - name: "Docker: Checking group existence"
+          when: "'docker-ce' not in ansible_facts.packages"
+          ansible.builtin.group:
+            name: docker
+            state: present
+
+        - name: "Docker: Adding user to docker group"
+          when: "'docker-ce' not in ansible_facts.packages"
+          ansible.builtin.user:
+            name: "{{ ansible_user_id }}"
+            append: true
+            groups: docker
+          become: true
+
+        - name: "Docker: Activate group changes"
+          when: "'docker-ce' not in ansible_facts.packages"
+          ansible.builtin.command: newgrp docker
+          register: docker_apply_script
+          changed_when: docker_apply_script.rc != 0
