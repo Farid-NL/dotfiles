@@ -32,6 +32,14 @@
             state: present
           become: true
 
+    - name: ZSH Default
+      block:
+        - name: "ZSH Default: Change login shell"
+          when: ansible_user_shell != "/usr/bin/zsh"
+          ansible.builtin.user:
+            name: "{{ ansible_user_id }}"
+            shell: /usr/bin/zsh
+
     - name: Firefox
       block:
         - name: "Firefox: Checking if is installed"
