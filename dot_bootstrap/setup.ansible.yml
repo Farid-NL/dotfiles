@@ -1,32 +1,37 @@
 ---
 - name: Machine setup
   hosts: localhost
-  become: true
   connection: local
   gather_facts: true
 
-  # nvm
-  # gh
-  # toolbox
-  # docker
-  #
   # jetbrains mono
   # jetbrains mono nerd
 
   tasks:
-    - name: Get user
-      ansible.builtin.set_fact:
-        regular_user: "{{ ansible_env.SUDO_USER or ansible_user_id }}"
 
+    ## Apt packages
     - name: Install standard packages
-      ansible.builtin.apt:
-        name:
-          - zsh
-          - yakuake
-          - okular-extra-backends
-          - neovim
-          - mpv
-        state: present
+      block:
+        - name: "Gather packages facts"
+          ansible.builtin.package_facts:
+            manager: auto
+
+        - name: "STD_PKGS: Installation"
+          when: >
+            'zsh' not in ansible_facts.packages
+            or 'yakuake' not in ansible_facts.packages
+            or 'okular-extra-backends' not in ansible_facts.packages
+            or 'neovim' not in ansible_facts.packages
+            or 'mpv' not in ansible_facts.packages
+          ansible.builtin.apt:
+            name:
+              - zsh
+              - yakuake
+              - okular-extra-backends
+              - neovim
+              - mpv
+            state: present
+          become: true
 
     ## Firefox
     - name: Firefox
@@ -36,20 +41,11 @@
             path: /opt/firefox
           register: firefox_exists
 
-        - name: "Firefox: Get version"
-          when: firefox_exists.stat.isdir is undefined
-          ansible.builtin.shell:
-            cmd: |
-              set -o pipefail
-              curl -s https://product-details.mozilla.org/1.0/firefox_versions.json | jq -r .LATEST_FIREFOX_VERSION
-            executable: /bin/bash
-          register: firefox_version
-          changed_when: false
-
-        - name: "Firefox: Define target version"
-          when: firefox_exists.stat.isdir is undefined
-          ansible.builtin.set_fact:
-            ff_version: "{{ firefox_version.stdout }}"
+        - name: "Firefox: Get effective url"
+          when: firefox_exists.stat.isreg is undefined
+          ansible.builtin.uri:
+            url: https://download.mozilla.org/?product=firefox-latest-ssl&os=linux64&lang=en-US
+          register: result
 
         - name: "Firefox: Creates target directory"
           when: firefox_exists.stat.isdir is undefined
@@ -57,28 +53,27 @@
             path: /opt/firefox
             state: directory
             mode: "775"
-            owner: "{{ regular_user }}"
-            group: "{{ regular_user }}"
+            owner: "{{ ansible_user_id }}"
+            group: "{{ ansible_user_id }}"
+          become: true
 
-
-        - name: "Firefox: Download tar.bz2"
-          when: firefox_exists.stat.isdir is undefined
+        - name: "Firefox: Download"
+          when: firefox_exists.stat.isreg is undefined
           ansible.builtin.get_url:
-            url: https://download-installer.cdn.mozilla.net/pub/firefox/releases/{{ ff_version }}/linux-x86_64/en-US/firefox-{{ ff_version }}.tar.bz2
+            url: "{{ result.url }}"
             dest: /tmp
             mode: "644"
-            owner: "{{ regular_user }}"
-            group: "{{ regular_user }}"
 
         - name: "Firefox: Unzip tar.bz2"
           when: firefox_exists.stat.isdir is undefined
           ansible.builtin.unarchive:
-            src: /tmp/firefox-{{ ff_version }}.tar.bz2
+            src: "/tmp/{{ result.url | basename }}"
             dest: /opt/firefox
-            owner: "{{ regular_user }}"
-            group: "{{ regular_user }}"
+            owner: "{{ ansible_user_id }}"
+            group: "{{ ansible_user_id }}"
             extra_opts:
               - --strip-components=1
+          become: true
 
         - name: "Firefox: Create symbolic link"
           when: firefox_exists.stat.isdir is undefined
@@ -86,6 +81,7 @@
             src: /opt/firefox/firefox
             dest: /usr/local/bin/firefox
             state: link
+          become: true
 
         - name: "Firefox: Create Desktop file"
           when: firefox_exists.stat.isdir is undefined
@@ -93,15 +89,166 @@
             url: https://raw.githubusercontent.com/mozilla/sumo-kb/main/install-firefox-linux/firefox.desktop
             dest: /usr/local/share/applications
             mode: "644"
+          become: true
 
     # VS Code
-    - name: Vs Code Installation
-      ansible.builtin.apt:
-        deb: https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64
-        state: present
+    - name: Code
+      block:
+        - name: "Code: Gather packages facts"
+          ansible.builtin.package_facts:
+            manager: auto
+
+        - name: "Code: Installation"
+          when: "'code' not in ansible_facts.packages"
+          ansible.builtin.apt:
+            deb: https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64
+            state: present
+          become: true
 
     # Google Chrome
-    - name: Google Chrome Installation
-      ansible.builtin.apt:
-        deb: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-        state: present
+    - name: Google Chrome
+      block:
+        - name: "Google Chrome: Gather packages facts"
+          ansible.builtin.package_facts:
+            manager: auto
+
+        - name: "Google Chrome: Installation"
+          when: "'google-chrome-stable' not in ansible_facts.packages"
+          ansible.builtin.apt:
+            deb: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+            state: present
+          become: true
+
+    # nvm
+    - name: NVM
+      block:
+        - name: "NVM: Check if is installed"
+          ansible.builtin.stat:
+            path: "{{ ansible_env.HOME }}/.config/nvm"
+          register: nvm_exists
+
+        - name: "NVM: Install"
+          when: nvm_exists.stat.isdir is undefined
+          ansible.builtin.shell:
+            cmd: |
+              set -o pipefail
+              curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+            executable: /bin/bash
+          register: nvm_script
+          changed_when: nvm_script.rc != 0
+
+    # Jetbrains Toolbox
+    - name: Jetbrains Toolbox
+      block:
+        - name: "Toolbox: Check if is installed"
+          ansible.builtin.stat:
+            path: "{{ ansible_env.HOME }}/.local/share/JetBrains/Toolbox/bin/jetbrains-toolbox"
+          register: toolbox_exists
+
+        - name: "Toolboox: Get effective url"
+          when: toolbox_exists.stat.isreg is undefined
+          ansible.builtin.uri:
+            url: https://data.services.jetbrains.com/products/download?platform=linux&code=TBA
+          register: result
+
+        - name: "Toolbox: Download"
+          when: toolbox_exists.stat.isreg is undefined
+          ansible.builtin.get_url:
+            url: "{{ result.url }}"
+            dest: /tmp
+            mode: "644"
+            owner: "{{ ansible_user_id }}"
+            group: "{{ ansible_user_id }}"
+
+        - name: "Toolbox: Unzip tar.gz"
+          when: toolbox_exists.stat.isreg is undefined
+          ansible.builtin.unarchive:
+            src: "/tmp/{{ result.url | basename }}"
+            dest: "{{ ansible_env.HOME }}/Downloads"
+            owner: "{{ ansible_user_id }}"
+            group: "{{ ansible_user_id }}"
+            extra_opts:
+              - --strip-components=1
+
+    # GitHub CLI
+    - name: GitHub CLI
+      block:
+        - name: "GitHub CLI: Gather packages facts"
+          ansible.builtin.package_facts:
+            manager: auto
+
+        - name: "GitHub CLI: Adding GPG Key"
+          when: "'gh' not in ansible_facts.packages"
+          ansible.builtin.get_url:
+            url: "https://cli.github.com/packages/githubcli-archive-keyring.gpg"
+            dest: /etc/apt/keyrings/githubcli-archive-keyring.gpg
+            mode: "644"
+            force: true
+          become: true
+
+        - name: "GitHub CLI: Adding repository"
+          when: "'gh' not in ansible_facts.packages"
+          ansible.builtin.apt_repository:
+            repo: >
+              deb [arch={{ ansible_facts.packages.bash[0].arch }} signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg]
+              https://cli.github.com/packages stable main
+            state: present
+            update_cache: true
+          become: true
+
+        - name: "GitHub CLI: Installing"
+          when: "'gh' not in ansible_facts.packages"
+          ansible.builtin.apt:
+            name: gh
+            state: present
+          become: true
+
+    # Docker
+    - name: Docker
+      block:
+        - name: "Docker: Gather packages facts"
+          ansible.builtin.package_facts:
+            manager: auto
+
+        - name: "Docker: Removing old packages"
+          when: "'docker-ce' not in ansible_facts.packages"
+          ansible.builtin.apt:
+            name:
+              - docker.io
+              - docker-doc
+              - docker-compose
+              - podman-docker
+              - containerd
+              - runc
+            state: absent
+          become: true
+
+        - name: "Docker: Adding GPG Key"
+          when: "'docker-ce' not in ansible_facts.packages"
+          ansible.builtin.get_url:
+            url: "https://download.docker.com/linux/ubuntu/gpg"
+            dest: /etc/apt/keyrings/docker.asc
+            mode: "644"
+            force: true
+          become: true
+
+        - name: "Docker: Adding repository"
+          when: "'docker-ce' not in ansible_facts.packages"
+          ansible.builtin.apt_repository:
+            repo: >
+              deb [arch={{ ansible_facts.packages.bash[0].arch }} signed-by=/etc/apt/keyrings/docker.asc]
+              https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
+            state: present
+            update_cache: true
+          become: true
+
+        - name: "Docker: Installing"
+          when: "'docker-ce' not in ansible_facts.packages"
+          ansible.builtin.apt:
+            name:
+              - docker-ce-cli
+              - containerd.io
+              - docker-buildx-plugin
+              - docker-compose-plugin
+            state: present
+          become: true
