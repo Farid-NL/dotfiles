@@ -9,14 +9,13 @@
 
   tasks:
 
-    ## Apt packages
-    - name: Install standard packages
+    - name: Pkgs
       block:
-        - name: "Gather packages facts"
+        - name: "Pkgs: Gathering packages facts"
           ansible.builtin.package_facts:
             manager: auto
 
-        - name: "STD_PKGS: Installation"
+        - name: "Pkgs: Installing"
           when: >
             'zsh' not in ansible_facts.packages
             or 'yakuake' not in ansible_facts.packages
@@ -33,21 +32,14 @@
             state: present
           become: true
 
-    ## Firefox
     - name: Firefox
       block:
-        - name: "Firefox: Check if is installed"
+        - name: "Firefox: Checking if is installed"
           ansible.builtin.stat:
             path: /opt/firefox
           register: firefox_exists
 
-        - name: "Firefox: Get effective url"
-          when: firefox_exists.stat.isreg is undefined
-          ansible.builtin.uri:
-            url: https://download.mozilla.org/?product=firefox-latest-ssl&os=linux64&lang=en-US
-          register: result
-
-        - name: "Firefox: Creates target directory"
+        - name: "Firefox: Creating target directory"
           when: firefox_exists.stat.isdir is undefined
           ansible.builtin.file:
             path: /opt/firefox
@@ -57,14 +49,20 @@
             group: "{{ ansible_user_id }}"
           become: true
 
-        - name: "Firefox: Download"
+        - name: "Firefox: Getting effective url"
+          when: firefox_exists.stat.isreg is undefined
+          ansible.builtin.uri:
+            url: https://download.mozilla.org/?product=firefox-latest-ssl&os=linux64&lang=en-US
+          register: result
+
+        - name: "Firefox: Downloading"
           when: firefox_exists.stat.isreg is undefined
           ansible.builtin.get_url:
             url: "{{ result.url }}"
             dest: /tmp
             mode: "644"
 
-        - name: "Firefox: Unzip tar.bz2"
+        - name: "Firefox: Unzipping tar.bz2"
           when: firefox_exists.stat.isdir is undefined
           ansible.builtin.unarchive:
             src: "/tmp/{{ result.url | basename }}"
@@ -75,7 +73,7 @@
               - --strip-components=1
           become: true
 
-        - name: "Firefox: Create symbolic link"
+        - name: "Firefox: Creating symbolic link"
           when: firefox_exists.stat.isdir is undefined
           ansible.builtin.file:
             src: /opt/firefox/firefox
@@ -83,7 +81,7 @@
             state: link
           become: true
 
-        - name: "Firefox: Create Desktop file"
+        - name: "Firefox: Creating Desktop file"
           when: firefox_exists.stat.isdir is undefined
           ansible.builtin.get_url:
             url: https://raw.githubusercontent.com/mozilla/sumo-kb/main/install-firefox-linux/firefox.desktop
@@ -91,67 +89,63 @@
             mode: "644"
           become: true
 
-    # VS Code
     - name: Code
       block:
-        - name: "Code: Gather packages facts"
+        - name: "Code: Gathering packages facts"
           ansible.builtin.package_facts:
             manager: auto
 
-        - name: "Code: Installation"
+        - name: "Code: Installaing"
           when: "'code' not in ansible_facts.packages"
           ansible.builtin.apt:
             deb: https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64
             state: present
           become: true
 
-    # Google Chrome
-    - name: Google Chrome
+    - name: Chrome
       block:
-        - name: "Google Chrome: Gather packages facts"
+        - name: "Chrome: Gathering packages facts"
           ansible.builtin.package_facts:
             manager: auto
 
-        - name: "Google Chrome: Installation"
+        - name: "Chrome: Installing"
           when: "'google-chrome-stable' not in ansible_facts.packages"
           ansible.builtin.apt:
             deb: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
             state: present
           become: true
 
-    # nvm
     - name: NVM
       block:
-        - name: "NVM: Check if is installed"
+        - name: "NVM: Checking if is installed"
           ansible.builtin.stat:
             path: "{{ ansible_env.HOME }}/.config/nvm"
           register: nvm_exists
 
-        - name: "NVM: Install"
+        - name: "NVM: Installing"
           when: nvm_exists.stat.isdir is undefined
           ansible.builtin.shell:
             cmd: |
               set -o pipefail
-              curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+              curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/{{ nvm_latest_tag_name }}/install.sh
             executable: /bin/bash
           register: nvm_script
           changed_when: nvm_script.rc != 0
 
-    # Jetbrains Toolbox
     - name: Jetbrains Toolbox
       block:
-        - name: "Toolbox: Check if is installed"
+        - name: "Toolbox: Checking if is installed"
           ansible.builtin.stat:
             path: "{{ ansible_env.HOME }}/.local/share/JetBrains/Toolbox/bin/jetbrains-toolbox"
           register: toolbox_exists
 
-        - name: "Toolboox: Get effective url"
+        - name: "Toolboox: Getting effective url"
           when: toolbox_exists.stat.isreg is undefined
           ansible.builtin.uri:
             url: https://data.services.jetbrains.com/products/download?platform=linux&code=TBA
           register: result
 
-        - name: "Toolbox: Download"
+        - name: "Toolbox: Downloading"
           when: toolbox_exists.stat.isreg is undefined
           ansible.builtin.get_url:
             url: "{{ result.url }}"
@@ -160,7 +154,7 @@
             owner: "{{ ansible_user_id }}"
             group: "{{ ansible_user_id }}"
 
-        - name: "Toolbox: Unzip tar.gz"
+        - name: "Toolbox: Unzipping tar.gz"
           when: toolbox_exists.stat.isreg is undefined
           ansible.builtin.unarchive:
             src: "/tmp/{{ result.url | basename }}"
@@ -170,10 +164,9 @@
             extra_opts:
               - --strip-components=1
 
-    # GitHub CLI
     - name: GitHub CLI
       block:
-        - name: "GitHub CLI: Gather packages facts"
+        - name: "GitHub CLI: Gathering packages facts"
           ansible.builtin.package_facts:
             manager: auto
 
@@ -203,10 +196,9 @@
             state: present
           become: true
 
-    # Docker
     - name: Docker
       block:
-        - name: "Docker: Gather packages facts"
+        - name: "Docker: Gathering packages facts"
           ansible.builtin.package_facts:
             manager: auto
 
