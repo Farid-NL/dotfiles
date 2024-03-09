@@ -122,6 +122,12 @@
             path: "{{ ansible_env.HOME }}/.config/nvm"
           register: nvm_exists
 
+        - name: "NVM: Getting latest tag name"
+          ansible.builtin.uri:
+            url: https://api.github.com/repos/nvm-sh/nvm/releases/latest
+            body_format: json
+          register: nvm_latest_tag_name
+
         - name: "NVM: Installing"
           when: nvm_exists.stat.isdir is undefined
           ansible.builtin.shell:
