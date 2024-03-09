@@ -1,0 +1,107 @@
+---
+- name: Machine setup
+  hosts: localhost
+  become: true
+  connection: local
+  gather_facts: true
+
+  # nvm
+  # gh
+  # toolbox
+  # docker
+  #
+  # jetbrains mono
+  # jetbrains mono nerd
+
+  tasks:
+    - name: Get user
+      ansible.builtin.set_fact:
+        regular_user: "{{ ansible_env.SUDO_USER or ansible_user_id }}"
+
+    - name: Install standard packages
+      ansible.builtin.apt:
+        name:
+          - zsh
+          - yakuake
+          - okular-extra-backends
+          - neovim
+          - mpv
+        state: present
+
+    ## Firefox
+    - name: Firefox
+      block:
+        - name: "Firefox: Check if is installed"
+          ansible.builtin.stat:
+            path: /opt/firefox
+          register: firefox_exists
+
+        - name: "Firefox: Get version"
+          when: firefox_exists.stat.isdir is undefined
+          ansible.builtin.shell:
+            cmd: |
+              set -o pipefail
+              curl -s https://product-details.mozilla.org/1.0/firefox_versions.json | jq -r .LATEST_FIREFOX_VERSION
+            executable: /bin/bash
+          register: firefox_version
+          changed_when: false
+
+        - name: "Firefox: Define target version"
+          when: firefox_exists.stat.isdir is undefined
+          ansible.builtin.set_fact:
+            ff_version: "{{ firefox_version.stdout }}"
+
+        - name: "Firefox: Creates target directory"
+          when: firefox_exists.stat.isdir is undefined
+          ansible.builtin.file:
+            path: /opt/firefox
+            state: directory
+            mode: "775"
+            owner: "{{ regular_user }}"
+            group: "{{ regular_user }}"
+
+
+        - name: "Firefox: Download tar.bz2"
+          when: firefox_exists.stat.isdir is undefined
+          ansible.builtin.get_url:
+            url: https://download-installer.cdn.mozilla.net/pub/firefox/releases/{{ ff_version }}/linux-x86_64/en-US/firefox-{{ ff_version }}.tar.bz2
+            dest: /tmp
+            mode: "644"
+            owner: "{{ regular_user }}"
+            group: "{{ regular_user }}"
+
+        - name: "Firefox: Unzip tar.bz2"
+          when: firefox_exists.stat.isdir is undefined
+          ansible.builtin.unarchive:
+            src: /tmp/firefox-{{ ff_version }}.tar.bz2
+            dest: /opt/firefox
+            owner: "{{ regular_user }}"
+            group: "{{ regular_user }}"
+            extra_opts:
+              - --strip-components=1
+
+        - name: "Firefox: Create symbolic link"
+          when: firefox_exists.stat.isdir is undefined
+          ansible.builtin.file:
+            src: /opt/firefox/firefox
+            dest: /usr/local/bin/firefox
+            state: link
+
+        - name: "Firefox: Create Desktop file"
+          when: firefox_exists.stat.isdir is undefined
+          ansible.builtin.get_url:
+            url: https://raw.githubusercontent.com/mozilla/sumo-kb/main/install-firefox-linux/firefox.desktop
+            dest: /usr/local/share/applications
+            mode: "644"
+
+    # VS Code
+    - name: Vs Code Installation
+      ansible.builtin.apt:
+        deb: https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64
+        state: present
+
+    # Google Chrome
+    - name: Google Chrome Installation
+      ansible.builtin.apt:
+        deb: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+        state: present
