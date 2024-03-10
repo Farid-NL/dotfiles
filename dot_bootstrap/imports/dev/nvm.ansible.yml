@@ -8,15 +8,14 @@
   when: nvm_exists.stat.isdir is undefined
   ansible.builtin.uri:
     url: https://api.github.com/repos/nvm-sh/nvm/releases/latest
-    body_format: json
-  register: nvm_latest_tag_name
+  register: result
 
 - name: "NVM: Installing"
   when: nvm_exists.stat.isdir is undefined
   ansible.builtin.shell:
     cmd: |
       set -o pipefail
-      curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/{{ nvm_latest_tag_name }}/install.sh
+      curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/{{ result.json.tag_name }}/install.sh
     executable: /bin/bash
   register: nvm_script
   changed_when: nvm_script.rc != 0
