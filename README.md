@@ -8,7 +8,9 @@ Personal dotfiles managed by [chezmoi](https://www.chezmoi.io)
 - [x] Create init script for setting up Bitwarden
 - [x] Create init script for installing Ansible
 - [x] Create ansible playbook for software installation
+- [ ] Add miniconda to ansible playbook
 - [ ] Add Firefox installation (.tar.bz2) to `software.sh`
+- [ ] Add miniconda to `software.sh`
 - [ ] Improve downloads with curls headers and json parser for `software.sh`
 - [ ] Improve README for better understanding
 
