@@ -5,7 +5,6 @@
   gather_facts: true
 
   tasks:
-
     - name: Pkgs
       block:
         - name: "Pkgs: Gathering packages facts"
@@ -37,253 +36,30 @@
             name: "{{ ansible_user_id }}"
             shell: /usr/bin/zsh
 
-    - name: Firefox
+    - name: Web Browsers
       block:
-        - name: "Firefox: Checking if is installed"
-          ansible.builtin.stat:
-            path: /opt/firefox
-          register: firefox_exists
+        - name: Firefox
+          ansible.builtin.import_tasks: imports/utils/fifefox.ansible.yml
 
-        - name: "Firefox: Creating target directory"
-          when: firefox_exists.stat.isdir is undefined
-          ansible.builtin.file:
-            path: /opt/firefox
-            state: directory
-            mode: "775"
-            owner: "{{ ansible_user_id }}"
-            group: "{{ ansible_user_id }}"
-          become: true
+        - name: Chrome
+          ansible.builtin.import_tasks: imports/utils/chrome.ansible.yml
 
-        - name: "Firefox: Getting effective url"
-          when: firefox_exists.stat.isreg is undefined
-          ansible.builtin.uri:
-            url: https://download.mozilla.org/?product=firefox-latest-ssl&os=linux64&lang=en-US
-          register: result
-
-        - name: "Firefox: Downloading"
-          when: firefox_exists.stat.isreg is undefined
-          ansible.builtin.get_url:
-            url: "{{ result.url }}"
-            dest: /tmp
-            mode: "644"
-
-        - name: "Firefox: Unzipping tar.bz2"
-          when: firefox_exists.stat.isdir is undefined
-          ansible.builtin.unarchive:
-            src: "/tmp/{{ result.url | basename }}"
-            dest: /opt/firefox
-            owner: "{{ ansible_user_id }}"
-            group: "{{ ansible_user_id }}"
-            extra_opts:
-              - --strip-components=1
-          become: true
-
-        - name: "Firefox: Creating symbolic link"
-          when: firefox_exists.stat.isdir is undefined
-          ansible.builtin.file:
-            src: /opt/firefox/firefox
-            dest: /usr/local/bin/firefox
-            state: link
-          become: true
-
-        - name: "Firefox: Creating Desktop file"
-          when: firefox_exists.stat.isdir is undefined
-          ansible.builtin.get_url:
-            url: https://raw.githubusercontent.com/mozilla/sumo-kb/main/install-firefox-linux/firefox.desktop
-            dest: /usr/local/share/applications
-            mode: "644"
-          become: true
-
-    - name: Code
+    - name: Development
       block:
-        - name: "Code: Gathering packages facts"
-          ansible.builtin.package_facts:
-            manager: auto
+        - name: Jetbrains Toolbox
+          ansible.builtin.import_tasks: imports/dev/jetbrains_toolbox.ansible.yml
 
-        - name: "Code: Installaing"
-          when: "'code' not in ansible_facts.packages"
-          ansible.builtin.apt:
-            deb: https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64
-            state: present
-          become: true
+        - name: Code
+          ansible.builtin.import_tasks: imports/dev/code.ansible.yml
 
-    - name: Chrome
-      block:
-        - name: "Chrome: Gathering packages facts"
-          ansible.builtin.package_facts:
-            manager: auto
+        - name: NVM
+          ansible.builtin.import_tasks: imports/dev/nvm.ansible.yml
 
-        - name: "Chrome: Installing"
-          when: "'google-chrome-stable' not in ansible_facts.packages"
-          ansible.builtin.apt:
-            deb: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-            state: present
-          become: true
+        - name: GitHub CLI
+          ansible.builtin.import_tasks: imports/dev/github_cli.ansible.yml
 
-    - name: NVM
-      block:
-        - name: "NVM: Checking if is installed"
-          ansible.builtin.stat:
-            path: "{{ ansible_env.HOME }}/.config/nvm"
-          register: nvm_exists
-
-        - name: "NVM: Getting latest tag name"
-          when: nvm_exists.stat.isdir is undefined
-          ansible.builtin.uri:
-            url: https://api.github.com/repos/nvm-sh/nvm/releases/latest
-            body_format: json
-          register: nvm_latest_tag_name
-
-        - name: "NVM: Installing"
-          when: nvm_exists.stat.isdir is undefined
-          ansible.builtin.shell:
-            cmd: |
-              set -o pipefail
-              curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/{{ nvm_latest_tag_name }}/install.sh
-            executable: /bin/bash
-          register: nvm_script
-          changed_when: nvm_script.rc != 0
-
-        - name: "NVM: Last steps"
-          when: nvm_exists.stat.isdir is undefined
-          ansible.builtin.debug:
-            msg:
-              - "- Open a new terminal session"
-              - "- run `nvm install node`"
-              - "- You're done!"
-
-    - name: Jetbrains Toolbox
-      block:
-        - name: "Toolbox: Checking if is installed"
-          ansible.builtin.stat:
-            path: "{{ ansible_env.HOME }}/.local/share/JetBrains/Toolbox/bin/jetbrains-toolbox"
-          register: toolbox_exists
-
-        - name: "Toolboox: Getting effective url"
-          when: toolbox_exists.stat.isreg is undefined
-          ansible.builtin.uri:
-            url: https://data.services.jetbrains.com/products/download?platform=linux&code=TBA
-          register: result
-
-        - name: "Toolbox: Downloading"
-          when: toolbox_exists.stat.isreg is undefined
-          ansible.builtin.get_url:
-            url: "{{ result.url }}"
-            dest: /tmp
-            mode: "644"
-            owner: "{{ ansible_user_id }}"
-            group: "{{ ansible_user_id }}"
-
-        - name: "Toolbox: Unzipping tar.gz"
-          when: toolbox_exists.stat.isreg is undefined
-          ansible.builtin.unarchive:
-            src: "/tmp/{{ result.url | basename }}"
-            dest: "{{ ansible_env.HOME }}/Downloads"
-            owner: "{{ ansible_user_id }}"
-            group: "{{ ansible_user_id }}"
-            extra_opts:
-              - --strip-components=1
-
-    - name: GitHub CLI
-      block:
-        - name: "GitHub CLI: Gathering packages facts"
-          ansible.builtin.package_facts:
-            manager: auto
-
-        - name: "GitHub CLI: Adding GPG Key"
-          when: "'gh' not in ansible_facts.packages"
-          ansible.builtin.get_url:
-            url: "https://cli.github.com/packages/githubcli-archive-keyring.gpg"
-            dest: /etc/apt/keyrings/githubcli-archive-keyring.gpg
-            mode: "644"
-            force: true
-          become: true
-
-        - name: "GitHub CLI: Adding repository"
-          when: "'gh' not in ansible_facts.packages"
-          ansible.builtin.apt_repository:
-            repo: >
-              deb [arch={{ ansible_facts.packages.bash[0].arch }} signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg]
-              https://cli.github.com/packages stable main
-            state: present
-            update_cache: true
-          become: true
-
-        - name: "GitHub CLI: Installing"
-          when: "'gh' not in ansible_facts.packages"
-          ansible.builtin.apt:
-            name: gh
-            state: present
-          become: true
-
-    - name: Docker
-      block:
-        - name: "Docker: Gathering packages facts"
-          ansible.builtin.package_facts:
-            manager: auto
-
-        - name: "Docker: Removing old packages"
-          when: "'docker-ce' not in ansible_facts.packages"
-          ansible.builtin.apt:
-            name:
-              - docker.io
-              - docker-doc
-              - docker-compose
-              - podman-docker
-              - containerd
-              - runc
-            state: absent
-          become: true
-
-        - name: "Docker: Adding GPG Key"
-          when: "'docker-ce' not in ansible_facts.packages"
-          ansible.builtin.get_url:
-            url: "https://download.docker.com/linux/ubuntu/gpg"
-            dest: /etc/apt/keyrings/docker.asc
-            mode: "644"
-            force: true
-          become: true
-
-        - name: "Docker: Adding repository"
-          when: "'docker-ce' not in ansible_facts.packages"
-          ansible.builtin.apt_repository:
-            repo: >
-              deb [arch={{ ansible_facts.packages.bash[0].arch }} signed-by=/etc/apt/keyrings/docker.asc]
-              https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
-            state: present
-            update_cache: true
-          become: true
-
-        - name: "Docker: Installing"
-          when: "'docker-ce' not in ansible_facts.packages"
-          ansible.builtin.apt:
-            name:
-              - docker-ce-cli
-              - containerd.io
-              - docker-buildx-plugin
-              - docker-compose-plugin
-            state: present
-          become: true
-
-        - name: "Docker: Checking group existence"
-          when: "'docker-ce' not in ansible_facts.packages"
-          ansible.builtin.group:
-            name: docker
-            state: present
-
-        - name: "Docker: Adding user to docker group"
-          when: "'docker-ce' not in ansible_facts.packages"
-          ansible.builtin.user:
-            name: "{{ ansible_user_id }}"
-            append: true
-            groups: docker
-          become: true
-
-        - name: "Docker: Activate group changes"
-          when: "'docker-ce' not in ansible_facts.packages"
-          ansible.builtin.command: newgrp docker
-          register: docker_apply_script
-          changed_when: docker_apply_script.rc != 0
+        - name: Docker
+          ansible.builtin.import_tasks: imports/dev/docker.ansible.yml
 
     - name: Fonts
       block:
@@ -296,110 +72,8 @@
             owner: "{{ ansible_user_id }}"
             group: "{{ ansible_user_id }}"
 
-    - name: Jetbrains Mono Font
-      block:
-        - name: "Jetbrains Font: Checking if font is installed"
-          ansible.builtin.shell:
-            cmd: |
-              set -o pipefail
-              fc-list | grep JetBrainsMono-
-            executable: /bin/bash
-          register: jetbrains_font_exists
-          ignore_errors: true
-          changed_when: jetbrains_font_exists.rc != 0
+        - name: Jetbrains Mono Font
+          ansible.builtin.import_tasks: imports/fonts/jetbrains_mono.ansible.yml
 
-        - name: "Jetbrains Font: Getting effective url"
-          when: jetbrains_font_exists.rc != 0
-          ansible.builtin.uri:
-            url: https://api.github.com/repos/JetBrains/JetBrainsMono/releases/latest
-          register: result
-
-        - name: "Jetbrains Font: Downloading"
-          when: jetbrains_font_exists.rc != 0
-          ansible.builtin.get_url:
-            url: "{{ result.json.assets[0].browser_download_url }}"
-            dest: /tmp
-            mode: "644"
-            owner: "{{ ansible_user_id }}"
-            group: "{{ ansible_user_id }}"
-
-        - name: "Jetbrains Font: Unzipping zip"
-          when: jetbrains_font_exists.rc != 0
-          ansible.builtin.unarchive:
-            src: "/tmp/{{ result.json.assets[0].browser_download_url | basename }}"
-            dest: "/tmp"
-            owner: "{{ ansible_user_id }}"
-            group: "{{ ansible_user_id }}"
-
-        - name: "Jetbrains Font: Copying files"
-          when: jetbrains_font_exists.rc != 0
-          ansible.builtin.copy:
-            src: "{{ item }}"
-            dest: ~/.local/share/fonts
-            mode: "644"
-            owner: "{{ ansible_user_id }}"
-            group: "{{ ansible_user_id }}"
-          with_fileglob:
-            - "/tmp/fonts/ttf/JetBrainsMono-*"
-
-        - name: "Jetbrains Font: Updating cache fonts"
-          when: jetbrains_font_exists.rc != 0
-          ansible.builtin.shell:
-            cmd: fc-cache -f -v
-            executable: /bin/bash
-          register: font_cache
-          changed_when: font_cache.rc != 0
-
-    - name: Jetbrains Mono Nerd Font
-      block:
-        - name: "Jetbrains Nerd Font: Checking if font is installed"
-          ansible.builtin.shell:
-            cmd: |
-              set -o pipefail
-              fc-list | grep JetBrainsMonoNerdFontMono-
-            executable: /bin/bash
-          register: jetbrains_nerd_font_exists
-          ignore_errors: true
-          changed_when: jetbrains_nerd_font_exists.rc != 0
-
-        - name: "Jetbrains Nerd Font: Getting effective url"
-          when: jetbrains_nerd_font_exists.rc != 0
-          ansible.builtin.uri:
-            url: https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest
-          register: result
-
-        - name: "Jetbrains Nerd Font: Downloading"
-          when: jetbrains_nerd_font_exists.rc != 0
-          ansible.builtin.get_url:
-            url: "{{ result.json.assets[78].browser_download_url }}"
-            dest: /tmp
-            mode: "644"
-            owner: "{{ ansible_user_id }}"
-            group: "{{ ansible_user_id }}"
-
-        - name: "Jetbrains Nerd Font: Unzipping zip"
-          when: jetbrains_nerd_font_exists.rc != 0
-          ansible.builtin.unarchive:
-            src: "/tmp/{{ result.json.assets[78].browser_download_url | basename }}"
-            dest: "/tmp"
-            owner: "{{ ansible_user_id }}"
-            group: "{{ ansible_user_id }}"
-
-        - name: "Jetbrains Nerd Font: Copying files"
-          when: jetbrains_nerd_font_exists.rc != 0
-          ansible.builtin.copy:
-            src: "{{ item }}"
-            dest: ~/.local/share/fonts
-            mode: "644"
-            owner: "{{ ansible_user_id }}"
-            group: "{{ ansible_user_id }}"
-          with_fileglob:
-            - "/tmp/JetBrainsMonoNerdFontMono-*"
-
-        - name: "Jetbrains Nerd Font: Updating cache fonts"
-          when: jetbrains_nerd_font_exists.rc != 0
-          ansible.builtin.shell:
-            cmd: fc-cache -f -v
-            executable: /bin/bash
-          register: font_cache
-          changed_when: font_cache.rc != 0
+        - name: Jetbrains Mono Nerd Font
+          ansible.builtin.import_tasks: imports/fonts/jetbrains_mono_nerd.ansible.yml

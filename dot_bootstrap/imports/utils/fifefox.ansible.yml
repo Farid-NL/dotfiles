@@ -1,0 +1,55 @@
+---
+- name: "Firefox: Checking if is installed"
+  ansible.builtin.stat:
+    path: /opt/firefox
+  register: firefox_exists
+
+- name: "Firefox: Creating target directory"
+  when: firefox_exists.stat.isdir is undefined
+  ansible.builtin.file:
+    path: /opt/firefox
+    state: directory
+    mode: "775"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+  become: true
+
+- name: "Firefox: Getting effective url"
+  when: firefox_exists.stat.isreg is undefined
+  ansible.builtin.uri:
+    url: https://download.mozilla.org/?product=firefox-latest-ssl&os=linux64&lang=en-US
+  register: result
+
+- name: "Firefox: Downloading"
+  when: firefox_exists.stat.isreg is undefined
+  ansible.builtin.get_url:
+    url: "{{ result.url }}"
+    dest: /tmp
+    mode: "644"
+
+- name: "Firefox: Unzipping tar.bz2"
+  when: firefox_exists.stat.isdir is undefined
+  ansible.builtin.unarchive:
+    src: "/tmp/{{ result.url | basename }}"
+    dest: /opt/firefox
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+    extra_opts:
+      - --strip-components=1
+  become: true
+
+- name: "Firefox: Creating symbolic link"
+  when: firefox_exists.stat.isdir is undefined
+  ansible.builtin.file:
+    src: /opt/firefox/firefox
+    dest: /usr/local/bin/firefox
+    state: link
+  become: true
+
+- name: "Firefox: Creating Desktop file"
+  when: firefox_exists.stat.isdir is undefined
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/mozilla/sumo-kb/main/install-firefox-linux/firefox.desktop
+    dest: /usr/local/share/applications
+    mode: "644"
+  become: true

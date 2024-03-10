@@ -1,0 +1,30 @@
+---
+- name: "GitHub CLI: Gathering packages facts"
+  ansible.builtin.package_facts:
+    manager: auto
+
+- name: "GitHub CLI: Adding GPG Key"
+  when: "'gh' not in ansible_facts.packages"
+  ansible.builtin.get_url:
+    url: "https://cli.github.com/packages/githubcli-archive-keyring.gpg"
+    dest: /etc/apt/keyrings/githubcli-archive-keyring.gpg
+    mode: "644"
+    force: true
+  become: true
+
+- name: "GitHub CLI: Adding repository"
+  when: "'gh' not in ansible_facts.packages"
+  ansible.builtin.apt_repository:
+    repo: >
+      deb [arch={{ ansible_facts.packages.bash[0].arch }} signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg]
+      https://cli.github.com/packages stable main
+    state: present
+    update_cache: true
+  become: true
+
+- name: "GitHub CLI: Installing"
+  when: "'gh' not in ansible_facts.packages"
+  ansible.builtin.apt:
+    name: gh
+    state: present
+  become: true

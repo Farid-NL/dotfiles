@@ -1,0 +1,67 @@
+---
+- name: "Docker: Gathering packages facts"
+  ansible.builtin.package_facts:
+    manager: auto
+
+- name: "Docker: Removing old packages"
+  when: "'docker-ce' not in ansible_facts.packages"
+  ansible.builtin.apt:
+    name:
+      - docker.io
+      - docker-doc
+      - docker-compose
+      - podman-docker
+      - containerd
+      - runc
+    state: absent
+  become: true
+
+- name: "Docker: Adding GPG Key"
+  when: "'docker-ce' not in ansible_facts.packages"
+  ansible.builtin.get_url:
+    url: "https://download.docker.com/linux/ubuntu/gpg"
+    dest: /etc/apt/keyrings/docker.asc
+    mode: "644"
+    force: true
+  become: true
+
+- name: "Docker: Adding repository"
+  when: "'docker-ce' not in ansible_facts.packages"
+  ansible.builtin.apt_repository:
+    repo: >
+      deb [arch={{ ansible_facts.packages.bash[0].arch }} signed-by=/etc/apt/keyrings/docker.asc]
+      https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
+    state: present
+    update_cache: true
+  become: true
+
+- name: "Docker: Installing"
+  when: "'docker-ce' not in ansible_facts.packages"
+  ansible.builtin.apt:
+    name:
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+    state: present
+  become: true
+
+- name: "Docker: Checking group existence"
+  when: "'docker-ce' not in ansible_facts.packages"
+  ansible.builtin.group:
+    name: docker
+    state: present
+
+- name: "Docker: Adding user to docker group"
+  when: "'docker-ce' not in ansible_facts.packages"
+  ansible.builtin.user:
+    name: "{{ ansible_user_id }}"
+    append: true
+    groups: docker
+  become: true
+
+- name: "Docker: Activate group changes"
+  when: "'docker-ce' not in ansible_facts.packages"
+  ansible.builtin.command: newgrp docker
+  register: docker_apply_script
+  changed_when: docker_apply_script.rc != 0
