@@ -7,12 +7,10 @@ Personal dotfiles managed by [chezmoi](https://www.chezmoi.io)
 - [x] Store SSH Keys in Bitwarden and retrieve then with templates
 - [x] Create init script for setting up Bitwarden
 - [x] Create init script for installing Ansible
-- [ ] Create Ansible playbook
-- [ ] Create ansible playbook for software installation
+- [x] Create ansible playbook for software installation
 - [ ] Add Firefox installation (.tar.bz2) to `software.sh`
-    - [ ] Detect installation through snap and remove it
-- [ ] Add Firefox installation (.tar.bz2) to ansible playbook
-    - [ ] Detect installation through snap and remove it
+- [ ] Improve downloads with curls headers and json parser for `software.sh`
+- [ ] Improve README for better understanding
 
 ## How to use
 
