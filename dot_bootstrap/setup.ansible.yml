@@ -39,7 +39,7 @@
     - name: Web Browsers
       block:
         - name: Firefox
-          ansible.builtin.import_tasks: imports/utils/fifefox.ansible.yml
+          ansible.builtin.import_tasks: imports/utils/firefox.ansible.yml
 
         - name: Chrome
           ansible.builtin.import_tasks: imports/utils/chrome.ansible.yml

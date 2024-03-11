@@ -15,13 +15,13 @@
   become: true
 
 - name: "Firefox: Getting effective url"
-  when: firefox_exists.stat.isreg is undefined
+  when: firefox_exists.stat.isdir is undefined
   ansible.builtin.uri:
     url: https://download.mozilla.org/?product=firefox-latest-ssl&os=linux64&lang=en-US
   register: result
 
 - name: "Firefox: Downloading"
-  when: firefox_exists.stat.isreg is undefined
+  when: firefox_exists.stat.isdir is undefined
   ansible.builtin.get_url:
     url: "{{ result.url }}"
     dest: /tmp
