@@ -35,6 +35,7 @@
           ansible.builtin.user:
             name: "{{ ansible_user_id }}"
             shell: /usr/bin/zsh
+          become: true
 
     - name: Web Browsers
       block:
