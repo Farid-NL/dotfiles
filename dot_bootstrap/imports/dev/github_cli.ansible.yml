@@ -19,8 +19,12 @@
       deb [arch={{ ansible_facts.packages.bash[0].arch }} signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg]
       https://cli.github.com/packages stable main
     state: present
-    update_cache: true
+    update_cache: false
   become: true
+
+- name: "GitHub CLI: Refreshing repositories"
+  ansible.builtin.apt:
+    update_cache: true
 
 - name: "GitHub CLI: Installing"
   when: "'gh' not in ansible_facts.packages"

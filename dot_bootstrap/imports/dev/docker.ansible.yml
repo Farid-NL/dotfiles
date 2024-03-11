@@ -32,8 +32,12 @@
       deb [arch={{ ansible_facts.packages.bash[0].arch }} signed-by=/etc/apt/keyrings/docker.asc]
       https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
     state: present
-    update_cache: true
+    update_cache: false
   become: true
+
+- name: "Docker: Refreshing repositories"
+  ansible.builtin.apt:
+    update_cache: true
 
 - name: "Docker: Installing"
   when: "'docker-ce' not in ansible_facts.packages"
