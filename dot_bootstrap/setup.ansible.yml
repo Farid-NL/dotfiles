@@ -5,13 +5,13 @@
   gather_facts: true
 
   tasks:
-    - name: Pkgs
+    - name: Packages
       block:
-        - name: "Pkgs: Gathering packages facts"
+        - name: "Packages: Gathering packages facts"
           ansible.builtin.package_facts:
             manager: auto
 
-        - name: "Pkgs: Installing"
+        - name: "Packages: Installing"
           when: >
             'zsh' not in ansible_facts.packages
             or 'yakuake' not in ansible_facts.packages
