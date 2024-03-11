@@ -2,16 +2,16 @@
 - name: "NVM: Checking if is installed"
   ansible.builtin.stat:
     path: "{{ ansible_env.HOME }}/.config/nvm"
-  register: nvm_exists
+  register: nvm
 
 - name: "NVM: Getting latest tag name"
-  when: nvm_exists.stat.isdir is undefined
+  when: not nvm.stat.exists
   ansible.builtin.uri:
     url: https://api.github.com/repos/nvm-sh/nvm/releases/latest
   register: result
 
 - name: "NVM: Installing"
-  when: nvm_exists.stat.isdir is undefined
+  when: not nvm.stat.exists
   ansible.builtin.shell:
     cmd: |
       set -o pipefail
@@ -21,7 +21,7 @@
   changed_when: nvm_script.rc != 0
 
 - name: "NVM: Last steps"
-  when: nvm_exists.stat.isdir is undefined
+  when: not nvm.stat.exists
   ansible.builtin.debug:
     msg:
       - "- Open a new terminal session"
