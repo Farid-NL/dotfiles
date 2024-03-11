@@ -55,6 +55,9 @@
         - name: NVM
           ansible.builtin.import_tasks: imports/dev/nvm.ansible.yml
 
+        - name: Conda
+          ansible.builtin.import_tasks: imports/dev/miniconda.ansible.yml
+
         - name: GitHub CLI
           ansible.builtin.import_tasks: imports/dev/github_cli.ansible.yml
 
