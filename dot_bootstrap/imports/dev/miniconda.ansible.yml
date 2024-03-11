@@ -1,7 +1,7 @@
 ---
 - name: "Miniconda: Checking if is installed"
   ansible.builtin.stat:
-    path: "{{ ansible_env.HOME }}/.config/miniconda"
+    path: "{{ ansible_env.HOME }}/.miniconda"
   register: miniconda
 
 - name: "Miniconda: Downloading"
@@ -15,8 +15,8 @@
 - name: "Miniconda: Installing"
   when: not miniconda.stat.exists
   ansible.builtin.shell:
-    cmd: "/tmp/miniconda.sh -b -u -p {{ ansible_env.HOME }}/.config/miniconda"
-    creates: "{{ ansible_env.HOME }}/.config/miniconda"
+    cmd: "/tmp/miniconda.sh -b -u -p {{ ansible_env.HOME }}/.miniconda"
+    creates: "{{ ansible_env.HOME }}/.miniconda"
     executable: /bin/bash
   register: miniconda_installed
   changed_when: miniconda_installed.rc != 0
@@ -25,7 +25,7 @@
   when: not miniconda.stat.exists
   ansible.builtin.shell:
     cmd: |
-      eval "$({{ ansible_env.HOME }}/.config/miniconda/bin/conda shell.zsh hook)"
+      eval "$({{ ansible_env.HOME }}/.miniconda/bin/conda shell.zsh hook)"
       conda init zsh
     executable: /bin/bash
   register: miniconda_iniatalized

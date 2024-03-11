@@ -82,14 +82,14 @@ export NVM_DIR="$HOME/.config/nvm"
 # Conda initializer
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/farid/.config/miniconda/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+__conda_setup="$('/home/farid/.miniconda/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/home/farid/.config/miniconda/etc/profile.d/conda.sh" ]; then
-        . "/home/farid/.config/miniconda/etc/profile.d/conda.sh"
+    if [ -f "/home/farid/.miniconda/etc/profile.d/conda.sh" ]; then
+        . "/home/farid/.miniconda/etc/profile.d/conda.sh"
     else
-        export PATH="/home/farid/.config/miniconda/bin:$PATH"
+        export PATH="/home/farid/.miniconda/bin:$PATH"
     fi
 fi
 unset __conda_setup
