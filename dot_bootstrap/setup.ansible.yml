@@ -28,6 +28,11 @@
             state: present
           become: true
 
+    - name: Vim Plug
+      block:
+        - name: Setup
+          ansible.builtin.import_tasks: imports/dev/vimplug.ansible.yml
+
     - name: ZSH Default
       block:
         - name: "ZSH Default: Change login shell"
