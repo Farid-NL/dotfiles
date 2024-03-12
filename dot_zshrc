@@ -128,8 +128,6 @@ compdef _directories md
 
 # Define aliases.
 #alias tree='tree -a -I .git'
-alias dot='git --git-dir=$HOME/.dot-config/ --work-tree=$HOME'
-
 alias ch='chezmoi'
 
 # Add flags to existing aliases.
