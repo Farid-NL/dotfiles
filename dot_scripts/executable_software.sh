@@ -340,7 +340,7 @@ check_installs() {
   is_installed_unrar=$(check_package unrar && echo "true" || echo "false")
   is_installed_pdfgrep=$(check_package pdfgrep && echo "true" || echo "false")
   is_installed_kcolor=$(check_package kcolorchooser && echo "true" || echo "false")
-  is_installed_screenkey=$(check_directory "${screenkey_dir}" && echo "true" || echo "false")
+  is_installed_screenkey=$(check_package screenkey && echo "true" || echo "false")
 
   # Development
   is_installed_code=$(check_package code && echo "true" || echo "false")
@@ -560,7 +560,7 @@ utilities() {
   install_standard "kcolorchooser" "kcolorchooser" "${is_installed_kcolor}"
 
   # screenkey
-  install_screenkey "${is_installed_screenkey}"
+  install_screenkey "screenkey" "screenkey" "${is_installed_screenkey}"
 }
 
 #─ Install packages from 'Development' category

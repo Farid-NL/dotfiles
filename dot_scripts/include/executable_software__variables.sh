@@ -108,52 +108,6 @@ install_vimplug(){
   fi
 }
 
-#─ Installs screenkey
-#─ @arg $1 Installed?
-install_screenkey(){
-  if $1; then return; fi
-
-  if (! whiptail --title "🚀 Screenkey 🚀" --yesno "Do you want to install 'Screenkey'?" --defaultno 9 60); then
-    whiptail --title "❌ Screenkey ❌" --msgbox "Installation canceled" 9 60
-    return
-  fi
-
-  log_separator 'screenkey'
-
-  # Install slope dependency
-  TERM=ansi; whiptail --title "🔨 Screenkey 🔨" --infobox "Installing splope (dependency) ..." 9 60; TERM=xterm-256color
-
-  if ! sudo apt-get install slop -qq > /dev/null 2>> "${error}";then
-    whiptail --title "❗ Screenkey ❗" --msgbox "Installation failed\n\nCheck the error.log" 9 60
-    return
-  fi
-
-  local file_version
-  file_version=$(curl -sS "${screenkey_url}"/ | grep -owP "screenkey-\d*\.\d*\.tar\.gz" | tail -1)
-
-  # Download
-  TERM=ansi; whiptail --title "🔨 Screenkey 🔨" --infobox "Downloading Screenkey ..." 9 60; TERM=xterm-256color
-
-  if ! curl -sS "${screenkey_url}/${file_version}" -o /tmp/"${file_version}" 2>> "${error}";then
-    whiptail --title "❗ Screenkey ❗" --msgbox "Installation failed\n\nCheck the error.log" 9 60
-    return
-  fi
-
-  # Installation
-  TERM=ansi; whiptail --title "🔨 Screenkey 🔨" --infobox "Installing Screenkey ..." 9 60; TERM=xterm-256color
-
-  if
-    {
-      mkdir -p "${HOME}/Applications/screenkey"
-      tar -xzf "/tmp/${file_version}" -C "${HOME}/Applications/screenkey" --strip-components=1
-    } > /dev/null 2>> "${error}"
-  then
-    whiptail --title "✅ Screenkey ✅" --msgbox "Installation completed" 9 60
-  else
-    whiptail --title "❗ Screenkey ❗" --msgbox "Installation failed\n\nCheck the error.log" 9 60
-  fi
-}
-
 #─ Installs GitHub CLI
 #─ @arg $1 Installed?
 install_githubcli(){
