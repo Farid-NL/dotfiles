@@ -10,7 +10,7 @@
 error="$HOME/error.log"
 script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
 
-source "$script_dir/include/software__variables.sh"
+source "${script_dir}/include/software__variables.sh"
 
 #╔═══════════════════════════════════════════════════╗
 #║ Functions                                         ║
@@ -21,13 +21,13 @@ source "$script_dir/include/software__variables.sh"
 #─ @noargs
 final_message() {
   local string
-  string="Check possible errors in '$error'
+  string="Check possible errors in '${error}'
 
   • Check how to install 'zsh'
     https://bit.ly/3Tz6zLO
 
   • Look for desktop files & KDE settings
-    https://github.com/$github_username/dotfiles
+    https://github.com/${github_username}/dotfiles
 
   • You could need the thunderbird-menu-fix
     libdbusmenu-glib4 (Install)
@@ -35,8 +35,8 @@ final_message() {
   • Custom Grub themes
     https://github.com/vinceliuice/grub2-themes"
 
-  if (whiptail --title "Goodbye!" --scrolltext --yesno "$string" --yes-button "Show error log" --no-button "Exit" --defaultno 15 80); then
-    whiptail --title "Error log file" --scrolltext --textbox "$error" 15 80
+  if (whiptail --title "Goodbye!" --scrolltext --yesno "${string}" --yes-button "Show error log" --no-button "Exit" --defaultno 15 80); then
+    whiptail --title "Error log file" --scrolltext --textbox "${error}" 15 80
   fi
 }
 
@@ -45,7 +45,7 @@ final_message() {
 #─ @arg $1 Name of the package
 #─ @arg $2 Target file
 log_separator() {
-  echo -e "---------------$1---------------" >> "$2"
+  echo -e "---------------$1---------------" >> "${error}"
 }
 
 #─ Install package from default repository
@@ -64,11 +64,11 @@ install_standard() {
     return
   fi
 
-  log_separator "$1" "$error"
+  log_separator "$1"
 
   TERM=ansi; whiptail --title "🔨 $2 🔨" --infobox "Installing $2 ..." 9 60; TERM=xterm-256color
 
-  if sudo apt-get install "$1" -qq > /dev/null 2>> "$error"; then
+  if sudo apt-get install "$1" -qq > /dev/null 2>> "${error}"; then
     whiptail --title "✅ $2 ✅" --msgbox "Installation completed" 9 60
   else
     whiptail --title "❗ $2 ❗" --msgbox "Installation failed\n\nCheck the error.log" 9 60
@@ -94,7 +94,7 @@ install_deb() {
     return
   fi
 
-  log_separator "$1" "$error"
+  log_separator "$1"
 
   local url
 
@@ -102,30 +102,30 @@ install_deb() {
   if $4; then
     url=$(curl -w "%{url_effective}\n" -I -L -s -S "$3" -o /dev/null)
   else
-    url=$3
+    url="$3"
   fi
 
   # Download
   TERM=ansi; whiptail --title "🔨 $2 🔨" --infobox "Downloading $2 ..." 9 60; TERM=xterm-256color
 
-  cd "/tmp" 2>> "$error" || return
+  cd "/tmp" 2>> "${error}" || return
 
-  if ! curl -sSLO "$url" 2>> "$error"; then
+  if ! curl -sSLO "$url" 2>> "${error}"; then
     whiptail --title "❗ $2 ❗" --msgbox "Installation failed\n\nCheck the error.log" 9 60
-    cd "$init_dir" 2>> "$error" || return
+    cd "${init_dir}" 2>> "${error}" || return
     return
   fi
 
   # Installation
   TERM=ansi; whiptail --title "🔨 $2 🔨" --infobox "Installing $2 ..." 9 60; TERM=xterm-256color
 
-  if sudo apt-get install "./$(basename "$url")" -qq > /dev/null 2>> "$error"; then
+  if sudo apt-get install "./$(basename "$url")" -qq > /dev/null 2>> "${error}"; then
     whiptail --title "✅ $2 ✅" --msgbox "Installation completed" 9 60
   else
     whiptail --title "❗ $2 ❗" --msgbox "Installation failed\n\nCheck the error.log" 9 60
   fi
 
-  cd "$init_dir" 2>> "$error" || return
+  cd "${init_dir}" 2>> "${error}" || return
 }
 
 #─ Install package from PPA
@@ -145,12 +145,12 @@ install_PPA() {
     return
   fi
 
-  log_separator "$1" "$error"
+  log_separator "$1"
 
   # PPA set up
   TERM=ansi; whiptail --title "🔨 $2 🔨" --infobox "Setting PPA..." 9 60; TERM=xterm-256color
 
-  if ! sudo add-apt-repository -y "$3" > /dev/null 2>> "$error"; then
+  if ! sudo add-apt-repository -y "$3" > /dev/null 2>> "${error}"; then
     whiptail --title "❗ $2 ❗" --msgbox "Installation failed\n\nCheck the error.log" 9 60
     return
   fi
@@ -162,7 +162,7 @@ install_PPA() {
     {
       sudo apt-get update -qq
       sudo apt-get install "$1" -qq
-    } > /dev/null 2>> "$error"
+    } > /dev/null 2>> "${error}"
   then
     whiptail --title "✅ $2 ✅" --msgbox "Installation completed" 9 60
   else
@@ -457,23 +457,23 @@ prereq_installation() {
 
   # curl installation
   if ! $1; then
-    log_separator 'curl' "$error"
+    log_separator 'curl'
     TERM=ansi; whiptail --title "Prerequisites 🔨" --infobox "Installing curl ..." 9 60; TERM=xterm-256color
-    sudo apt-get install curl -qq > /dev/null 2>> "$error"
+    sudo apt-get install curl -qq > /dev/null 2>> "${error}"
     whiptail --title "Prerequisites - curl" --msgbox "curl installed ✅" 9 60
   fi
 
   # zsh installation
   if ! $2; then
-    log_separator 'zsh' "$error"
+    log_separator 'zsh'
     TERM=ansi; whiptail --title "Prerequisites 🔨" --infobox "Installing zsh ..." 9 60; TERM=xterm-256color
-    sudo apt-get install zsh -qq > /dev/null 2>> "$error"
+    sudo apt-get install zsh -qq > /dev/null 2>> "${error}"
     whiptail --title "Prerequisites - zsh" --msgbox "zsh installed ✅" 9 60
   fi
 
   # zsh as login shell set up
   if ! $3; then
-    log_separator 'zsh_login' "$error"
+    log_separator 'zsh_login'
     TERM=ansi; whiptail --title "Prerequisites 🔨" --infobox "Setting zsh as login shell..." 9 60; TERM=xterm-256color
     chsh -s "$(which zsh)"
     whiptail --title "Prerequisites - zsh-login" --msgbox "zsh is now your login shell ✅\n\nLog out and log back in again." 9 60
@@ -481,7 +481,7 @@ prereq_installation() {
 
   # ssh for git set up
   if ! $4; then
-    log_separator 'ssh_git' "$error"
+    log_separator 'ssh_git'
 
     local bold
     local color_reset
@@ -494,9 +494,9 @@ prereq_installation() {
     eval "$(ssh-agent -s)"
     ssh-add "$HOME/.ssh/id_ed25519_github"
 
-    mkdir -p "$HOME/.ssh" ; cd "$HOME/.ssh" 2>> "$error" || return
+    mkdir -p "$HOME/.ssh" ; cd "$HOME/.ssh" 2>> "${error}" || return
     curl -sSO "$ssh_config_file"
-    cd "$init_dir" 2>> "$error" || return
+    cd "${init_dir}" 2>> "${error}" || return
 
     whiptail --title "Prerequisites - ssh-git" --scrolltext --msgbox "ssh-git setted up ✅\n\nVisit https://github.com/settings/keys and add your ssh public key: '$HOME/.ssh/id_ed25519_github.pub'" 9 60
   fi
@@ -506,7 +506,7 @@ prereq_installation() {
 #─ @noargs
 utilities() {
   # Brave
-  install_brave "$is_installed_brave" "$error"
+  install_brave "$is_installed_brave"
 
   # Yakuake
   install_standard "yakuake" "Yakuake" "$is_installed_yakuake"
@@ -527,7 +527,7 @@ utilities() {
   install_standard "neovim" "Neovim (Editor)" "$is_installed_neovim"
 
   # vim-plug
-  install_vimplug "$is_installed_nvimplug" "$error"
+  install_vimplug "$is_installed_nvimplug"
 
   # mpv (Music Player)
   install_standard "mpv" "mpv (Music Player)" "$is_installed_mvp"
@@ -560,7 +560,7 @@ utilities() {
   install_standard "kcolorchooser" "kcolorchooser" "$is_installed_kcolor"
 
   # screenkey
-  install_screenkey "$is_installed_screenkey" "$error"
+  install_screenkey "$is_installed_screenkey"
 }
 
 #─ Install packages from 'Development' category
@@ -579,13 +579,13 @@ development() {
   install_PPA "git" "git" "ppa:git-core/ppa" "$is_installed_git"
 
   # GitHub CLI
-  install_githubcli "$is_installed_gh" "$error"
+  install_githubcli "$is_installed_gh"
 
   # Jetbrains Toolbox App
-  install_jetbrains_toolbox "$is_installed_jetbrains_toolbox" "$error"
+  install_jetbrains_toolbox "$is_installed_jetbrains_toolbox"
 
   # Docker
-  install_docker "$is_installed_docker" "$error"
+  install_docker "$is_installed_docker"
 
   # MySQL Dependencies (gnome-keyring)
   install_standard "gnome-keyring" "gnome-keyring (MySQL deps)" "$is_installed_mysql_dep1"
@@ -632,13 +632,13 @@ others() {
   show_manual_install "Pcloud" "$is_installed_pcloud" "$msg" "--scrolltext"
 
   #Anki
-  install_anki "$is_installed_anki" "$error"
+  install_anki "$is_installed_anki"
 
   # JetBrains Mono (Font)
-  install_font_jetbrainsmono "$is_installed_jetbrains_font" "$error"
+  install_font_jetbrainsmono "$is_installed_jetbrains_font"
 
   # JetBrainsMono Nerd (Font)
-  install_font_jetbrainsmono_nerd "$is_installed_jetbrains_nerd_font" "$error"
+  install_font_jetbrainsmono_nerd "$is_installed_jetbrains_nerd_font"
 }
 
 #╔═══════════════════════════════════════════════════╗
@@ -655,10 +655,10 @@ fi
 sudo echo ""
 
 # New date for log
-if [ ! -f "$error" ]; then
-  echo -e "+++++++++++++++ $(date +'%x %X') +++++++++++++++" >> "$error"
+if [ ! -f "${error}" ]; then
+  echo -e "+++++++++++++++ $(date +'%x %X') +++++++++++++++" >> "${error}"
 else
-  echo -e "\n+++++++++++++++ $(date +'%x %X') +++++++++++++++" >> "$error"
+  echo -e "\n+++++++++++++++ $(date +'%x %X') +++++++++++++++" >> "${error}"
 fi
 
 # Set installation status of packages

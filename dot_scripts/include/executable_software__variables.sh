@@ -34,7 +34,6 @@ dotfiles_backup_url="https://gist.githubusercontent.com/$github_username/4975e29
 
 #─ Installs Brave Browser
 #─ @arg $1 Installed?
-#─ @arg $2 error.log
 install_brave(){
   if $1; then return; fi
 
@@ -43,7 +42,7 @@ install_brave(){
     return
   fi
 
-  log_separator 'brave-browser' "$2"
+  log_separator 'brave-browser'
 
   TERM=ansi; whiptail --title "🔨 Brave Browser 🔨" --infobox "Installing Brave Browser ..." 9 60; TERM=xterm-256color
 
@@ -53,7 +52,7 @@ install_brave(){
       echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main"|sudo tee /etc/apt/sources.list.d/brave-browser-release.list
       sudo apt-get update -qq
       sudo apt-get install brave-browser -qq
-    } > /dev/null 2>> "$2"
+    } > /dev/null 2>> "${error}"
   then
     whiptail --title "✅ Brave Browser ✅" --msgbox "Installation completed" 9 60
   else
@@ -63,7 +62,6 @@ install_brave(){
 
 #─ Installs vim-plug
 #─ @arg $1 Installed?
-#─ @arg $2 error.log
 install_vimplug(){
   if $1; then return; fi
 
@@ -72,11 +70,11 @@ install_vimplug(){
     return
   fi
 
-  log_separator 'vim-plug' "$2"
+  log_separator 'vim-plug'
 
   TERM=ansi; whiptail --title "🔨 Vim Plug 🔨" --infobox "Installing Vim Plug ..." 9 60; TERM=xterm-256color
 
-  if sh -c 'curl -fsSLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim' 2>> "$2";then
+  if sh -c 'curl -fsSLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim' 2>> "${error}";then
     whiptail --title "✅ Vim Plug ✅" --msgbox "Installation completed" 9 60
   else
     whiptail --title "❗ Vim Plug ❗" --msgbox "Installation failed\n\nCheck the error.log" 9 60
@@ -85,7 +83,6 @@ install_vimplug(){
 
 #─ Installs screenkey
 #─ @arg $1 Installed?
-#─ @arg $2 error.log
 install_screenkey(){
   if $1; then return; fi
 
@@ -93,12 +90,12 @@ install_screenkey(){
     whiptail --title "❌ Screenkey ❌" --msgbox "Installation canceled" 9 60
   fi
 
-  log_separator 'screenkey' "$2"
+  log_separator 'screenkey'
 
   # Install slope dependency
   TERM=ansi; whiptail --title "🔨 Screenkey 🔨" --infobox "Installing splope (dependency) ..." 9 60; TERM=xterm-256color
 
-  if ! sudo apt-get install slop -qq > /dev/null 2>> "$2";then
+  if ! sudo apt-get install slop -qq > /dev/null 2>> "${error}";then
     whiptail --title "❗ Screenkey ❗" --msgbox "Installation failed\n\nCheck the error.log" 9 60
     return
   fi
@@ -109,7 +106,7 @@ install_screenkey(){
   # Download
   TERM=ansi; whiptail --title "🔨 Screenkey 🔨" --infobox "Downloading Screenkey ..." 9 60; TERM=xterm-256color
 
-  if ! curl -sS "$screenkey_url/$file_version" -o /tmp/"$file_version" 2>> "$2";then
+  if ! curl -sS "$screenkey_url/$file_version" -o /tmp/"$file_version" 2>> "${error}";then
     whiptail --title "❗ Screenkey ❗" --msgbox "Installation failed\n\nCheck the error.log" 9 60
     return
   fi
@@ -121,7 +118,7 @@ install_screenkey(){
     {
       mkdir -p "$HOME/Applications/screenkey"
       tar -xzf "/tmp/$file_version" -C "$HOME/Applications/screenkey" --strip-components=1
-    } > /dev/null 2>> "$2"
+    } > /dev/null 2>> "${error}"
   then
     whiptail --title "✅ Screenkey ✅" --msgbox "Installation completed" 9 60
   else
@@ -131,7 +128,6 @@ install_screenkey(){
 
 #─ Installs GitHub CLI
 #─ @arg $1 Installed?
-#─ @arg $2 error.log
 install_githubcli(){
   if $1; then return; fi
 
@@ -139,7 +135,7 @@ install_githubcli(){
     whiptail --title "❌ GitHub CLI ❌" --msgbox "Installation canceled" 9 60
   fi
 
-  log_separator 'GitHub CLI' "$2"
+  log_separator 'GitHub CLI'
 
   TERM=ansi; whiptail --title "🔨 GitHub CLI 🔨" --infobox "Installing GitHub CLI ..." 9 60; TERM=xterm-256color
 
@@ -151,7 +147,7 @@ install_githubcli(){
       echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list
       sudo apt-get update -qq
       sudo apt-get install gh -qq
-    } > /dev/null 2>> "$2"
+    } > /dev/null 2>> "${error}"
   then
     whiptail --title "✅ GitHub CLI ✅" --msgbox "Installation completed" 9 60
   else
@@ -161,7 +157,6 @@ install_githubcli(){
 
 #─ Installs Jetbrains Toolbox
 #─ @arg $1 Installed?
-#─ @arg $2 error.log
 install_jetbrains_toolbox(){
   if $1; then return; fi
 
@@ -169,7 +164,7 @@ install_jetbrains_toolbox(){
     whiptail --title "❌ Jetbrains Toolbox App ❌" --msgbox "Installation canceled" 9 60
   fi
 
-  log_separator 'Jetbrains Toolbox App' "$2"
+  log_separator 'Jetbrains Toolbox App'
 
   local url
   local tmp_dir
@@ -180,7 +175,7 @@ install_jetbrains_toolbox(){
 
   if [ -z "$url" ];then
     whiptail --title "❗ Jetbrains Toolbox App ❗" --msgbox "Installation failed\n\nCheck the error.log" 9 60
-    echo "Something failed in the retrieving of the tar.gz file. Chek the base url or the piped commands" >> "$2"
+    echo "Something failed in the retrieving of the tar.gz file. Chek the base url or the piped commands" >> "${error}"
     return
   fi
 
@@ -190,7 +185,7 @@ install_jetbrains_toolbox(){
   # Download
   TERM=ansi; whiptail --title "🔨 Jetbrains Toolbox App 🔨" --infobox "Downloading Jetbrains Toolbox App ..." 9 60; TERM=xterm-256color
 
-  if curl -sSL "$url" -o "$tmp_dir" 2>> "$2";then
+  if curl -sSL "$url" -o "$tmp_dir" 2>> "${error}";then
     whiptail --title "❗ Jetbrains Toolbox App ❗" --msgbox "Installation failed\n\nCheck the error.log" 9 60
     return
   fi
@@ -198,7 +193,7 @@ install_jetbrains_toolbox(){
   # Decompression
   TERM=ansi; whiptail --title "🔨 Jetbrains Toolbox App 🔨" --infobox "Jetbrains Toolbox App will be decompressed in '$target_dir'" 9 60; TERM=xterm-256color
 
-  if sudo mkdir -p "$target_dir" && sudo tar -xzf "$tmp_dir" -C "$target_dir" --strip-components=1 > /dev/null 2>> "$2"; then
+  if sudo mkdir -p "$target_dir" && sudo tar -xzf "$tmp_dir" -C "$target_dir" --strip-components=1 > /dev/null 2>> "${error}"; then
     whiptail --title "✅ Jetbrains Toolbox App ✅" --msgbox "Installation completed\n\nGo to $target_dir and execute the program to finish installation" 9 60
   else
     whiptail --title "❗ Jetbrains Toolbox App ❗" --msgbox "Installation failed\n\nCheck the error.log" 9 60
@@ -207,7 +202,6 @@ install_jetbrains_toolbox(){
 
 #─ Installs Docker
 #─ @arg $1 Installed?
-#─ @arg $2 error.log
 install_docker(){
   if $1; then return; fi
 
@@ -215,7 +209,7 @@ install_docker(){
     whiptail --title "❌ Docker ❌" --msgbox "Installation canceled" 9 60
   fi
 
-  log_separator 'Docker' "$2"
+  log_separator 'Docker'
 
   TERM=ansi; whiptail --title "🔨 Docker 🔨" --infobox "Installing Docker ..." 9 60; TERM=xterm-256color
 
@@ -233,7 +227,7 @@ install_docker(){
 
       sudo usermod -aG docker "$USER"
       newgrp docker
-    } > /dev/null 2>> "$2"
+    } > /dev/null 2>> "${error}"
   then
     whiptail --title "✅ Docker ✅" --msgbox "Installation completed" 9 60
   else
@@ -243,7 +237,6 @@ install_docker(){
 
 #─ Installs Anki
 #─ @arg $1 Installed?
-#─ @arg $2 error.log
 install_anki(){
   if $1; then return; fi
 
@@ -251,7 +244,7 @@ install_anki(){
     whiptail --title "❌ Anki ❌" --msgbox "Installation canceled" 9 60
   fi
 
-  log_separator 'Anki' "$2"
+  log_separator 'Anki'
 
   local version
   local url
@@ -261,7 +254,7 @@ install_anki(){
 
   if [ -z "$version" ];then
     whiptail --title "❗ Anki ❗" --msgbox "Installation failed\n\nCheck the error.log" 9 60
-    echo "Something failed in the retrieving of the software version. Chek the base url or the piped commands" >> "$2"
+    echo "Something failed in the retrieving of the software version. Chek the base url or the piped commands" >> "${error}"
     return
   fi
 
@@ -272,11 +265,11 @@ install_anki(){
 
   if
     {
-      cd "/tmp" 2>> "$2" || return
+      cd "/tmp" 2>> "${error}" || return
       curl -sSLO "$url"
       mkdir -p "/tmp/anki"
       tar xaf "/tmp/$(basename "$url")" -C "/tmp/anki" --strip-components=1
-    } > /dev/null 2>> "$2"
+    } > /dev/null 2>> "${error}"
   then
     whiptail --title "❗ Anki ❗" --msgbox "Installation failed\n\nCheck the error.log" 9 60
     return
@@ -287,11 +280,11 @@ install_anki(){
 
   if [ ! -f "/tmp/anki/install.sh" ];then
     whiptail --title "❗ Anki ❗" --msgbox "Installation failed\n\nCheck the error.log" 9 60
-    echo "install.sh executable not found" >> "$2"
+    echo "install.sh executable not found" >> "${error}"
     return
   fi
 
-  if cd anki 2>> "$2" || return ; sudo ./install.sh > /dev/null 2>> "$2"; then
+  if cd anki 2>> "${error}" || return ; sudo ./install.sh > /dev/null 2>> "${error}"; then
     whiptail --title "✅ Anki ✅" --msgbox "Installation completed" 9 60
   else
     whiptail --title "❗ Anki ❗" --msgbox "Installation failed\n\nCheck the error.log" 9 60
@@ -300,7 +293,6 @@ install_anki(){
 
 #─ Show manual installation for JetBrains Mono Font
 #─ @arg $1 Installed?
-#─ @arg $2 error.log
 install_font_jetbrainsmono() {
   if $1; then return; fi
 
@@ -313,10 +305,10 @@ install_font_jetbrainsmono() {
   # Downlad
   whiptail --title "🔨 JetBrains Mono (Font) 🔨" --scrolltext --infobox "Manual installation required.\n\nDownloading font, wait a minute..." 11 60
 
-  cd "/tmp" 2>> "$2" || return; curl -sSLO "$url" 2>> "$2"
-  mkdir -p "$HOME/Downloads/fonts/JetBrains Mono" && unzip -oqj "$(basename "$url")" 'fonts/ttf/*' -d "$HOME/Downloads/fonts/JetBrains Mono" 2>> "$2"
-  find "$HOME/Downloads/fonts/JetBrains Mono" -type f -name "*.ttf" | grep -P "NL" | xargs -I {} rm {} 2>> "$2"
-  cd "$init_dir" 2>> "$2" || return
+  cd "/tmp" 2>> "${error}" || return; curl -sSLO "$url" 2>> "${error}"
+  mkdir -p "$HOME/Downloads/fonts/JetBrains Mono" && unzip -oqj "$(basename "$url")" 'fonts/ttf/*' -d "$HOME/Downloads/fonts/JetBrains Mono" 2>> "${error}"
+  find "$HOME/Downloads/fonts/JetBrains Mono" -type f -name "*.ttf" | grep -P "NL" | xargs -I {} rm {} 2>> "${error}"
+  cd "$init_dir" 2>> "${error}" || return
 
   # Manual installation
   whiptail --title "🔨 JetBrains Mono (Font) 🔨" --scrolltext --msgbox "JetBrains Mono Fonts downloded in '$HOME/Downloads/fonts/JetBrains Mono'\nInstall the fonts with the Font Manager" 11 60
@@ -324,7 +316,6 @@ install_font_jetbrainsmono() {
 
 #─ Show manual installation for JetBrainsMono Nerd Font
 #─ @arg $1 Installed?
-#─ @arg $2 error.log
 install_font_jetbrainsmono_nerd() {
   if $1; then return; fi
 
