@@ -88,6 +88,7 @@ install_screenkey(){
 
   if (! whiptail --title "🚀 Screenkey 🚀" --yesno "Do you want to install 'Screenkey'?" --defaultno 9 60); then
     whiptail --title "❌ Screenkey ❌" --msgbox "Installation canceled" 9 60
+    return
   fi
 
   log_separator 'screenkey'
