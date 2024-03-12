@@ -9,6 +9,7 @@ init_dir="${PWD}"
 github_username="Farid-NL"
 
 # File and directory paths for checking installation status
+firefox_dir="/opt/firefox"
 vimplug_dir="${HOME}/.local/share/nvim/site/autoload/plug.vim"
 screenkey_dir="${HOME}/Applications/screenkey"
 nvm_dir="${HOME}/.config/nvm"
@@ -20,6 +21,7 @@ pcloud_dir="${HOME}/Applications/pcloud"
 ssh_config_file="https://gist.githubusercontent.com/${github_username}/a5cab28b95918c53ebb115fb36935689/raw/config"
 
 # URL for some package installations
+firefox_url="https://download.mozilla.org/?product=firefox-latest-ssl&os=linux64&lang=en-US"
 chrome_url="https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
 screenkey_url="https://www.thregr.org/wavexx/software/screenkey/releases"
 code_url="https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"
@@ -32,31 +34,40 @@ dotfiles_backup_url="https://gist.githubusercontent.com/${github_username}/4975e
 #║ Custom installations                              ║
 #╚═══════════════════════════════════════════════════╝
 
-#─ Installs Brave Browser
+#─ Installs Firefox Browser
 #─ @arg $1 Installed?
-install_brave(){
+install_firefox(){
   if $1; then return; fi
 
-  if (! whiptail --title "🚀 Brave Browser 🚀" --yesno "Do you want to install 'Brave Browser'?" --defaultno 9 60); then
-    whiptail --title "❌ Brave Browser ❌" --msgbox "Installation canceled" 9 60
+  if (! whiptail --title "🚀 Firefox 🚀" --yesno "Do you want to install 'Firefox'?" --defaultno 9 60); then
+    whiptail --title "❌ Firefox ❌" --msgbox "Installation canceled" 9 60
     return
   fi
 
-  log_separator 'brave-browser'
+  log_separator 'firefox'
 
-  TERM=ansi; whiptail --title "🔨 Brave Browser 🔨" --infobox "Installing Brave Browser ..." 9 60; TERM=xterm-256color
+  TERM=ansi; whiptail --title "🔨 Firefox 🔨" --infobox "Installing Firefox ..." 9 60; TERM=xterm-256color
+
+  local url
 
   if
     {
-      sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
-      echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main"|sudo tee /etc/apt/sources.list.d/brave-browser-release.list
-      sudo apt-get update -qq
-      sudo apt-get install brave-browser -qq
+      url=$(curl -w "%{url_effective}\n" -ILsS "${firefox_url}" -o /dev/null)
+      cd /tmp 2>> "${error}" || return
+      curl -sSLO "${url}"
+
+      tar xjf "$(basename "${url}")"
+      sudo mv firefox /opt
+
+      sudo ln -s /opt/firefox/firefox /usr/local/bin/firefox
+      wget -q https://raw.githubusercontent.com/mozilla/sumo-kb/main/install-firefox-linux/firefox.desktop -P /usr/local/share/applications
+
+      cd "${init_dir}" 2>> "${error}" || return
     } > /dev/null 2>> "${error}"
   then
-    whiptail --title "✅ Brave Browser ✅" --msgbox "Installation completed" 9 60
+    whiptail --title "✅ Firefox ✅" --msgbox "Installation completed" 9 60
   else
-    whiptail --title "❗ Brave Browser ❗" --msgbox "Installation failed\n\nCheck the error.log" 9 60
+    whiptail --title "❗ Firefox ❗" --msgbox "Installation failed\n\nCheck the error.log" 9 60
   fi
 }
 

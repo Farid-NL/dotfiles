@@ -323,7 +323,7 @@ check_prerequisites() {
 check_installs() {
   # Utilities
   is_installed_yakuake=$(check_package yakuake && echo "true" || echo "false")
-  is_installed_brave=$(check_package brave-browser && echo "true" || echo "false")
+  is_installed_firefox=$(check_directory "${firefox_dir}" && echo "true" || echo "false")
   is_installed_chrome=$(check_package google-chrome && echo "true" || echo "false")
   is_installed_okular=$(check_package okular-extra-backends && echo "true" || echo "false")
   is_installed_make=$(check_package make && echo "true" || echo "false")
@@ -378,7 +378,7 @@ show_installs() {
   ─────────────────────── Utilities ──────────────────────
 
   $(${is_installed_yakuake} && echo ✅ || echo ❌) Yakuake
-  $(${is_installed_brave} && echo ✅ || echo ❌) Brave browser
+  $(${is_installed_firefox} && echo ✅ || echo ❌) Firefox
   $(${is_installed_chrome} && echo ✅ || echo ❌) Google Chrome
   $(${is_installed_okular} && echo ✅ || echo ❌) Okular Backends
   $(${is_installed_make} && echo ✅ || echo ❌) make
@@ -506,7 +506,7 @@ prereq_installation() {
 #─ @noargs
 utilities() {
   # Brave
-  install_brave "${is_installed_brave}"
+  install_firefox "${is_installed_firefox}"
 
   # Yakuake
   install_standard "yakuake" "Yakuake" "${is_installed_yakuake}"
