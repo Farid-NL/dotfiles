@@ -21,28 +21,19 @@ source "$script_dir/include/software__variables.sh"
 #─ @noargs
 final_message() {
   local string
-  string="  • Check how to install 'zsh'\nhttps://github.com/ohmyzsh/ohmyzsh/wiki/Installing-ZSH#install-and-set-up-zsh-as-default
+  string="Check possible errors in '$error'
 
-  • Check how to install 'zsh4humans'
-    https://github.com/romkatv/zsh4humans
+  • Check how to install 'zsh'
+    https://bit.ly/3Tz6zLO
 
-  • Look for desktop files
+  • Look for desktop files & KDE settings
     https://github.com/$github_username/dotfiles
 
   • You could need the thunderbird-menu-fix
     libdbusmenu-glib4 (Install)
 
   • Custom Grub themes
-    https://github.com/vinceliuice/grub2-themes
-
-  • Tile Window Manager
-    https://github.com/Bismuth-Forge/bismuth
-
-  • KDE settings
-    https://github.com/$github_username/dotfiles
-
-  Check possible errors in '$error'
-  "
+    https://github.com/vinceliuice/grub2-themes"
 
   if (whiptail --title "Goodbye!" --scrolltext --yesno "$string" --yes-button "Show error log" --no-button "Exit" --defaultno 15 80); then
     whiptail --title "Error log file" --scrolltext --textbox "$error" 15 80
