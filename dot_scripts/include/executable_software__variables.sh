@@ -46,23 +46,39 @@ install_firefox(){
 
   log_separator 'firefox'
 
-  TERM=ansi; whiptail --title "🔨 Firefox 🔨" --infobox "Installing Firefox ..." 9 60; TERM=xterm-256color
-
   local url
+  local tmp_dir
+  local target_dir
+
+  # Get URL
+  url=$(curl -w "%{url_effective}\n" -ILsS "${firefox_url}" -o /dev/null)
+
+  if [ -z "${url}" ];then
+    whiptail --title "❗ Firefox ❗" --msgbox "Installation failed\n\nCheck the error.log" 9 60
+    echo "Something failed in the retrieving of the tar.gz file. Chek the base url" >> "${error}"
+    return
+  fi
+
+  tmp_dir="/tmp/$(basename "${url}")"
+
+  # Download
+  TERM=ansi; whiptail --title "🔨 Firefox 🔨" --infobox "Downloading Firefox ..." 9 60; TERM=xterm-256color
+
+  if curl -sSL "${url}" -o "${tmp_dir}" 2>> "${error}";then
+    whiptail --title "❗ Firefox ❗" --msgbox "Installation failed\n\nCheck the error.log" 9 60
+    return
+  fi
+
+  # Decompression and installation
+  TERM=ansi; whiptail --title "🔨 Firefox 🔨" --infobox "Decompressing & setting binary and desktop file" 9 60; TERM=xterm-256color
 
   if
     {
-      url=$(curl -w "%{url_effective}\n" -ILsS "${firefox_url}" -o /dev/null)
-      cd /tmp 2>> "${error}" || return
-      curl -sSLO "${url}"
-
-      tar xjf "$(basename "${url}")"
-      sudo mv firefox /opt
+      tar xjf "${tmp_dir}" -C /tmp
+      sudo mv /tmp/firefox /opt
 
       sudo ln -s /opt/firefox/firefox /usr/local/bin/firefox
-      wget -q https://raw.githubusercontent.com/mozilla/sumo-kb/main/install-firefox-linux/firefox.desktop -P /usr/local/share/applications
-
-      cd "${init_dir}" 2>> "${error}" || return
+      sudo wget -q https://raw.githubusercontent.com/mozilla/sumo-kb/main/install-firefox-linux/firefox.desktop -P /usr/local/share/applications
     } > /dev/null 2>> "${error}"
   then
     whiptail --title "✅ Firefox ✅" --msgbox "Installation completed" 9 60
