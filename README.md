@@ -4,8 +4,8 @@ Personal dotfiles managed by [chezmoi](https://www.chezmoi.io)
 
 ## TODOS
 
-- [ ] Add missing software from `software.sh`
-- [ ] Improve downloads with curls headers and json parser for `software.sh`
+- [ ] Add fonts installation into `software.sh` based on ansible playbook
+- [ ] Add miniconda installation into `software.sh` based on ansible playbook
 - [ ] Improve README for better understanding
 
 ## How to use
