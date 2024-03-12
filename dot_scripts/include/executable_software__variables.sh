@@ -25,7 +25,7 @@ firefox_url="https://download.mozilla.org/?product=firefox-latest-ssl&os=linux64
 chrome_url="https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
 screenkey_url="https://www.thregr.org/wavexx/software/screenkey/releases"
 code_url="https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"
-jetbrains_toolbox_url="https://data.services.jetbrains.com//products/releases?code=TBA&latest=true&type=release"
+jetbrains_toolbox_url="https://data.services.jetbrains.com/products/download?platform=linux&code=TBA"
 anki_url="https://api.github.com/repos/ankitects/anki/releases/latest"
 jetbrains_font_url="https://api.github.com/repos/JetBrains/JetBrainsMono/releases/latest"
 dotfiles_backup_url="https://gist.githubusercontent.com/${github_username}/4975e2918d1e10c65844b428b59b18ad/raw/dot-files.sh"
@@ -183,16 +183,16 @@ install_jetbrains_toolbox(){
   local target_dir
 
   # Get URL
-  url=$(curl -sS "${jetbrains_toolbox_url}" | grep -Po '"linux":.*?[^\\]",' | awk -F ':' '{print $3,":"$4}' | sed 's/[", ]//g')
+  url=$(curl -w "%{url_effective}\n" -ILsS "${jetbrains_toolbox_url}" -o /dev/null)
 
   if [ -z "${url}" ];then
     whiptail --title "❗ Jetbrains Toolbox App ❗" --msgbox "Installation failed\n\nCheck the error.log" 9 60
-    echo "Something failed in the retrieving of the tar.gz file. Chek the base url or the piped commands" >> "${error}"
+    echo "Something failed in the retrieving of the tar.gz file. Chek the base url" >> "${error}"
     return
   fi
 
   tmp_dir="/tmp/$(basename "${url}")"
-  target_dir="/opt/jetbrains-toolbox"
+  target_dir="${HOME}/Downloads"
 
   # Download
   TERM=ansi; whiptail --title "🔨 Jetbrains Toolbox App 🔨" --infobox "Downloading Jetbrains Toolbox App ..." 9 60; TERM=xterm-256color
@@ -205,7 +205,7 @@ install_jetbrains_toolbox(){
   # Decompression
   TERM=ansi; whiptail --title "🔨 Jetbrains Toolbox App 🔨" --infobox "Jetbrains Toolbox App will be decompressed in '${target_dir}'" 9 60; TERM=xterm-256color
 
-  if sudo mkdir -p "${target_dir}" && sudo tar -xzf "${tmp_dir}" -C "${target_dir}" --strip-components=1 > /dev/null 2>> "${error}"; then
+  if tar -xzf "${tmp_dir}" -C "${target_dir}" --strip-components=1 > /dev/null 2>> "${error}"; then
     whiptail --title "✅ Jetbrains Toolbox App ✅" --msgbox "Installation completed\n\nGo to ${target_dir} and execute the program to finish installation" 9 60
   else
     whiptail --title "❗ Jetbrains Toolbox App ❗" --msgbox "Installation failed\n\nCheck the error.log" 9 60
