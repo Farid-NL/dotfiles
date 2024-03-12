@@ -36,8 +36,10 @@
   become: true
 
 - name: "Docker: Refreshing repositories"
+  when: "'docker-ce' not in ansible_facts.packages"
   ansible.builtin.apt:
     update_cache: true
+  become: true
 
 - name: "Docker: Installing"
   when: "'docker-ce' not in ansible_facts.packages"

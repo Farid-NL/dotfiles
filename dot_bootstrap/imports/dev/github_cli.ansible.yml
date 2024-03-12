@@ -23,8 +23,10 @@
   become: true
 
 - name: "GitHub CLI: Refreshing repositories"
+  when: "'gh' not in ansible_facts.packages"
   ansible.builtin.apt:
     update_cache: true
+  become: true
 
 - name: "GitHub CLI: Installing"
   when: "'gh' not in ansible_facts.packages"
