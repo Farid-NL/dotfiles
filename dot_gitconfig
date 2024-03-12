@@ -5,11 +5,11 @@
 
 [user]
     # Author and commiter info
-    email = {{ (get (bitwardenFields "item" "6f1ad927-83d6-4bcc-9fa7-ae4000e303cf") "GitHub email").value }}
+    email = 34426099+Farid-NL@users.noreply.github.com
     name = Carlos Farid Nogales López
 
     # Default GPG key to use when creating signed tags and commits
-    signingkey = {{ (get (bitwardenFields "item" "6f1ad927-83d6-4bcc-9fa7-ae4000e303cf") "GitHub email").value }}
+    signingkey = 34426099+Farid-NL@users.noreply.github.com
 
 [merge]
     # Tool used during merges
