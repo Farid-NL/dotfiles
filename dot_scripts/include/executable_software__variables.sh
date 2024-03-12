@@ -5,19 +5,19 @@
 #╚═══════════════════════════════════════════════════╝
 
 # Utilities
-init_dir=$PWD
+init_dir="${PWD}"
 github_username="Farid-NL"
 
 # File and directory paths for checking installation status
-vimplug_dir="$HOME/.local/share/nvim/site/autoload/plug.vim"
-screenkey_dir="$HOME/Applications/screenkey"
-nvm_dir="$HOME/.config/nvm"
-jetbrains_toolbox_dir="$HOME/.local/share/JetBrains/Toolbox/bin/jetbrains-toolbox"
+vimplug_dir="${HOME}/.local/share/nvim/site/autoload/plug.vim"
+screenkey_dir="${HOME}/Applications/screenkey"
+nvm_dir="${HOME}/.config/nvm"
+jetbrains_toolbox_dir="${HOME}/.local/share/JetBrains/Toolbox/bin/jetbrains-toolbox"
 xampp_dir="/opt/lampp"
-pcloud_dir="$HOME/Applications/pcloud"
+pcloud_dir="${HOME}/Applications/pcloud"
 
 # ssh config file for prerequisite section
-ssh_config_file="https://gist.githubusercontent.com/$github_username/a5cab28b95918c53ebb115fb36935689/raw/config"
+ssh_config_file="https://gist.githubusercontent.com/${github_username}/a5cab28b95918c53ebb115fb36935689/raw/config"
 
 # URL for some package installations
 chrome_url="https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
@@ -26,7 +26,7 @@ code_url="https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x
 jetbrains_toolbox_url="https://data.services.jetbrains.com//products/releases?code=TBA&latest=true&type=release"
 anki_url="https://api.github.com/repos/ankitects/anki/releases/latest"
 jetbrains_font_url="https://api.github.com/repos/JetBrains/JetBrainsMono/releases/latest"
-dotfiles_backup_url="https://gist.githubusercontent.com/$github_username/4975e2918d1e10c65844b428b59b18ad/raw/dot-files.sh"
+dotfiles_backup_url="https://gist.githubusercontent.com/${github_username}/4975e2918d1e10c65844b428b59b18ad/raw/dot-files.sh"
 
 #╔═══════════════════════════════════════════════════╗
 #║ Custom installations                              ║
@@ -101,12 +101,12 @@ install_screenkey(){
   fi
 
   local file_version
-  file_version=$(curl -sS $screenkey_url/ | grep -owP "screenkey-\d*\.\d*\.tar\.gz" | tail -1)
+  file_version=$(curl -sS "${screenkey_url}"/ | grep -owP "screenkey-\d*\.\d*\.tar\.gz" | tail -1)
 
   # Download
   TERM=ansi; whiptail --title "🔨 Screenkey 🔨" --infobox "Downloading Screenkey ..." 9 60; TERM=xterm-256color
 
-  if ! curl -sS "$screenkey_url/$file_version" -o /tmp/"$file_version" 2>> "${error}";then
+  if ! curl -sS "${screenkey_url}/${file_version}" -o /tmp/"${file_version}" 2>> "${error}";then
     whiptail --title "❗ Screenkey ❗" --msgbox "Installation failed\n\nCheck the error.log" 9 60
     return
   fi
@@ -116,8 +116,8 @@ install_screenkey(){
 
   if
     {
-      mkdir -p "$HOME/Applications/screenkey"
-      tar -xzf "/tmp/$file_version" -C "$HOME/Applications/screenkey" --strip-components=1
+      mkdir -p "${HOME}/Applications/screenkey"
+      tar -xzf "/tmp/${file_version}" -C "${HOME}/Applications/screenkey" --strip-components=1
     } > /dev/null 2>> "${error}"
   then
     whiptail --title "✅ Screenkey ✅" --msgbox "Installation completed" 9 60
@@ -171,30 +171,30 @@ install_jetbrains_toolbox(){
   local target_dir
 
   # Get URL
-  url=$(curl -sS "$jetbrains_toolbox_url" | grep -Po '"linux":.*?[^\\]",' | awk -F ':' '{print $3,":"$4}' | sed 's/[", ]//g')
+  url=$(curl -sS "${jetbrains_toolbox_url}" | grep -Po '"linux":.*?[^\\]",' | awk -F ':' '{print $3,":"$4}' | sed 's/[", ]//g')
 
-  if [ -z "$url" ];then
+  if [ -z "${url}" ];then
     whiptail --title "❗ Jetbrains Toolbox App ❗" --msgbox "Installation failed\n\nCheck the error.log" 9 60
     echo "Something failed in the retrieving of the tar.gz file. Chek the base url or the piped commands" >> "${error}"
     return
   fi
 
-  tmp_dir="/tmp/$(basename "$url")"
+  tmp_dir="/tmp/$(basename "${url}")"
   target_dir="/opt/jetbrains-toolbox"
 
   # Download
   TERM=ansi; whiptail --title "🔨 Jetbrains Toolbox App 🔨" --infobox "Downloading Jetbrains Toolbox App ..." 9 60; TERM=xterm-256color
 
-  if curl -sSL "$url" -o "$tmp_dir" 2>> "${error}";then
+  if curl -sSL "${url}" -o "${tmp_dir}" 2>> "${error}";then
     whiptail --title "❗ Jetbrains Toolbox App ❗" --msgbox "Installation failed\n\nCheck the error.log" 9 60
     return
   fi
 
   # Decompression
-  TERM=ansi; whiptail --title "🔨 Jetbrains Toolbox App 🔨" --infobox "Jetbrains Toolbox App will be decompressed in '$target_dir'" 9 60; TERM=xterm-256color
+  TERM=ansi; whiptail --title "🔨 Jetbrains Toolbox App 🔨" --infobox "Jetbrains Toolbox App will be decompressed in '${target_dir}'" 9 60; TERM=xterm-256color
 
-  if sudo mkdir -p "$target_dir" && sudo tar -xzf "$tmp_dir" -C "$target_dir" --strip-components=1 > /dev/null 2>> "${error}"; then
-    whiptail --title "✅ Jetbrains Toolbox App ✅" --msgbox "Installation completed\n\nGo to $target_dir and execute the program to finish installation" 9 60
+  if sudo mkdir -p "${target_dir}" && sudo tar -xzf "${tmp_dir}" -C "${target_dir}" --strip-components=1 > /dev/null 2>> "${error}"; then
+    whiptail --title "✅ Jetbrains Toolbox App ✅" --msgbox "Installation completed\n\nGo to ${target_dir} and execute the program to finish installation" 9 60
   else
     whiptail --title "❗ Jetbrains Toolbox App ❗" --msgbox "Installation failed\n\nCheck the error.log" 9 60
   fi
@@ -215,17 +215,17 @@ install_docker(){
 
   if
     {
-      for pkg in docker.io docker-doc docker-compose podman-docker containerd runc; do sudo apt-get purge $pkg -qq; done
+      for pkg in docker.io docker-doc docker-compose podman-docker containerd runc; do sudo apt-get purge "${pkg}" -qq; done
 
       sudo mkdir -p /etc/apt/keyrings
       sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
       sudo chmod a+r /etc/apt/keyrings/docker.asc
-      echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | sudo tee /etc/apt/sources.list.d/docker.list
+      echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "${VERSION_CODENAME}") stable" | sudo tee /etc/apt/sources.list.d/docker.list
 
       sudo apt-get update -qq
       sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -qq
 
-      sudo usermod -aG docker "$USER"
+      sudo usermod -aG docker "${USER}"
       newgrp docker
     } > /dev/null 2>> "${error}"
   then
@@ -250,15 +250,15 @@ install_anki(){
   local url
 
   # Get URL
-  version=$(curl -sS "$anki_url" | grep tag_name | grep -oP "\d+\.?\d*\.?\d*")
+  version=$(curl -sS "${anki_url}" | grep tag_name | grep -oP "\d+\.?\d*\.?\d*")
 
-  if [ -z "$version" ];then
+  if [ -z "${version}" ];then
     whiptail --title "❗ Anki ❗" --msgbox "Installation failed\n\nCheck the error.log" 9 60
     echo "Something failed in the retrieving of the software version. Chek the base url or the piped commands" >> "${error}"
     return
   fi
 
-  url="https://github.com/ankitects/anki/releases/download/$version/anki-$version-linux-qt6.tar.zst"
+  url="https://github.com/ankitects/anki/releases/download/${version}/anki-${version}-linux-qt6.tar.zst"
 
   # Download
   TERM=ansi; whiptail --title "🔨 Anki 🔨" --infobox "Downloading Anki ..." 9 60; TERM=xterm-256color
@@ -266,9 +266,9 @@ install_anki(){
   if
     {
       cd "/tmp" 2>> "${error}" || return
-      curl -sSLO "$url"
+      curl -sSLO "${url}"
       mkdir -p "/tmp/anki"
-      tar xaf "/tmp/$(basename "$url")" -C "/tmp/anki" --strip-components=1
+      tar xaf "/tmp/$(basename "${url}")" -C "/tmp/anki" --strip-components=1
     } > /dev/null 2>> "${error}"
   then
     whiptail --title "❗ Anki ❗" --msgbox "Installation failed\n\nCheck the error.log" 9 60
@@ -299,19 +299,19 @@ install_font_jetbrainsmono() {
   local version
   local url
 
-  version=$(curl -sS "$jetbrains_font_url" | grep tag_name | grep -oP "\d+\.?\d*\.?\d*")
-  url="https://github.com/JetBrains/JetBrainsMono/releases/download/v$version/JetBrainsMono-$version.zip"
+  version=$(curl -sS "${jetbrains_font_url}" | grep tag_name | grep -oP "\d+\.?\d*\.?\d*")
+  url="https://github.com/JetBrains/JetBrainsMono/releases/download/v${version}/JetBrainsMono-${version}.zip"
 
   # Downlad
   whiptail --title "🔨 JetBrains Mono (Font) 🔨" --scrolltext --infobox "Manual installation required.\n\nDownloading font, wait a minute..." 11 60
 
-  cd "/tmp" 2>> "${error}" || return; curl -sSLO "$url" 2>> "${error}"
-  mkdir -p "$HOME/Downloads/fonts/JetBrains Mono" && unzip -oqj "$(basename "$url")" 'fonts/ttf/*' -d "$HOME/Downloads/fonts/JetBrains Mono" 2>> "${error}"
-  find "$HOME/Downloads/fonts/JetBrains Mono" -type f -name "*.ttf" | grep -P "NL" | xargs -I {} rm {} 2>> "${error}"
-  cd "$init_dir" 2>> "${error}" || return
+  cd "/tmp" 2>> "${error}" || return; curl -sSLO "${url}" 2>> "${error}"
+  mkdir -p "${HOME}/Downloads/fonts/JetBrains Mono" && unzip -oqj "$(basename "${url}")" 'fonts/ttf/*' -d "${HOME}/Downloads/fonts/JetBrains Mono" 2>> "${error}"
+  find "${HOME}/Downloads/fonts/JetBrains Mono" -type f -name "*.ttf" | grep -P "NL" | xargs -I {} rm {} 2>> "${error}"
+  cd "${init_dir}" 2>> "${error}" || return
 
   # Manual installation
-  whiptail --title "🔨 JetBrains Mono (Font) 🔨" --scrolltext --msgbox "JetBrains Mono Fonts downloded in '$HOME/Downloads/fonts/JetBrains Mono'\nInstall the fonts with the Font Manager" 11 60
+  whiptail --title "🔨 JetBrains Mono (Font) 🔨" --scrolltext --msgbox "JetBrains Mono Fonts downloded in '${HOME}/Downloads/fonts/JetBrains Mono'\nInstall the fonts with the Font Manager" 11 60
 }
 
 #─ Show manual installation for JetBrainsMono Nerd Font
@@ -325,9 +325,9 @@ install_font_jetbrainsmono_nerd() {
   msg+="\n• Visit: https://downgit.github.io/#/home?url=https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/JetBrainsMono/Ligatures"
   msg+="\n• Move it to '/tmp'"
   msg+="\n• Run: cd /tmp;unzip -oq Ligatures.zip"
-  msg+="\n• Run: mkdir -p '$HOME/Downloads/fonts/JetBrainsMono Nerd'"
-  msg+="\n• Run: find Ligatures -type f -name \"*.ttf\" | grep -P \"JetBrains Mono[ \\w]+ Complete Mono\\.ttf\" | xargs -I {} cp {} \"$HOME/Downloads/fonts/JetBrainsMono Nerd\""
+  msg+="\n• Run: mkdir -p '${HOME}/Downloads/fonts/JetBrainsMono Nerd'"
+  msg+="\n• Run: find Ligatures -type f -name \"*.ttf\" | grep -P \"JetBrains Mono[ \\w]+ Complete Mono\\.ttf\" | xargs -I {} cp {} \"${HOME}/Downloads/fonts/JetBrainsMono Nerd\""
   msg+="\n• Install the fonts with the Font Manager"
 
-  whiptail --title "🔨 JetBrainsMono Nerd (Font) 🔨" --scrolltext --msgbox "$msg" 11 60
+  whiptail --title "🔨 JetBrainsMono Nerd (Font) 🔨" --scrolltext --msgbox "${msg}" 11 60
 }

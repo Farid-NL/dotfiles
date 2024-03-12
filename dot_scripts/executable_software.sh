@@ -7,7 +7,7 @@
 #║ Variables                                         ║
 #╚═══════════════════════════════════════════════════╝
 
-error="$HOME/error.log"
+error="${HOME}/error.log"
 script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
 
 source "${script_dir}/include/software__variables.sh"
@@ -55,7 +55,7 @@ log_separator() {
 #─ @arg $3 Installed?
 #─
 #─ @example
-#─     install_standard "yakuake" "Yakuake" "$is_installed_yakuake"
+#─     install_standard "yakuake" "Yakuake" "${is_installed_yakuake}"
 install_standard() {
   if $3; then return; fi
 
@@ -84,8 +84,8 @@ install_standard() {
 #─ @arg $5 Installed?
 #─
 #─ @example
-#─     install_deb "google-chrome" "Google Chrome" "$chrome_url" false "$is_installed_chrome"
-#─     install_deb "code" "VSCode (Editor)" "$code_url" true "$is_installed_code"
+#─     install_deb "google-chrome" "Google Chrome" "${chrome_url}" false "${is_installed_chrome}"
+#─     install_deb "code" "VSCode (Editor)" "${code_url}" true "${is_installed_code}"
 install_deb() {
   if $5; then return; fi
 
@@ -110,7 +110,7 @@ install_deb() {
 
   cd "/tmp" 2>> "${error}" || return
 
-  if ! curl -sSLO "$url" 2>> "${error}"; then
+  if ! curl -sSLO "${url}" 2>> "${error}"; then
     whiptail --title "❗ $2 ❗" --msgbox "Installation failed\n\nCheck the error.log" 9 60
     cd "${init_dir}" 2>> "${error}" || return
     return
@@ -119,7 +119,7 @@ install_deb() {
   # Installation
   TERM=ansi; whiptail --title "🔨 $2 🔨" --infobox "Installing $2 ..." 9 60; TERM=xterm-256color
 
-  if sudo apt-get install "./$(basename "$url")" -qq > /dev/null 2>> "${error}"; then
+  if sudo apt-get install "./$(basename "${url}")" -qq > /dev/null 2>> "${error}"; then
     whiptail --title "✅ $2 ✅" --msgbox "Installation completed" 9 60
   else
     whiptail --title "❗ $2 ❗" --msgbox "Installation failed\n\nCheck the error.log" 9 60
@@ -136,7 +136,7 @@ install_deb() {
 #─ @arg $4 Installed?
 #─
 #─ @example
-#─     install_PPA "git" "git" "ppa:git-core/ppa" "$is_installed_git"
+#─     install_PPA "git" "git" "ppa:git-core/ppa" "${is_installed_git}"
 install_PPA() {
   if $4; then return; fi
 
@@ -192,7 +192,7 @@ check_package() {
 #─ @arg $1 File path
 #─
 #─ @example
-#─     check_file "$HOME/path/to/file.txt"
+#─     check_file "${HOME}/path/to/file.txt"
 #─
 #─ @exitcode 1 If file is not found
 #─ @exitcode 0 If file is found
@@ -209,7 +209,7 @@ check_file() {
 #─ @arg $1 Directory path
 #─
 #─ @example
-#─     check_directory "$HOME/path/to/directory"
+#─     check_directory "${HOME}/path/to/directory"
 #─
 #─ @exitcode 1 If directory is not found
 #─ @exitcode 0 If directory is found
@@ -283,7 +283,7 @@ check_prerequisites() {
     is_zsh_login_shell=false
   fi
 
-  if [ -f "$HOME"/.ssh/id_ed25519_github ]; then
+  if [ -f "${HOME}"/.ssh/id_ed25519_github ]; then
     is_set_ssh_git=true
   else
     is_set_ssh_git=false
@@ -291,23 +291,23 @@ check_prerequisites() {
 
   # Displaying of prerequisites statuses
   local string
-  string="  $($is_installed_curl && echo ✅ || echo ❌) curl
-  $($is_installed_zsh && echo ✅ || echo ❌) zsh
-  $($is_zsh_login_shell && echo ✅ || echo ❌) zsh login
-  $($is_set_ssh_git && echo ✅ || echo ❌) ssh git"
+  string="  $(${is_installed_curl} && echo ✅ || echo ❌) curl
+  $(${is_installed_zsh} && echo ✅ || echo ❌) zsh
+  $(${is_zsh_login_shell} && echo ✅ || echo ❌) zsh login
+  $(${is_set_ssh_git} && echo ✅ || echo ❌) ssh git"
 
   # All prerequisites installed: Continue with the script or exit
   if $is_installed_curl && $is_installed_zsh && $is_zsh_login_shell && $is_set_ssh_git; then
-    whiptail --title "Prerequisites" --yesno "$string" --yes-button "Continue" --no-button "Exit" 15 80
+    whiptail --title "Prerequisites" --yesno "${string}" --yes-button "Continue" --no-button "Exit" 15 80
     return
   fi
 
   # Installation
   string+="\n\n──────────────────────────────────────────────────────\n\nDo you want to install the remaining prerequisites?"
-  if (whiptail --title "Prerequisites" --yesno "$string" --yes-button "Continue" --no-button "Exit" --defaultno 15 80); then
+  if (whiptail --title "Prerequisites" --yesno "${string}" --yes-button "Continue" --no-button "Exit" --defaultno 15 80); then
 
     local prereq
-    prereq=("$is_installed_curl" "$is_installed_zsh" "$is_zsh_login_shell" "$is_set_ssh_git")
+    prereq=("${is_installed_curl}" "${is_installed_zsh}" "${is_zsh_login_shell}" "${is_set_ssh_git}")
 
     prereq_installation "${prereq[@]}"
     whiptail --title "Prerequisites" --msgbox "Prerequisites installed ✅" 9 60
@@ -329,7 +329,7 @@ check_installs() {
   is_installed_make=$(check_package make && echo "true" || echo "false")
   is_installed_dolphin_plugins=$(check_package dolphin-plugins && echo "true" || echo "false")
   is_installed_neovim=$(check_package neovim && echo "true" || echo "false")
-  is_installed_nvimplug=$(check_file "$vimplug_dir" && echo "true" || echo "false")
+  is_installed_nvimplug=$(check_file "${vimplug_dir}" && echo "true" || echo "false")
   is_installed_mvp=$(check_package mpv && echo "true" || echo "false")
   is_installed_adb=$(check_package adb && echo "true" || echo "false")
   is_installed_scrcpy=$(check_package scrcpy && echo "true" || echo "false")
@@ -340,26 +340,26 @@ check_installs() {
   is_installed_unrar=$(check_package unrar && echo "true" || echo "false")
   is_installed_pdfgrep=$(check_package pdfgrep && echo "true" || echo "false")
   is_installed_kcolor=$(check_package kcolorchooser && echo "true" || echo "false")
-  is_installed_screenkey=$(check_directory "$screenkey_dir" && echo "true" || echo "false")
+  is_installed_screenkey=$(check_directory "${screenkey_dir}" && echo "true" || echo "false")
 
   # Development
   is_installed_code=$(check_package code && echo "true" || echo "false")
   is_installed_git=$(check_package git && echo "true" || echo "false")
-  is_installed_nvm=$(check_directory "$nvm_dir" && echo "true" || echo "false")
+  is_installed_nvm=$(check_directory "${nvm_dir}" && echo "true" || echo "false")
   is_installed_gh=$(check_package gh && echo "true" || echo "false")
-  is_installed_jetbrains_toolbox=$(check_file "$jetbrains_toolbox_dir" && echo "true" || echo "false")
+  is_installed_jetbrains_toolbox=$(check_file "${jetbrains_toolbox_dir}" && echo "true" || echo "false")
   is_installed_docker=$(check_package docker-ce && echo "true" || echo "false")
   is_installed_mysql_dep1=$(check_package gnome-keyring && echo "true" || echo "false")
   is_installed_mysql_dep2=$(check_package libproj-dev && echo "true" || echo "false")
   is_installed_mysql=$(check_package mysql-server && echo "true" || echo "false")
   is_installed_mysql_workbench=$(check_package mysql-workbench-community && echo "true" || echo "false")
-  is_installed_xampp=$(check_directory "$xampp_dir" && echo "true" || echo "false")
+  is_installed_xampp=$(check_directory "${xampp_dir}" && echo "true" || echo "false")
 
   # Others
   is_installed_veracrypt=$(check_package veracrypt && echo "true" || echo "false")
   is_installed_qbittorrent=$(check_package qbittorrent && echo "true" || echo "false")
   is_installed_obs=$(check_package obs-studio && echo "true" || echo "false")
-  is_installed_pcloud=$(check_file "$pcloud_dir" && echo "true" || echo "false")
+  is_installed_pcloud=$(check_file "${pcloud_dir}" && echo "true" || echo "false")
   is_installed_anki=$(check_command anki && echo "true" || echo "false")
   is_installed_droidcam=$(check_command droidcam && echo "true" || echo "false")
   is_installed_jetbrains_font=$(check_font 'JetBrains Mono' && echo "true" || echo "false")
@@ -377,54 +377,54 @@ show_installs() {
 
   ─────────────────────── Utilities ──────────────────────
 
-  $($is_installed_yakuake && echo ✅ || echo ❌) Yakuake
-  $($is_installed_brave && echo ✅ || echo ❌) Brave browser
-  $($is_installed_chrome && echo ✅ || echo ❌) Google Chrome
-  $($is_installed_okular && echo ✅ || echo ❌) Okular Backends
-  $($is_installed_make && echo ✅ || echo ❌) make
-  $($is_installed_dolphin_plugins && echo ✅ || echo ❌) Dolphin Plugins
-  $($is_installed_neovim && echo ✅ || echo ❌) Neovim
-  $($is_installed_nvimplug && echo ✅ || echo ❌) vim-plug
-  $($is_installed_mvp && echo ✅ || echo ❌) mpv (Music Player)
-  $($is_installed_adb && echo ✅ || echo ❌) adb (Android USB Debugging)
-  $($is_installed_scrcpy && echo ✅ || echo ❌) scrcpy (Android on screen)
-  $($is_installed_netstat && echo ✅ || echo ❌) netstat (XAMPP)
-  $($is_installed_ffmpeg && echo ✅ || echo ❌) ffmpeg (Audio-Video libraries)
-  $($is_installed_neofetch && echo ✅ || echo ❌) neofetch (System Info)
-  $($is_installed_gromit && echo ✅ || echo ❌) Gromit MPX (Draw on screen)
-  $($is_installed_unrar && echo ✅ || echo ❌) unrar
-  $($is_installed_pdfgrep && echo ✅ || echo ❌) pdfgrep
-  $($is_installed_kcolor && echo ✅ || echo ❌) KColorChooser
-  $($is_installed_screenkey && echo ✅ || echo ❌) ScreenKey
+  $(${is_installed_yakuake} && echo ✅ || echo ❌) Yakuake
+  $(${is_installed_brave} && echo ✅ || echo ❌) Brave browser
+  $(${is_installed_chrome} && echo ✅ || echo ❌) Google Chrome
+  $(${is_installed_okular} && echo ✅ || echo ❌) Okular Backends
+  $(${is_installed_make} && echo ✅ || echo ❌) make
+  $(${is_installed_dolphin_plugins} && echo ✅ || echo ❌) Dolphin Plugins
+  $(${is_installed_neovim} && echo ✅ || echo ❌) Neovim
+  $(${is_installed_nvimplug} && echo ✅ || echo ❌) vim-plug
+  $(${is_installed_mvp} && echo ✅ || echo ❌) mpv (Music Player)
+  $(${is_installed_adb} && echo ✅ || echo ❌) adb (Android USB Debugging)
+  $(${is_installed_scrcpy} && echo ✅ || echo ❌) scrcpy (Android on screen)
+  $(${is_installed_netstat} && echo ✅ || echo ❌) netstat (XAMPP)
+  $(${is_installed_ffmpeg} && echo ✅ || echo ❌) ffmpeg (Audio-Video libraries)
+  $(${is_installed_neofetch} && echo ✅ || echo ❌) neofetch (System Info)
+  $(${is_installed_gromit} && echo ✅ || echo ❌) Gromit MPX (Draw on screen)
+  $(${is_installed_unrar} && echo ✅ || echo ❌) unrar
+  $(${is_installed_pdfgrep} && echo ✅ || echo ❌) pdfgrep
+  $(${is_installed_kcolor} && echo ✅ || echo ❌) KColorChooser
+  $(${is_installed_screenkey} && echo ✅ || echo ❌) ScreenKey
 
   ───────────────────── Development ────────────────────
 
-  $($is_installed_code && echo ✅ || echo ❌) VSCode (Editor)
-  $($is_installed_git && echo ✅ || echo ❌) git
-  $($is_installed_nvm && echo ✅ || echo ❌) nvm
-  $($is_installed_gh && echo ✅ || echo ❌) GitHub CLI
-  $($is_installed_jetbrains_toolbox && echo ✅ || echo ❌) Jetbrains Toolbox App
-  $($is_installed_docker && echo ✅ || echo ❌) Docker
-  $($is_installed_mysql_dep1 && echo ✅ || echo ❌) MySQL Dependencies (gnome-keyring)
-  $($is_installed_mysql_dep2 && echo ✅ || echo ❌) MySQL Dependencies (libproj-dev)
-  $($is_installed_mysql && echo ✅ || echo ❌) MySQL
-  $($is_installed_mysql_workbench && echo ✅ || echo ❌) MySQL Workbench
-  $($is_installed_xampp && echo ✅ || echo ❌) XAMPP
+  $(${is_installed_code} && echo ✅ || echo ❌) VSCode (Editor)
+  $(${is_installed_git} && echo ✅ || echo ❌) git
+  $(${is_installed_nvm} && echo ✅ || echo ❌) nvm
+  $(${is_installed_gh} && echo ✅ || echo ❌) GitHub CLI
+  $(${is_installed_jetbrains_toolbox} && echo ✅ || echo ❌) Jetbrains Toolbox App
+  $(${is_installed_docker} && echo ✅ || echo ❌) Docker
+  $(${is_installed_mysql_dep1} && echo ✅ || echo ❌) MySQL Dependencies (gnome-keyring)
+  $(${is_installed_mysql_dep2} && echo ✅ || echo ❌) MySQL Dependencies (libproj-dev)
+  $(${is_installed_mysql} && echo ✅ || echo ❌) MySQL
+  $(${is_installed_mysql_workbench} && echo ✅ || echo ❌) MySQL Workbench
+  $(${is_installed_xampp} && echo ✅ || echo ❌) XAMPP
 
   ─────────────────────── Others ───────────────────────
 
-  $($is_installed_veracrypt && echo ✅ || echo ❌) VeraCrypt
-  $($is_installed_qbittorrent && echo ✅ || echo ❌) qBittorrent
-  $($is_installed_obs && echo ✅ || echo ❌) OBS studio
-  $($is_installed_pcloud && echo ✅ || echo ❌) PCloud
-  $($is_installed_anki && echo ✅ || echo ❌) Anki
-  $($is_installed_droidcam && echo ✅ || echo ❌) Droidcam
-  $($is_installed_jetbrains_font && echo ✅ || echo ❌) JetBrains Mono (Font)
-  $($is_installed_jetbrains_nerd_font && echo ✅ || echo ❌) JetBrainsMono Nerd (Font)
+  $(${is_installed_veracrypt} && echo ✅ || echo ❌) VeraCrypt
+  $(${is_installed_qbittorrent} && echo ✅ || echo ❌) qBittorrent
+  $(${is_installed_obs} && echo ✅ || echo ❌) OBS studio
+  $(${is_installed_pcloud} && echo ✅ || echo ❌) PCloud
+  $(${is_installed_anki} && echo ✅ || echo ❌) Anki
+  $(${is_installed_droidcam} && echo ✅ || echo ❌) Droidcam
+  $(${is_installed_jetbrains_font} && echo ✅ || echo ❌) JetBrains Mono (Font)
+  $(${is_installed_jetbrains_nerd_font} && echo ✅ || echo ❌) JetBrainsMono Nerd (Font)
 
   ──────────────────────────────────────────────────────"
 
-  whiptail --title "Installed software" --scrolltext --yesno "$string" --yes-button "Continue" --no-button "Exit" --defaultno 15 80
+  whiptail --title "Installed software" --scrolltext --yesno "${string}" --yes-button "Continue" --no-button "Exit" --defaultno 15 80
 }
 
 #─ Helper that display a prompt about a required manual installation
@@ -435,8 +435,8 @@ show_installs() {
 #─ @arg $4 Scrollable <'--scrolltext'> || <>
 #─
 #─ @example
-#─     show_manual_install "nvm" "$is_installed_nvm" "$msg"
-#─     show_manual_install "MySQL" "$is_installed_mysql" "$msg" "--scrolltext"
+#─     show_manual_install "nvm" "${is_installed_nvm}" "${msg}"
+#─     show_manual_install "MySQL" "${is_installed_mysql}" "${msg}" "--scrolltext"
 show_manual_install(){
   if $2; then return; fi
 
@@ -489,16 +489,16 @@ prereq_installation() {
     bold=$(tput bold)
     color_reset=$(tput sgr0)
 
-    echo -e "Set the key name to ${bold}'$HOME/.ssh/id_ed25519_github'${color_reset}\n"
-    ssh-keygen -t ed25519 -C "34426099+$github_username@users.noreply.github.com"
+    echo -e "Set the key name to ${bold}'${HOME}/.ssh/id_ed25519_github'${color_reset}\n"
+    ssh-keygen -t ed25519 -C "34426099+${github_username}@users.noreply.github.com"
     eval "$(ssh-agent -s)"
-    ssh-add "$HOME/.ssh/id_ed25519_github"
+    ssh-add "${HOME}/.ssh/id_ed25519_github"
 
-    mkdir -p "$HOME/.ssh" ; cd "$HOME/.ssh" 2>> "${error}" || return
-    curl -sSO "$ssh_config_file"
+    mkdir -p "${HOME}/.ssh" ; cd "${HOME}/.ssh" 2>> "${error}" || return
+    curl -sSO "${ssh_config_file}"
     cd "${init_dir}" 2>> "${error}" || return
 
-    whiptail --title "Prerequisites - ssh-git" --scrolltext --msgbox "ssh-git setted up ✅\n\nVisit https://github.com/settings/keys and add your ssh public key: '$HOME/.ssh/id_ed25519_github.pub'" 9 60
+    whiptail --title "Prerequisites - ssh-git" --scrolltext --msgbox "ssh-git setted up ✅\n\nVisit https://github.com/settings/keys and add your ssh public key: '${HOME}/.ssh/id_ed25519_github.pub'" 9 60
   fi
 }
 
@@ -506,61 +506,61 @@ prereq_installation() {
 #─ @noargs
 utilities() {
   # Brave
-  install_brave "$is_installed_brave"
+  install_brave "${is_installed_brave}"
 
   # Yakuake
-  install_standard "yakuake" "Yakuake" "$is_installed_yakuake"
+  install_standard "yakuake" "Yakuake" "${is_installed_yakuake}"
 
   # Okular Backends (Format support)
-  install_standard "okular-extra-backends" "Okular Backends (Format support)" "$is_installed_okular"
+  install_standard "okular-extra-backends" "Okular Backends (Format support)" "${is_installed_okular}"
 
   # Google Chrome
-  install_deb "google-chrome" "Google Chrome" "$chrome_url" false "$is_installed_chrome"
+  install_deb "google-chrome" "Google Chrome" "${chrome_url}" false "${is_installed_chrome}"
 
   # make (Compilation utility)
-  install_standard "make" "make (Compilation utility)" "$is_installed_make"
+  install_standard "make" "make (Compilation utility)" "${is_installed_make}"
 
   # Dolphin Plugins
-  install_standard "dolphin-plugins" "Dolphin Plugins" "$is_installed_dolphin_plugins"
+  install_standard "dolphin-plugins" "Dolphin Plugins" "${is_installed_dolphin_plugins}"
 
   # Neovim (Editor)
-  install_standard "neovim" "Neovim (Editor)" "$is_installed_neovim"
+  install_standard "neovim" "Neovim (Editor)" "${is_installed_neovim}"
 
   # vim-plug
-  install_vimplug "$is_installed_nvimplug"
+  install_vimplug "${is_installed_nvimplug}"
 
   # mpv (Music Player)
-  install_standard "mpv" "mpv (Music Player)" "$is_installed_mvp"
+  install_standard "mpv" "mpv (Music Player)" "${is_installed_mvp}"
 
   # adb (Android USB Debugging)
-  install_standard "adb" "adb (Android USB Debugging)" "$is_installed_adb"
+  install_standard "adb" "adb (Android USB Debugging)" "${is_installed_adb}"
 
   # scrcpy (Android on screen)
-  install_standard "scrcpy" "scrcpy (Android on screen)" "$is_installed_scrcpy"
+  install_standard "scrcpy" "scrcpy (Android on screen)" "${is_installed_scrcpy}"
 
   # netstat (XAMPP)
-  install_standard "net-tools" "netstat (XAMPP)" "$is_installed_netstat"
+  install_standard "net-tools" "netstat (XAMPP)" "${is_installed_netstat}"
 
   # ffmpeg (Audio-Video libraries)
-  install_standard "ffmpeg" "ffmpeg (Audio-Video libraries)" "$is_installed_ffmpeg"
+  install_standard "ffmpeg" "ffmpeg (Audio-Video libraries)" "${is_installed_ffmpeg}"
 
   # neofetch (System Info)
-  install_standard "neofetch" "neofetch (System Info)" "$is_installed_neofetch"
+  install_standard "neofetch" "neofetch (System Info)" "${is_installed_neofetch}"
 
   # gromit-mpx
-  install_standard "gromit-mpx" "Gromit MPX (Draw on screen)" "$is_installed_gromit"
+  install_standard "gromit-mpx" "Gromit MPX (Draw on screen)" "${is_installed_gromit}"
 
   # unrar
-  install_standard "unrar" "unrar" "$is_installed_unrar"
+  install_standard "unrar" "unrar" "${is_installed_unrar}"
 
   # pdfgrep
-  install_standard "pdfgrep" "pdfgrep" "$is_installed_pdfgrep"
+  install_standard "pdfgrep" "pdfgrep" "${is_installed_pdfgrep}"
 
   # kcolorchooser
-  install_standard "kcolorchooser" "kcolorchooser" "$is_installed_kcolor"
+  install_standard "kcolorchooser" "kcolorchooser" "${is_installed_kcolor}"
 
   # screenkey
-  install_screenkey "$is_installed_screenkey"
+  install_screenkey "${is_installed_screenkey}"
 }
 
 #─ Install packages from 'Development' category
@@ -569,47 +569,47 @@ development() {
   local msg
 
   # VSCode
-  install_deb "code" "VSCode (Editor)" "$code_url" true "$is_installed_code"
+  install_deb "code" "VSCode (Editor)" "${code_url}" true "${is_installed_code}"
 
   # nvm
   msg="Manual installation required:\n\nhttps://github.com/nvm-sh/nvm#install--update-script"
-  show_manual_install "nvm" "$is_installed_nvm" "$msg"
+  show_manual_install "nvm" "${is_installed_nvm}" "${msg}"
 
   # git
-  install_PPA "git" "git" "ppa:git-core/ppa" "$is_installed_git"
+  install_PPA "git" "git" "ppa:git-core/ppa" "${is_installed_git}"
 
   # GitHub CLI
-  install_githubcli "$is_installed_gh"
+  install_githubcli "${is_installed_gh}"
 
   # Jetbrains Toolbox App
-  install_jetbrains_toolbox "$is_installed_jetbrains_toolbox"
+  install_jetbrains_toolbox "${is_installed_jetbrains_toolbox}"
 
   # Docker
-  install_docker "$is_installed_docker"
+  install_docker "${is_installed_docker}"
 
   # MySQL Dependencies (gnome-keyring)
-  install_standard "gnome-keyring" "gnome-keyring (MySQL deps)" "$is_installed_mysql_dep1"
+  install_standard "gnome-keyring" "gnome-keyring (MySQL deps)" "${is_installed_mysql_dep1}"
 
   # MySQL Dependencies (libproj-dev)
-  install_standard "libproj-dev" "libproj-dev (MySQL deps)" "$is_installed_mysql_dep2"
+  install_standard "libproj-dev" "libproj-dev (MySQL deps)" "${is_installed_mysql_dep2}"
 
   # MySQL
   msg="Manual installation required:"
   msg+="\n\nVisit: https://dev.mysql.com/doc/mysql-apt-repo-quick-guide/en/#apt-repo-fresh-install"
   msg+="\nRun: sudo apt update"
   msg+="\nRun: sudo apt install mysql-server"
-  show_manual_install "MySQL" "$is_installed_mysql" "$msg" "--scrolltext"
+  show_manual_install "MySQL" "${is_installed_mysql}" "${msg}" "--scrolltext"
 
   # MySQL Workbench
   msg="Manual installation required:"
   msg+="\n\nVisit: https://dev.mysql.com/doc/mysql-apt-repo-quick-guide/en/#apt-repo-fresh-install"
   msg+="\nRun: sudo apt update"
   msg+="\nRun: sudo apt install mysql-workbench-community"
-  show_manual_install "MySQL Workbench" "$is_installed_mysql_workbench" "$msg" "--scrolltext"
+  show_manual_install "MySQL Workbench" "${is_installed_mysql_workbench}" "${msg}" "--scrolltext"
 
   # XAMPP
   msg="Manual installation required:\n\nVisit: https://sourceforge.net/projects/xampp/files/latest/download"
-  show_manual_install "XAMPP" "$is_installed_xampp" "$msg"
+  show_manual_install "XAMPP" "${is_installed_xampp}" "${msg}"
 }
 
 #─ Install packages from 'Others' category
@@ -619,26 +619,26 @@ others() {
 
   # Veracrypt
   msg="Manual installation required:\n\nVisit: https://www.veracrypt.fr/en/Downloads.html"
-  show_manual_install "VeraCrypt" "$is_installed_veracrypt" "$msg"
+  show_manual_install "VeraCrypt" "${is_installed_veracrypt}" "${msg}"
 
   # qBitorrent
-  install_PPA "qbittorrent" "qBittorrent" "ppa:qbittorrent-team/qbittorrent-stable" "$is_installed_qbittorrent"
+  install_PPA "qbittorrent" "qBittorrent" "ppa:qbittorrent-team/qbittorrent-stable" "${is_installed_qbittorrent}"
 
   # OBS Studio
-  install_PPA "obs-studio" "OBS Studio" "ppa:obsproject/obs-studio" "$is_installed_obs"
+  install_PPA "obs-studio" "OBS Studio" "ppa:obsproject/obs-studio" "${is_installed_obs}"
 
   # Pcloud
   msg="Manual installation required:\n\nVisit: https://www.pcloud.com/how-to-install-pcloud-drive-linux.html?download=electron-64"
-  show_manual_install "Pcloud" "$is_installed_pcloud" "$msg" "--scrolltext"
+  show_manual_install "Pcloud" "${is_installed_pcloud}" "${msg}" "--scrolltext"
 
   #Anki
-  install_anki "$is_installed_anki"
+  install_anki "${is_installed_anki}"
 
   # JetBrains Mono (Font)
-  install_font_jetbrainsmono "$is_installed_jetbrains_font"
+  install_font_jetbrainsmono "${is_installed_jetbrains_font}"
 
   # JetBrainsMono Nerd (Font)
-  install_font_jetbrainsmono_nerd "$is_installed_jetbrains_nerd_font"
+  install_font_jetbrainsmono_nerd "${is_installed_jetbrains_nerd_font}"
 }
 
 #╔═══════════════════════════════════════════════════╗
@@ -646,7 +646,7 @@ others() {
 #╚═══════════════════════════════════════════════════╝
 
 # Check if it's run as root
-if [[ $EUID = 0 ]]; then
+if [[ "${EUID}" = 0 ]]; then
   echo "It is not recommended (nor necessary) to run this script as root."
   exit 1
 fi
@@ -676,7 +676,7 @@ fi
 
 # Option to backup dotfiles
 if (whiptail --title "dotfiles" --yesno "Do you want to restore/backup your dot files ?" --defaultno 15 80); then
-  bash <(curl -sS "$dotfiles_backup_url")
+  bash <(curl -sS "${dotfiles_backup_url}")
 fi
 
 # Menu
@@ -688,7 +688,7 @@ CATEGORY=$(whiptail --title "Installation" \
   "ALL" "All" \
   3>&1 1<&2 2>&3)
 
-case $CATEGORY in
+case "${CATEGORY}" in
   "UTL")
     utilities
   ;;
