@@ -63,7 +63,8 @@ path=($path ~/.scripts)
 fpath=(~/.config/zsh/completion/ $fpath)
 
 # Export environment variables.
-export EDITOR="code --wait"
+export EDITOR=vim # nvim if installed
+export VISUAL=vim # nvim if installed
 
 export GPG_TTY=$TTY
 export LESS='-iRFMx4'
