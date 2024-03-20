@@ -33,7 +33,8 @@
     line-numbers-left-style = "#6272a4"
     line-numbers-right-format = {np:>4}│
     line-numbers-right-style = "#6272a4"
-    zero-style = "#444444"
+    line-numbers-zero-style = dimgrey
+    zero-style = dimgrey
 
 [user]
     # Author and commiter info
