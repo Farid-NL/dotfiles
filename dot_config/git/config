@@ -6,34 +6,8 @@
     # Pager
     pager = delta
 
-[interactive]
-    diffFilter = delta --color-only --features=interactive
-
-[delta]
-    features = decorations
-    navigate = true
-
-[delta "interactive"]
-    keep-plus-minus-markers = false
-
-[delta "decorations"]
-    syntax-theme = Dracula
-    #commit-decoration-style = blue box
-    file-style = bold blue
-    file-added-label = "+"
-    file-modified-label = "Δ"
-    file-removed-label = "-"
-    file-renamed-label = "⇄ "
-    right-arrow = "⟶"
-    hunk-header-decoration-style = "#6272a4" box
-    hunk-header-line-number-style = bold "#6272a4"
-    line-numbers = true
-    line-numbers-left-format = {nm:>4}│
-    line-numbers-left-style = "#6272a4"
-    line-numbers-right-format = {np:>4}│
-    line-numbers-right-style = "#6272a4"
-    line-numbers-zero-style = dimgrey
-    zero-style = dimgrey
+[include]
+    path = delta
 
 [user]
     # Author and commiter info
