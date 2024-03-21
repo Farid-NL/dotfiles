@@ -67,6 +67,12 @@ export EDITOR=vim # nvim if installed
 export VISUAL=vim # nvim if installed
 
 export GPG_TTY=$TTY
+
+# -i | ignore case in searches that lack uppercase
+# -R | display control chars; keep track of screen effects
+# -F | exit if entire file fits on first screen
+# -M | prompt very verbosely
+# -x | set tab stops
 export LESS='-iRFMx4'
 
 export XDG_CONFIG_HOME="$HOME/.config"      # export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
