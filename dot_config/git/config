@@ -12,7 +12,7 @@
 [user]
     # Author and commiter info
     email = 34426099+Farid-NL@users.noreply.github.com
-    name = Carlos Farid Nogales López
+    name = Farid NL
 
     # Default GPG key to use when creating signed tags and commits
     signingkey = 34426099+Farid-NL@users.noreply.github.com
