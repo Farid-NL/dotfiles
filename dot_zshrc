@@ -138,6 +138,8 @@ compdef _directories md
 # Define aliases.
 #alias tree='tree -a -I .git'
 alias ch='chezmoi'
+alias dss="export DELTA_FEATURES='+side-by-side'"
+alias dn="unset DELTA_FEATURES"
 
 # Add flags to existing aliases.
 #alias ls="${aliases[ls]:-ls} -A"

@@ -12,7 +12,6 @@
 [delta]
     features = decorations
     navigate = true
-    side-by-side = false
 
 [delta "interactive"]
     keep-plus-minus-markers = false
