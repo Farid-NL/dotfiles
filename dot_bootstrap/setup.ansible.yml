@@ -52,6 +52,9 @@
 
     - name: Development
       block:
+        - name: Delta
+          ansible.builtin.import_tasks: imports/dev/delta.ansible.yml
+
         - name: Jetbrains Toolbox
           ansible.builtin.import_tasks: imports/dev/jetbrains_toolbox.ansible.yml
 
