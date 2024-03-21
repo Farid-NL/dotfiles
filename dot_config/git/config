@@ -89,20 +89,43 @@
     # Values for log:
         # Color => %C(attribute color) => Colors: normal, black, red, green, yellow, blue, magenta, cyan, white. | Attributes: bold, dim, ul, blink, reverse, italic, strike
         # Color_reset => %C(reset)
-        # New_line => %n
-        # Hash => %h
-        # Author_date => %aD
-        # Author_date (relative) => %ar
-        # Commiter_date => %cD
-        # Branches => %d
-        # Message => %s
-        # Name_author => %an
-        # Email_author => %ae
-        # Name_commiter => %cn
-        # Email_commiter => %ce
+        # %n  => New_line
 
-    #lg = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) %C(auto)%d%C(reset) %C(bold green)(%ar)%C(reset)%n''          %C(white)%s%C(reset)%n''          %C(dim white)[A] %an: %aD <%ae>%C(reset)%n''          %C(dim white)[C] %cn: %cD <%ce>%C(reset)%n'
-    #lg2 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) %C(auto)%d%C(reset) %C(bold green)(%ar)%C(reset)%n''          %C(white)%s%C(reset)%n''          %C(bold cyan)[A]%an: %aD%C(reset) %C(dim white)<%ae>%C(reset)%n''          %C(bold cyan)[C]%cn: %cD%C(reset) %C(dim white)<%ce>%C(reset)%n'
+        # %H  => Commit hash
+        # %h  => Commit hash, abbreviated
+
+        # %an => Author name
+        # %ae => Author email
+
+        # %ad => Author date (format respects the --date=option)
+        # %ar => Author date, relative
+        # %as => Author date, short format (YYYY-MM-DD)
+        # %ah => Author date, human style
+
+        # %cn => Committer name
+        # %ce => Committer email
+
+        # %cd => Committer date
+        # %cr => Committer date, relative
+        # %cs => Committer date, short format (YYYY-MM-DD)
+        # %ch => Committer date, human style
+
+        # %s  => Subject (Message)
+        # %d  => Ref names
+        # %D  => Ref names without the ` ()` wrapping.
+
+    # %h - (%ar) %s - %an (%d)
+    lg  = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(#696969)- %an%C(reset)%C(auto)%d%C(reset)'"
+
+    # %h - %aD (%ar) (%d)
+    #      %s - %an
+    lg2 = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(auto)%d%C(reset)%n''          %C(white)%s%C(reset) %C(#696969)- %an%C(reset)'"
+
+    # %h - [A] %aD (%ar) [C] %cD (%d)
+    #      %s
+    #      [A] %an <%ae>
+    #      [C] %cn <%ce>
+    lg3 = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)[A] %aD%C(reset) %C(bold green)(%ar)%C(reset) %C(bold cyan)[C] %cD%C(reset)%C(auto)%d%C(reset)%n''          %C(white)%s%C(reset)%n''          %C(#696969)[A] %an <%ae>%C(reset)%n''          %C(#696969)[C] %cn <%ce>%C(reset)'"
 
 
 [color]
