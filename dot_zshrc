@@ -80,34 +80,21 @@ export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/.npmrc"
 export ANSIBLE_HOME="$XDG_DATA_HOME/ansible"
 export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
 
-# NVM
+# NVM (Lazy loaded)
 export NVM_DIR="$HOME/.config/nvm"
 export NVM_SYMLINK_CURRENT=true
 export NVM_LAZY_LOAD=true
 #export NVM_COMPLETION=true
 
-# Conda initializer
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/farid/.miniconda/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/farid/.miniconda/etc/profile.d/conda.sh" ]; then
-        . "/home/farid/.miniconda/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/farid/.miniconda/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
+# Conda (Lazy loaded)
+export CONDA_DIR="$HOME/.miniconda"
 
-# sdkman
+# sdkman (Lazy loaded)
 export SDKMAN_DIR="$HOME/.sdkman"
-[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 # Source additional local files if they exist.
 z4h source ~/.config/zsh/functions.zsh
+z4h source ~/.config/zsh/lazy-loadings.zsh
 
 # Use additional Git repositories files pulled in with `z4h install`.
 z4h source Farid-NL/zsh-nvm/zsh-nvm.plugin.zsh
