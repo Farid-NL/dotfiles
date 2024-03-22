@@ -80,8 +80,3 @@ function swap() {
     local tmp_file=tmp.$$
     mv "$1" $tmp_file && mv "$2" "$1" && mv $tmp_file "$2"
 }
-
-# Swap git profiles
-function swap_git() {
-  # TODO
-}
