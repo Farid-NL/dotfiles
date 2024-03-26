@@ -74,16 +74,13 @@
 
 # Useful aliases
 [alias]
-    s = status
+    st = status
     Acm = !git add -A && git commit -m
     acm = !git add . && git commit -m
+    ch = checkout
     fd = !git fetch && git difftool
     sw = switch
-    st = stash
-    stpop = stash pop
-    stpush = stash push
     diffstash = difftool stash@{0}^!
-    cge = config --global -e
     aliases = !git config --get-regexp ^alias\\. | less
 
     # Values for log:
