@@ -85,7 +85,7 @@ export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
 
 #|-- Conda --
 #| Installation:
-#|   ❯ wget https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O /tmp/miniconda.sh
+#|   ❯ wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/miniconda.sh
 #|   ❯ /tmp/miniconda.sh -b -u -p "$CONDA_DIR"
 export CONDA_DIR="$HOME/.miniconda"
 
