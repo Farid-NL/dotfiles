@@ -1,8 +1,6 @@
-# Personal Zsh configuration file. It is strongly recommended to keep all
-# shell customization and configuration (including exported environment
-# variables such as PATH) in this file or in files sourced from it.
-#
-# Documentation: https://github.com/romkatv/zsh4humans/blob/v5/README.md.
+#|----------------------------------
+#| zsh4humans settings
+#|----------------------------------
 
 # Periodic auto-update on Zsh startup: 'ask' or 'no'.
 # You can manually run `z4h update` to update everything.
@@ -42,19 +40,24 @@ zstyle ':z4h:ssh:*'                   enable 'no'
 # enabled hosts.
 zstyle ':z4h:ssh:*' send-extra-files '~/.nanorc' '~/.env.zsh'
 
-# Clone additional Git repositories from GitHub.
+#|---------------------------------
+#| Clone repositories from GitHub
+#|---------------------------------
 #z4h install Farid-NL/zsh-nvm || return
 
-# Install or update core components (fzf, zsh-autosuggestions, etc.) and
-# initialize Zsh. After this point console I/O is unavailable until Zsh
-# is fully initialized. Everything that requires user interaction or can
-# perform network I/O must be done above. Everything else is best done below.
+#|-------------------------------------------------------
+#| Install or update core components and initialize Zsh
+#|-------------------------------------------------------
+#| After this point console I/O is unavailable until Zsh is fully
+#| initialized. Everything that requires user interaction or can perform
+#| network I/O must be done above. Everything else is best done below.
+
 z4h init || return
 
-# Extend FPATH
-fpath=(~/.config/zsh/completion/ $fpath)
+#|------------------------
+#| Environment variables
+#|------------------------
 
-# Export environment variables.
 export EDITOR=vim # nvim if installed
 export VISUAL=vim # nvim if installed
 
@@ -67,38 +70,55 @@ export GPG_TTY=$TTY
 # -x | set tab stops
 export LESS='-iRFMx4'
 
-export XDG_CONFIG_HOME="$HOME/.config"      # export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
-export XDG_CACHE_HOME="$HOME/.cache"        # export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
-export XDG_DATA_HOME="$HOME/.local/share"   # export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
-export XDG_STATE_HOME="$HOME/.local/state"  # export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_STATE_HOME="$HOME/.local/state"
 
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/.npmrc"
 export ANSIBLE_HOME="$XDG_DATA_HOME/ansible"
 export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
 
-# Conda (Lazy loaded)
+#|-----------
+#| Software
+#|-----------
+
+#|-- Conda --
+#| Installation:
+#|   ❯ wget https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O /tmp/miniconda.sh
+#|   ❯ /tmp/miniconda.sh -b -u -p "$CONDA_DIR"
 export CONDA_DIR="$HOME/.miniconda"
 
-# sdkman (Lazy loaded)
+#|-- sdkman --
+#| Installation:
+#|   ❯ curl -s "https://get.sdkman.io?rcupdate=false" | bash
 export SDKMAN_DIR="$HOME/.sdkman"
 
-# Volta
+#|-- Volta --
+#| Installation:
+#|   ❯ curl -s "https://get.volta.sh" | bash -s -- --skip-setup
 export VOLTA_HOME="$HOME/.volta"
 
-# Extend PATH.
-path=(~/.local/bin $VOLTA_HOME/bin $path)
-path=($path ~/.scripts)
+#|--------------
+#| Extend PATH
+#|--------------
 
-# Source additional local files if they exist.
+path=(~/.local/bin $VOLTA_HOME/bin $path ~/.scripts)
+fpath=(~/.config/zsh/completion $fpath)
+
+#|------------------------------
+#| Source files & load plugins
+#|------------------------------
+
 z4h source ~/.config/zsh/functions.zsh
-z4h source ~/.config/zsh/lazy-loadings.zsh
-
-# Use additional Git repositories files pulled in with `z4h install`.
+z4h source ~/.config/zsh/lazy-loadings.zsh # sdkman, miniconda
 #z4h source Farid-NL/zsh-nvm/zsh-nvm.plugin.zsh
-#z4h source ohmyzsh/ohmyzsh/lib/diagnostics.zsh  # source an individual file
-#z4h load   ohmyzsh/ohmyzsh/plugins/emoji-clock  # load a plugin
+#z4h load   ohmyzsh/ohmyzsh/plugins/emoji-clock
 
-# Define key bindings.
+#|----------------------
+#| Define key bindings
+#|----------------------
+
 z4h bindkey z4h-backward-kill-word  Ctrl+Backspace     Ctrl+H
 z4h bindkey z4h-backward-kill-zword Ctrl+Alt+Backspace
 
@@ -110,28 +130,44 @@ z4h bindkey z4h-cd-forward Alt+Right  # cd into the next directory
 z4h bindkey z4h-cd-up      Alt+Up     # cd into the parent directory
 z4h bindkey z4h-cd-down    Alt+Down   # cd into a child directory
 
-# Autoload functions.
-autoload -Uz zmv
+#|---------------------
+#| Autoload functions
+#|---------------------
 
-# Define functions and completions.
-function md() { [[ $# == 1 ]] && mkdir -p -- "$1" && cd -- "$1" }
-compdef _directories md
+#autoload -Uz zmv
 
-# Define named directories: ~w <=> Windows home directory on WSL.
-[[ -z $z4h_win_home ]] || hash -d w=$z4h_win_home
+#|-----------------------------------
+#| Define functions and completions
+#|-----------------------------------
 
-# Define aliases.
-#alias tree='tree -a -I .git'
+#function md() { [[ $# == 1 ]] && mkdir -p -- "$1" && cd -- "$1" }
+#compdef _directories md
+
+#|---------------------------
+#| Define named directories
+#|---------------------------
+#| https://www.arp242.net/zshrc.html#directory-shortcuts
+
+# ~w <=> Windows home directory on WSL.
+#[[ -z $z4h_win_home ]] || hash -d w=$z4h_win_home
+
+#|---------------------
+#| Aliases
+#|---------------------
+
 alias ch='chezmoi'
 alias dss="export DELTA_FEATURES='+side-by-side'"
 alias dn="unset DELTA_FEATURES"
 alias bwu='export BW_SESSION=$(bw unlock --raw)'
 
 # Add flags to existing aliases.
-#alias ls="${aliases[ls]:-ls} -A"
 alias ls="${aliases[ls]:-ls} --group-directories-first -v"
 alias rm="${aliases[rm]:-rm} -I"
 
-# Set shell options: http://zsh.sourceforge.net/Doc/Release/Options.html.
+#|-----------------------------------
+#| Set shell options
+#|-----------------------------------
+#| http://zsh.sourceforge.net/Doc/Release/Options.html
+
 setopt glob_dots     # no special treatment for file names with a leading dot
 setopt no_auto_menu  # require an extra TAB press to open the completion menu
