@@ -74,7 +74,7 @@
 
 # Useful aliases
 [alias]
-    st = status
+    s = status
     Acm = !git add -A && git commit -m
     acm = !git add . && git commit -m
     ch = checkout
