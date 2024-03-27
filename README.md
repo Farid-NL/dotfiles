@@ -4,7 +4,8 @@ Personal dotfiles managed by [chezmoi](https://www.chezmoi.io)
 
 ## TODOS
 
-- [ ] Add delta installation into ansible playbook
+- [ ] Add Neovim installation into ansible
+- [ ] Add AstroNvim installation into ansible
 - [ ] Add fonts installation into `software.sh` based on ansible playbook
 - [ ] Add miniconda installation into `software.sh` based on ansible playbook
 - [ ] Improve README for better understanding
