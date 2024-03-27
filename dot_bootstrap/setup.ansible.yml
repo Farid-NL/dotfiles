@@ -23,15 +23,9 @@
               - zsh
               - yakuake
               - okular-extra-backends
-              - neovim
               - mpv
             state: present
           become: true
-
-    - name: Vim Plug
-      block:
-        - name: Setup
-          ansible.builtin.import_tasks: imports/dev/vimplug.ansible.yml
 
     - name: ZSH Default
       block:
@@ -60,9 +54,6 @@
 
         - name: Code
           ansible.builtin.import_tasks: imports/dev/code.ansible.yml
-
-        - name: NVM
-          ansible.builtin.import_tasks: imports/dev/nvm.ansible.yml
 
         - name: Conda
           ansible.builtin.import_tasks: imports/dev/miniconda.ansible.yml
