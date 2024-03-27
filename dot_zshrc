@@ -88,19 +88,16 @@ export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
 #|   ❯ wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/miniconda.sh
 #|   ❯ /tmp/miniconda.sh -b -u -p "$CONDA_DIR"
 export CONDA_DIR="$HOME/.miniconda"
-export CONDA_INSTALL=true
 
 #|-- sdkman --
 #| Installation:
 #|   ❯ curl -s "https://get.sdkman.io?rcupdate=false" | bash
 export SDKMAN_DIR="$HOME/.sdkman"
-# export SDKMAN_INSTALL=false
 
 #|-- Volta --
 #| Installation:
 #|   ❯ curl -s "https://get.volta.sh" | bash -s -- --skip-setup
 export VOLTA_HOME="$HOME/.volta"
-#export VOLTA_INSTALL=true
 
 #|--------------
 #| Extend PATH
@@ -113,8 +110,7 @@ fpath=(~/.config/zsh/completion $fpath)
 #| Source files & load plugins
 #|------------------------------
 
-#z4h source ~/.config/zsh/functions.zsh
-source ~/.config/zsh/managers.zsh
+z4h source ~/.config/zsh/functions.zsh
 z4h source ~/.config/zsh/lazy-loadings.zsh # sdkman, miniconda
 #z4h source Farid-NL/zsh-nvm/zsh-nvm.plugin.zsh
 #z4h load   ohmyzsh/ohmyzsh/plugins/emoji-clock
