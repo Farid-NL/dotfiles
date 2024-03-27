@@ -1,6 +1,6 @@
 [core]
     # Default editor. Make sure to have the editor in PATH
-    editor = vim
+    editor = nvim
     #editor = code --wait ;`--wait` Wait for window to be closed before returning
 
     # Pager
