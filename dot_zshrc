@@ -58,8 +58,8 @@ z4h init || return
 #| Environment variables
 #|------------------------
 
-export EDITOR=vim # nvim if installed
-export VISUAL=vim # nvim if installed
+export EDITOR=nvim # nvim if installed
+export VISUAL=nvim # nvim if installed
 
 export GPG_TTY=$TTY
 
