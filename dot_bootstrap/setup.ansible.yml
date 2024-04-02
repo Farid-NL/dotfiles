@@ -16,7 +16,6 @@
             'zsh' not in ansible_facts.packages
             or 'yakuake' not in ansible_facts.packages
             or 'okular-extra-backends' not in ansible_facts.packages
-            or 'neovim' not in ansible_facts.packages
             or 'mpv' not in ansible_facts.packages
           ansible.builtin.apt:
             name:
@@ -54,9 +53,6 @@
 
         - name: Code
           ansible.builtin.import_tasks: imports/dev/code.ansible.yml
-
-        - name: Conda
-          ansible.builtin.import_tasks: imports/dev/miniconda.ansible.yml
 
         - name: GitHub CLI
           ansible.builtin.import_tasks: imports/dev/github_cli.ansible.yml
