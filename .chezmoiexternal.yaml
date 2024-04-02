@@ -1,8 +1,0 @@
-.config/nvim/lua/user:
-  type: git-repo
-  url: https://github.com/Farid-NL/astronvim-config.git
-  pull:
-    args:
-      - "--depth"
-      - "1"
-
