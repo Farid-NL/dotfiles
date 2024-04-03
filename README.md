@@ -4,10 +4,19 @@ Personal dotfiles managed by [chezmoi](https://www.chezmoi.io)
 
 ## TODOS
 
-- [ ] Add Neovim installation into ansible
-- [ ] Add AstroNvim installation into ansible
-- [ ] Add fonts installation into `software.sh` based on ansible playbook
-- [ ] Add miniconda installation into `software.sh` based on ansible playbook
+- [ ] Add Neovim installation into ansible (precompiled /opt/nvim/)
+- [ ] Add bat installation into ansible (deb)
+- [ ] Add eza installation into ansible (gpg)
+- [ ] Add zoxide installation into ansible (script)
+- [ ] Crate script for updating completion
+- [ ] Crate script to update completions
+  - [ ] _gh
+  - [ ] _bw & _bws
+  - [ ] _eza
+  - [ ] _conda
+  - [ ] _delta
+  - [ ] _volta
+  - [ ] _chezmoi
 - [ ] Improve README for better understanding
 
 ## How to use
