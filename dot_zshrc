@@ -69,6 +69,10 @@ export GPG_TTY=$TTY
 # -M | prompt very verbosely
 # -x | set tab stops
 export LESS='-iRFMx4'
+export FZF_DEFAULT_OPTS='--color=fg:#f8f8f2,bg:#282a36,hl:#bd93f9
+  --color=fg+:#f8f8f2,bg+:#44475a,hl+:#bd93f9
+  --color=info:#ffb86c,prompt:#50fa7b,pointer:#ff79c6
+  --color=marker:#ff79c6,spinner:#ffb86c,header:#6272a4'
 
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
@@ -82,6 +86,11 @@ export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
 #|-----------
 #| Software
 #|-----------
+
+#|-- Zoxide --
+#| Installation:
+#|   ❯ curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
+eval "$(zoxide init --cmd cd zsh)"
 
 #|-- Conda --
 #| Installation:
@@ -155,13 +164,13 @@ z4h bindkey z4h-cd-down    Alt+Down   # cd into a child directory
 #| Aliases
 #|---------------------
 
-alias ch='chezmoi'
 alias dss="export DELTA_FEATURES='+side-by-side'"
-alias dn="unset DELTA_FEATURES"
+alias dn='unset DELTA_FEATURES'
 alias bwu='export BW_SESSION=$(bw unlock --raw)'
+alias ls='eza --group-directories-first --color=auto --icons=auto'
 
 # Add flags to existing aliases.
-alias ls="${aliases[ls]:-ls} --group-directories-first -v"
+#alias ls="${aliases[ls]:-ls} --group-directories-first -v"
 alias rm="${aliases[rm]:-rm} -I"
 
 #|-----------------------------------

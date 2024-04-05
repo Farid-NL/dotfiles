@@ -17,4 +17,4 @@ install_ansible() {
 
 install_ansible
 
-ansible-playbook ~/.bootstrap/setup.ansible.yml --ask-become-pass
+ansible-pull -U https://github.com/Farid-NL/ansible-personal-setup --ask-become-pass
