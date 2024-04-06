@@ -40,12 +40,13 @@ install_bitwarden_secrets_cli() {
 local_bin_dir="${HOME}/.local/bin"
 mkdir -p "${local_bin_dir}"
 
-export PATH="$HOME/.local/bin:$PATH"
-
 install_bitwarden_cli
-
 install_bitwarden_secrets_cli
 
+export PATH="${local_bin_dir}:$PATH"
 bw login
-export BW_SESSION
-BW_SESSION=$(bw unlock --raw)
+
+echo -e "\n\Adding 'bw' & 'bws' to '/usr/local/bin'"
+
+sudo ln -s "${local_bin_dir}/bw" /usr/local/bin/bw
+sudo ln -s "${local_bin_dir}/bws" /usr/local/bin/bws
