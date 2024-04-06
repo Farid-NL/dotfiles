@@ -44,6 +44,6 @@ install_bitwarden_cli
 
 install_bitwarden_secrets_cli
 
-bw login
+"${HOME}/.local/bin/bw" login
 export BW_SESSION
-BW_SESSION=$(bw unlock --raw)
+BW_SESSION=$("${HOME}/.local/bin/bw" unlock --raw)
