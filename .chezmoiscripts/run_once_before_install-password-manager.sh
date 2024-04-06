@@ -40,10 +40,12 @@ install_bitwarden_secrets_cli() {
 local_bin_dir="${HOME}/.local/bin"
 mkdir -p "${local_bin_dir}"
 
+export PATH="$HOME/.local/bin:$PATH"
+
 install_bitwarden_cli
 
 install_bitwarden_secrets_cli
 
-"${HOME}/.local/bin/bw" login
+bw login
 export BW_SESSION
-BW_SESSION=$("${HOME}/.local/bin/bw" unlock --raw)
+BW_SESSION=$(bw unlock --raw)
