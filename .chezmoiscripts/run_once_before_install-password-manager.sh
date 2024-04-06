@@ -2,13 +2,13 @@
 
 install_bitwarden_cli() {
   if [ -f "${local_bin_dir}/bw" ]; then
-    echo "Bitwarden CLI already installed"
+    echo -e "\nBitwarden CLI already installed"
     return
   fi
 
   bw_url="https://vault.bitwarden.com/download/?app=cli&platform=linux"
 
-  echo -e "Downloading Bitwarden CLI from:\n${bw_url}\n"
+  echo -e "Downloading Bitwarden CLI from:\n${bw_url}"
 
   curl -LsS "${bw_url}" -o "${local_bin_dir}/bw.zip"
   unzip -oq "${local_bin_dir}/bw.zip" -d "${local_bin_dir}"
@@ -28,7 +28,7 @@ install_bitwarden_secrets_cli() {
   bws_version=$(curl -sS "${bws_api_url}" | jq -r ".tag_name" | grep -oP "\d+\.?\d*\.?\d*")
   bws_url="https://github.com/bitwarden/sdk/releases/download/bws-v${bws_version}/bws-x86_64-unknown-linux-gnu-${bws_version}.zip"
 
-  echo -e "Downloading Bitwarden Secrets CLI from:\n${bws_url}\n"
+  echo -e "\nDownloading Bitwarden Secrets CLI from:\n${bws_url}"
 
   curl -LsS "${bws_url}" -o "${local_bin_dir}/bws.zip"
   unzip -oq "${local_bin_dir}/bws.zip" -d "${local_bin_dir}"
