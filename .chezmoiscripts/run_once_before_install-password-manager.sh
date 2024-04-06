@@ -2,7 +2,7 @@
 
 install_bitwarden_cli() {
   if [ -f "${local_bin_dir}/bw" ]; then
-    echo -e "\nBitwarden CLI already installed"
+    echo -e "\n\nBitwarden CLI already installed"
     return
   fi
 
@@ -10,7 +10,7 @@ install_bitwarden_cli() {
 
   echo -e "Downloading Bitwarden CLI from:\n${bw_url}"
 
-  curl -LsS "${bw_url}" -o "${local_bin_dir}/bw.zip"
+  wget -q --show-progress "${bw_url}" -O "${local_bin_dir}/bw.zip"
   unzip -oq "${local_bin_dir}/bw.zip" -d "${local_bin_dir}"
   rm "${local_bin_dir}/bw.zip"
 
@@ -25,16 +25,16 @@ install_bitwarden_secrets_cli() {
 
   bws_api_url="https://api.github.com/repos/bitwarden/sdk/releases/latest"
 
-  bws_version=$(curl -sS "${bws_api_url}" | jq -r ".tag_name" | grep -oP "\d+\.?\d*\.?\d*")
+  bws_version=$(wget -qO- "${bws_api_url}" | jq -r ".tag_name" | grep -oP "\d+\.?\d*\.?\d*")
   bws_url="https://github.com/bitwarden/sdk/releases/download/bws-v${bws_version}/bws-x86_64-unknown-linux-gnu-${bws_version}.zip"
 
   echo -e "\nDownloading Bitwarden Secrets CLI from:\n${bws_url}"
 
-  curl -LsS "${bws_url}" -o "${local_bin_dir}/bws.zip"
+  wget -q --show-progress "${bws_url}" -O "${local_bin_dir}/bws.zip"
   unzip -oq "${local_bin_dir}/bws.zip" -d "${local_bin_dir}"
   rm "${local_bin_dir}/bws.zip"
 
-  echo "Bitwarden Secrets CLI installed"
+  echo -e "Bitwarden Secrets CLI installed\n\n"
 }
 
 local_bin_dir="${HOME}/.local/bin"
