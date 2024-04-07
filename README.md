@@ -14,9 +14,10 @@ My shell of choice is ZSH, with [zsh4humans](https://github.com/romkatv/zsh4huma
 
 ## Some details
 
-- Secrets management through [Bitwarden](https://www.chezmoi.io/user-guide/password-managers/).
-- Installation of password manager through a [chezmoi hook](https://www.chezmoi.io/user-guide/advanced/install-your-password-manager-on-init/).
-- Use of [scripts](https://www.chezmoi.io/user-guide/use-scripts-to-perform-actions/#clear-the-state-of-all-run_onchange_-and-run_once_-scripts) to initialize Bitwarden and set up my machine with the help of ansible
+- Secrets management through [Bitwarden](https://www.chezmoi.io/user-guide/password-managers).
+- Installation of password manager through a [chezmoi hook](https://www.chezmoi.io/user-guide/advanced/install-your-password-manager-on-init).
+- Use of [scripts](https://www.chezmoi.io/user-guide/use-scripts-to-perform-actions/#clear-the-state-of-all-run_onchange_-and-run_once_-scripts) to initialize Bitwarden and set up my machine with the help of [ansible](https://github.com/Farid-NL/ansible-personal-setup).
+- Some customizations done with help of [chezmoi externals](https://www.chezmoi.io/user-guide/include-files-from-elsewhere)
 
 ## TODOS
 
@@ -44,7 +45,7 @@ sh -c "$(wget -qO- get.chezmoi.io/lb)" -- init --apply Farid-NL
 
 ### Just another machine
 
-Just follow the steps [here](https://www.chezmoi.io/user-guide/setup/) and read the docs.
+Just follow the steps [here](https://www.chezmoi.io/user-guide/setup) and read the docs.
 
 ## Extras to be manually installed or set up
 
