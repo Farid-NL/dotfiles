@@ -112,7 +112,11 @@ export VOLTA_HOME="$HOME/.volta"
 #| Extend PATH
 #|--------------
 
-path=(~/.local/bin $VOLTA_HOME/bin $path ~/.scripts)
+# Software
+path=($VOLTA_HOME/bin $path)
+
+# Personal
+path=(~/.local/bin $path)
 fpath=(~/.config/zsh/completion $fpath)
 
 #|------------------------------
