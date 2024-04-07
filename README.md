@@ -50,13 +50,15 @@ Just follow the steps [here](https://www.chezmoi.io/user-guide/setup/) and read 
 
 ### Appearance
 
-| Configuration           | Store name                                                | Config. name               |
-|-------------------------|-----------------------------------------------------------|----------------------------|
-| Global theme            |                                                           | Breeze Dark                |
-| Plasma style            | [Ant-Dracula KDE](https://store.kde.org/p/1370687)        | _(Dracula)_                |
-| Colors                  | [Ant-Dracula KDE](https://store.kde.org/p/1370679)        | _(Dracula-purple)_         |
-| Window Decorations      | [Ant-Dracula KDE](https://store.kde.org/p/1370682)        | _(Dracula)_                |
-| Icons                   | [Dracula Icons](https://store.kde.org/p/1541561)          | _(Dracula)_                |
-| Cursors                 | [Dracula cursors](https://store.kde.org/p/1669262)        | _(Dracula-cursors)_        |
-| Splash screen           | [BeautifulTreeAnimation](https://store.kde.org/p/1433200) | _(BeautifulTreeAnimation)_ |
-| Wallpaper & Lock screen | [Ant-Dracula wallpaper](https://store.kde.org/p/1378234)  | _(dracula-purplish)_       |
+**KDE**
+
+| Configuration           | Store name                                                | Config. name             |
+|-------------------------|-----------------------------------------------------------|--------------------------|
+| Global theme            |                                                           | _Breeze Dark_            |
+| Plasma style            | [Ant-Dracula KDE](https://store.kde.org/p/1370687)        | _Dracula_                |
+| Colors                  | [Ant-Dracula KDE](https://store.kde.org/p/1370679)        | _Dracula-purple_         |
+| Window Decorations      | [Ant-Dracula KDE](https://store.kde.org/p/1370682)        | _Dracula_                |
+| Icons                   | [Dracula Icons](https://store.kde.org/p/1541561)          | _Dracula_                |
+| Cursors                 | [Dracula cursors](https://store.kde.org/p/1669262)        | _Dracula-cursors_        |
+| Splash screen           | [BeautifulTreeAnimation](https://store.kde.org/p/1433200) | _BeautifulTreeAnimation_ |
+| Wallpaper & Lock screen | [Ant-Dracula wallpaper](https://store.kde.org/p/1378234)  | _dracula-purplish_       |
