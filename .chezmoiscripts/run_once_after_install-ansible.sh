@@ -2,17 +2,17 @@
 
 install_ansible() {
   if dpkg --get-selections | grep -wq ansible; then
-    echo "Ansible already installed"
+    echo -e '\nAnsible already installed\n'
     return
   fi
 
-  echo "Installing Ansible"
+  echo -e '\nInstalling Ansible...'
 
   sudo add-apt-repository -y ppa:ansible/ansible
   sudo apt-get update -y
   sudo apt-get install -y ansible
 
-  echo "Ansible installation complete"
+  echo -e 'Ansible installed\n'
 }
 
 install_ansible
