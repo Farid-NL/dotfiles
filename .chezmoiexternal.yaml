@@ -1,0 +1,5 @@
+.local/share/yakuake/kns_skins/dracula:
+  type: archive
+  url: https://github.com/dracula/yakuake/archive/master.zip
+  exact: true
+  stripComponents: 1
