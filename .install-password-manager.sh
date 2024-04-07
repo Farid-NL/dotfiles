@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Exit immediately if Bitwarden is already in $PATH
-type bw > /dev/null 2>&1 && return
+type bw > /dev/null 2>&1 && exit
 
 bw_url='https://vault.bitwarden.com/download/?app=cli&platform=linux'
 
