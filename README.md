@@ -19,18 +19,6 @@ My shell of choice is ZSH, with [zsh4humans](https://github.com/romkatv/zsh4huma
 - Use of [scripts](https://www.chezmoi.io/user-guide/use-scripts-to-perform-actions/#clear-the-state-of-all-run_onchange_-and-run_once_-scripts) to initialize Bitwarden and set up my machine with the help of [ansible](https://github.com/Farid-NL/ansible-personal-setup).
 - Some customizations done with help of [chezmoi externals](https://www.chezmoi.io/user-guide/include-files-from-elsewhere)
 
-## TODOS
-
-- [ ] Create (bash? or ansible?) script to update completions
-  - [ ] _gh
-  - [ ] _bw
-  - [ ] _eza
-  - [ ] _conda
-  - [ ] _delta
-  - [ ] _volta
-  - [ ] _chezmoi
-- [ ] Create [orphan branch](https://github.com/twpayne/chezmoi/discussions/1508) for Windows (maybe for WSL too?).
-
 ## How to use
 
 ### Brand new machine
