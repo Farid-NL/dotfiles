@@ -111,18 +111,21 @@
         # %d  => Ref names
         # %D  => Ref names without the ` ()` wrapping.
 
+    # %h - (%d) %s
+    lg  = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) -%C(auto)%d%C(reset) %C(white)%s%C(reset)'"
+
     # %h - (%ar) %s - %an (%d)
-    lg  = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(#696969)- %an%C(reset)%C(auto)%d%C(reset)'"
+    lg2  = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(#696969)- %an%C(reset)%C(auto)%d%C(reset)'"
 
     # %h - %aD (%ar) (%d)
     #      %s - %an
-    lg2 = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(auto)%d%C(reset)%n''          %C(white)%s%C(reset) %C(#696969)- %an%C(reset)'"
+    lg3 = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(auto)%d%C(reset)%n''          %C(white)%s%C(reset) %C(#696969)- %an%C(reset)'"
 
     # %h - [A] %aD (%ar) [C] %cD (%d)
     #      %s
     #      [A] %an <%ae>
     #      [C] %cn <%ce>
-    lg3 = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)[A] %aD%C(reset) %C(bold green)(%ar)%C(reset) %C(bold cyan)[C] %cD%C(reset)%C(auto)%d%C(reset)%n''          %C(white)%s%C(reset)%n''          %C(#696969)[A] %an <%ae>%C(reset)%n''          %C(#696969)[C] %cn <%ce>%C(reset)'"
+    lg4 = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)[A] %aD%C(reset) %C(bold green)(%ar)%C(reset) %C(bold cyan)[C] %cD%C(reset)%C(auto)%d%C(reset)%n''          %C(white)%s%C(reset)%n''          %C(#696969)[A] %an <%ae>%C(reset)%n''          %C(#696969)[C] %cn <%ce>%C(reset)'"
 
 
 [color]
