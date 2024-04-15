@@ -1,0 +1,9 @@
+% docker
+
+# Remove an image
+docker rmi <image_id>
+
+# List all images that are locally stored with the Docker engine
+docker images
+
+$ image_id: docker images --- --headers 1 --column 3

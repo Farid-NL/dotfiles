@@ -1,0 +1,7 @@
+% text
+
+# remove first line
+tail -n +2
+
+# count lines
+wc -l
