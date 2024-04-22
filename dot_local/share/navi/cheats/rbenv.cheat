@@ -1,0 +1,16 @@
+% ruby rbenv
+
+# Install a new Ruby version
+rbenv install <implementation>
+
+# List local Ruby versions
+rbenv versions
+
+# View or change the global Ruby version
+rbenv global <version>
+
+# View or change the local Ruby version
+rbenv local <version>
+
+$ version: rbenv versions --bare
+$ implementation: rbenv install -L
