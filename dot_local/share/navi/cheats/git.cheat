@@ -30,6 +30,12 @@ git rebase --onto <new_base> <old_base>
 # Rebase a range of commits in the current branch onto a new base
 git rebase --onto <new_base> <old_base> <up_to>
 
+# Change author while committing
+git commit -m "<commit_msg>" --author="<author_name> <<author_email>>"
+
+# Change author of the last commit
+git commit --amend --author="<author_name> <<author_email>>" --no-edit
+
 $ branch: git branch | awk '{print $NF}'
 $ new_base: git branch | awk '{print $NF}';git tag | awk '{print $NF}';git log --format=format:%h | awk '{print $NF}' --- --preview 'git lg'
 $ old_base: git branch | awk '{print $NF}';git tag | awk '{print $NF}';git log --format=format:%h | awk '{print $NF}' --- --preview 'git lg'
