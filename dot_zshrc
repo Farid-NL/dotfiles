@@ -99,6 +99,13 @@ eval "$(zoxide init --cmd cd zsh)"
 #|   ❯ bash <(curl -sL https://raw.githubusercontent.com/denisidoro/navi/master/scripts/install)
 eval "$(navi widget zsh)"
 
+#|-- rbenv --
+#| Installation:
+#|   ❯ git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+#|   ❯ git clone https://github.com/rbenv/ruby-build.git "$(rbenv root)"/plugins/ruby-build
+#|   ❯ sudo apt install libz-dev libffi-dev libssl-dev libcurl4-openssl-dev libyaml-dev
+eval "$(~/.rbenv/bin/rbenv init - zsh)"
+
 #|-- Conda --
 #| Installation:
 #|   ❯ wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/miniconda.sh
