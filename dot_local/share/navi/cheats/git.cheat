@@ -6,6 +6,8 @@ git commit --no-verify
 # Untrack a file
 git rm --cached <file>
 
+
+
 % git, diff
 
 # View changes of a file between commits
@@ -14,9 +16,17 @@ git diff <commit_hash1> <commit_hash2> -- <file>
 # View changes in the staging area
 git diff --staged
 
-% git, branch
+$ commit_hash1: git log --format=format:%h | awk '{print $NF}' --- --preview 'git lg'
+$ commit_hash2: git log --format=format:%h | awk '{print $NF}' --- --preview 'git lg'
+$ file: git ls-files
 
-# Create new branch based on a specific commit
+
+
+% git, branch
+@ git, remote
+@ git, restore
+
+# Create new branch based on current branch
 git branch <branch_name>
 
 # Create new branch based on a specific commit
@@ -36,6 +46,10 @@ git branch -D <branch>
 
 # Delete a remote branch
 git push <remote_name> --delete <branch_name>
+
+$ branch: git branch | awk '{print $NF}'
+
+
 
 % git, remote
 
@@ -57,6 +71,11 @@ git remote set-url --add <remote_name> <remote_url>
 # Delete URL of a remote
 git remote set-url --delete <remote_name> <remote_url>
 
+$ remote_name: git remote
+$ old_remote_name: git remote
+
+
+
 % git, edit
 
 # Change last commit message
@@ -68,8 +87,12 @@ git commit -m "<commit_msg>" --author="<author_name> <<author_email>>"
 # Change author of the last commit
 git commit --amend --author="<author_name> <<author_email>>" --no-edit
 
+
+
 ;;;; Stash ;;;;
 ; TODO: https://git-scm.com/docs/git-stash
+
+
 
 % git, restore
 
@@ -88,10 +111,19 @@ git reset --hard <commit_hash>
 # Recover from a git action
 git reset <reflog_head>
 
+$ reference: git branch | awk '{print $NF}';git tag | awk '{print $NF}';git log --format=format:%h | awk '{print $NF}' --- --preview 'git lg'
+$ commit_hash: git log --format=format:%h | awk '{print $NF}' --- --preview 'git lg'
+$ reflog_head: git reflog | awk '{print substr($2, 1, length($2) - 1)}' --- --preview 'git reflog'
+
+
+
 ;;;; Revert ;;;;
 ; TODO: https://git-scm.com/docs/git-stash
 
+
+
 % git, rebase
+@ git, branch
 
 # Rebase current branch on top of another one
 git rebase <new_base>
@@ -107,32 +139,16 @@ git rebase --onto <new_base> <old_base> <up_to>
 
 ; TODO: https://git-scm.com/docs/git-rebase#Documentation/git-rebase.txt---interactive
 
+$ new_base: git branch | awk '{print $NF}';git tag | awk '{print $NF}';git log --format=format:%h | awk '{print $NF}' --- --preview 'git lg'
+$ old_base: git branch | awk '{print $NF}';git tag | awk '{print $NF}';git log --format=format:%h | awk '{print $NF}' --- --preview 'git lg'
+$ up_to: git log --format=format:%h | awk '{print $NF}' --- --preview 'git lg'
+
+
+
 ;;;; Apply ;;;;
 ; TODO: https://git-scm.com/docs/git-apply
 
+
+
 ;;;; Cherry pick ;;;;
 https://git-scm.com/docs/git-cherry-pick
-
-;
-
-$ branch: git branch | awk '{print $NF}'
-
-$ remote_name: git remote
-$ old_remote_name: git remote
-
-$ new_base: git branch | awk '{print $NF}';git tag | awk '{print $NF}';git log --format=format:%h | awk '{print $NF}' --- --preview 'git lg'
-$ old_base: git branch | awk '{print $NF}';git tag | awk '{print $NF}';git log --format=format:%h | awk '{print $NF}' --- --preview 'git lg'
-$ reference: git branch | awk '{print $NF}';git tag | awk '{print $NF}';git log --format=format:%h | awk '{print $NF}' --- --preview 'git lg'
-
-$ up_to: git log --format=format:%h | awk '{print $NF}' --- --preview 'git lg'
-
-$ commit_hash: git log --format=format:%h | awk '{print $NF}' --- --preview 'git lg'
-$ commit_hash1: git log --format=format:%h | awk '{print $NF}' --- --preview 'git lg'
-$ commit_hash2: git log --format=format:%h | awk '{print $NF}' --- --preview 'git lg'
-
-$ file: git ls-files
-
-$ reflog_head: git reflog | awk '{print substr($2, 1, length($2) - 1)}' --- --preview 'git reflog'
-
-$ unstaged_files: git status --untracked-files=no -s --porcelain | awk '{print $NF}' --- --multi true
-$ changed_files: git status --untracked-files=all -s --porcelain | awk '{print $NF}' --- --multi true
