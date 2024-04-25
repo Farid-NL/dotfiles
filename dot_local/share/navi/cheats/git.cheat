@@ -1,22 +1,97 @@
 % git
 
+# Skip commit hooks
+git commit --no-verify
+
+# Untrack a file
+git rm --cached <file>
+
+% git, diff
+
+# View changes of a file between commits
+git diff <commit_hash1> <commit_hash2> -- <file>
+
+# View changes in the staging area
+git diff --staged
+
+% git, branch
+
+# Create new branch based on a specific commit
+git branch <branch_name>
+
 # Create new branch based on a specific commit
 git branch <branch_name> <commit_hash>
 
+# Create and change/switch to a new branch
+git switch -c <branch_name>
+
+# Change/switch branch
+git switch <branch>
+
+# Delete a local branch
+git branch -d <branch>
+
+# Delete a local branch forcefully
+git branch -D <branch>
+
 # Delete a remote branch
-git push <remote_name> --delete <remote_branch>
+git push <remote_name> --delete <branch_name>
+
+% git, remote
 
 # Add remote
 git remote add <remote_name> <remote_url>
 
-# Change URL of a remote
-git remote set-url <remote_name> <new_url>
+# Remove remote
+git remote remove <remote_name>
 
 # Change remote name
-git remote rename <new_name>
+git remote rename <old_remote_name> <new_remote_name>
 
-# Skip commit hooks
-git commit --no-verify
+# Change URL of a remote
+git remote set-url <remote_name> <new_remote_url>
+
+# Add URL to a remote
+git remote set-url --add <remote_name> <remote_url>
+
+# Delete URL of a remote
+git remote set-url --delete <remote_name> <remote_url>
+
+% git, edit
+
+# Change last commit message
+git commit --amend -m "<commit_msg>"
+
+# Change author while committing
+git commit -m "<commit_msg>" --author="<author_name> <<author_email>>"
+
+# Change author of the last commit
+git commit --amend --author="<author_name> <<author_email>>" --no-edit
+
+;;;; Stash ;;;;
+; TODO: https://git-scm.com/docs/git-stash
+
+% git, restore
+
+# Restore file to a specific point
+git restore -s <reference> <file>
+
+# Remove commits from local repository (stage changes)
+git reset --soft <commit_hash>
+
+# Remove commits from local repository (unstage changes)
+git reset <commit_hash>
+
+# Remove commits from local repository (discard changes)
+git reset --hard <commit_hash>
+
+# Recover from a git action
+git reset <reflog_head>
+
+;;;; Revert ;;;;
+; TODO: https://git-scm.com/docs/git-stash
+
+% git, rebase
 
 # Rebase current branch on top of another one
 git rebase <new_base>
@@ -30,14 +105,34 @@ git rebase --onto <new_base> <old_base>
 # Rebase a range of commits in the current branch onto a new base
 git rebase --onto <new_base> <old_base> <up_to>
 
-# Change author while committing
-git commit -m "<commit_msg>" --author="<author_name> <<author_email>>"
+; TODO: https://git-scm.com/docs/git-rebase#Documentation/git-rebase.txt---interactive
 
-# Change author of the last commit
-git commit --amend --author="<author_name> <<author_email>>" --no-edit
+;;;; Apply ;;;;
+; TODO: https://git-scm.com/docs/git-apply
+
+;;;; Cherry pick ;;;;
+https://git-scm.com/docs/git-cherry-pick
+
+;
 
 $ branch: git branch | awk '{print $NF}'
+
+$ remote_name: git remote
+$ old_remote_name: git remote
+
 $ new_base: git branch | awk '{print $NF}';git tag | awk '{print $NF}';git log --format=format:%h | awk '{print $NF}' --- --preview 'git lg'
 $ old_base: git branch | awk '{print $NF}';git tag | awk '{print $NF}';git log --format=format:%h | awk '{print $NF}' --- --preview 'git lg'
+$ reference: git branch | awk '{print $NF}';git tag | awk '{print $NF}';git log --format=format:%h | awk '{print $NF}' --- --preview 'git lg'
+
 $ up_to: git log --format=format:%h | awk '{print $NF}' --- --preview 'git lg'
+
 $ commit_hash: git log --format=format:%h | awk '{print $NF}' --- --preview 'git lg'
+$ commit_hash1: git log --format=format:%h | awk '{print $NF}' --- --preview 'git lg'
+$ commit_hash2: git log --format=format:%h | awk '{print $NF}' --- --preview 'git lg'
+
+$ file: git ls-files
+
+$ reflog_head: git reflog | awk '{print substr($2, 1, length($2) - 1)}' --- --preview 'git reflog'
+
+$ unstaged_files: git status --untracked-files=no -s --porcelain | awk '{print $NF}' --- --multi true
+$ changed_files: git status --untracked-files=all -s --porcelain | awk '{print $NF}' --- --multi true
