@@ -202,3 +202,8 @@ alias rm="${aliases[rm]:-rm} -I"
 setopt glob_dots     # no special treatment for file names with a leading dot
 #setopt no_auto_menu  # require an extra TAB press to open the completion menu
 setopt auto_menu     # just one TAB press to open the completion menu
+
+# Tmux on startup
+if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+  exec tmux new-session -A -s main
+fi
