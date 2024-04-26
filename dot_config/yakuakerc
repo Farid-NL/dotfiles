@@ -9,3 +9,7 @@ DefaultProfile=Farid.profile
 
 [Dialogs]
 FirstRun=false
+
+[Window]
+ShowTabBar=false
+ShowTitleBar=false
