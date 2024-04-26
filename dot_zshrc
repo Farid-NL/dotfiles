@@ -97,8 +97,6 @@ path=(/opt/fzf/bin $path)
 eval "$(fzf --zsh)"
 
 #|-- Zoxide --
-#| Installation:
-#|   ❯ curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
 eval "$(zoxide init --cmd cd zsh)"
 
 #|-- Navi --
