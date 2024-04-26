@@ -88,6 +88,14 @@ export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
 #| Software
 #|-----------
 
+#|-- fzf --
+#| Installation:
+#|   ❯ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+#|   ❯ sudo mv ~/.fzf /opt/fzf
+#|   ❯ /opt/fzf/install --bin
+path=(/opt/fzf/bin $path)
+eval "$(fzf --zsh)"
+
 #|-- Zoxide --
 #| Installation:
 #|   ❯ curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
