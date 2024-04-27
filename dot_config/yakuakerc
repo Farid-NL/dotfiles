@@ -1,3 +1,6 @@
+[Animation]
+Frames=0
+
 [Appearance]
 Blur=true
 Skin=dracula
@@ -11,5 +14,6 @@ DefaultProfile=Farid.profile
 FirstRun=false
 
 [Window]
-ShowTabBar=false
+Height=60
 ShowTitleBar=false
+Width=100

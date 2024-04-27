@@ -8,6 +8,7 @@ Parent=FALLBACK/
 TerminalMargin=8
 
 [Scrolling]
+HighlightScrolledLines=false
 ScrollBarPosition=2
 
 [Terminal Features]
