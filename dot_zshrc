@@ -11,8 +11,13 @@ zstyle ':z4h:' auto-update-days '28'
 # Keyboard type: 'mac' or 'pc'.
 zstyle ':z4h:bindkey' keyboard  'pc'
 
-# Don't start tmux.
-zstyle ':z4h:' start-tmux       no
+# Automaticaly wrap TTY with a transparent tmux ('integrated'), or start a
+# full-fledged tmux ('system'), or disable features that require tmux ('no').
+zstyle ':z4h:' start-tmux       'no'
+
+# Move prompt to the bottom when zsh starts up so that it's always in the same
+# position. Has no effect if start-tmux is 'no' or your're not ina tmux session.
+zstyle ':z4h:' prompt-at-bottom 'yes'
 
 # Mark up shell's output with semantic information.
 zstyle ':z4h:' term-shell-integration 'yes'
@@ -204,6 +209,6 @@ setopt glob_dots     # no special treatment for file names with a leading dot
 setopt auto_menu     # just one TAB press to open the completion menu
 
 # Tmux on startup
-if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
-  exec tmux new-session -A -s main
-fi
+# if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+#   exec tmux new-session -A -s main
+# fi
