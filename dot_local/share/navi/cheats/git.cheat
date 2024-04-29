@@ -9,8 +9,8 @@ git rm --cached <files>
 # Move file and stage the movement for commit
 git mv <file> <new_file_path>
 
-$ new_file_path: find * -type d -not -iwholename '*.git*' --- --preview 'eza -T -D'
-$ file: git ls-files --- --preview 'eza -T -D'
+$ new_file_path: find * -type d -not -iwholename '*.git*' --- --preview 'eza -TD --icons=auto'
+$ file: git ls-files --- --preview 'eza -T --icons=auto'
 $ files: git ls-files --- --multi --expand
 
 
@@ -172,13 +172,52 @@ $ up_to: git log --format=format:%h | awk '{print $NF}' --- --preview 'git lg'
 
 
 
-;;;; Apply ;;;;
-; TODO: https://git-scm.com/docs/git-apply
+% git, apply
+
+# Create patch
+git diff > <file_name>.patch
+
+# Apply patch to the working directory
+git apply <patch_path>
+
+# Apply patch to the working directory and staging area
+git apply <patch_path> --index
+
+# Apply patch only to the staging area
+git apply <patch_path> --cached
+
+# Check patch before applying (dry run)
+git apply <patch_path> --check
+
+# See file statistics before applying the patch
+git apply <patch_path> --stat
+
+# Fix trailing whitespace errors
+git apply <patch_path> --whitespace=fix
+
+# Apply patch ignoring additions (just removals)
+git apply <patch_path> --no-add
+
+# Apply patch excluding files matching the given path pattern
+git apply <patch_path> --exclude=<path_pattern>
+
+$ path_pattern: git ls-files --- --preview 'eza -T --icons=auto'
+$ patch_path: ls | egrep '.diff$|.patch$'
 
 
 
-;;;; Cherry pick ;;;;
-https://git-scm.com/docs/git-cherry-
+% git, cherry-pick
+
+# Apply the changes introduced by some existing commits
+git cherry-pick <commit_hash>
+
+# Edit the commit message prior to cherry pick.
+git cherry-pick <commit_hash> --edit
+
+# Stage the changes introduced by some existing commits
+git cherry-pick <commit_hash> --no-commit
+
+$ commit_hash: git log --format=format:%h | awk '{print $NF}' --- --multi --expand --preview 'git lg'
 
 
 
