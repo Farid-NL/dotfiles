@@ -75,10 +75,12 @@ export GPG_TTY=$TTY
 # -M | prompt very verbosely
 # -x | set tab stops
 export LESS='-iRFMx4'
-export FZF_DEFAULT_OPTS='--color=fg:#f8f8f2,bg:#282a36,hl:#bd93f9
+export FZF_DEFAULT_OPTS='
+  --color=fg:#f8f8f2,bg:#282a36,hl:#bd93f9
   --color=fg+:#f8f8f2,bg+:#44475a,hl+:#bd93f9
   --color=info:#ffb86c,prompt:#50fa7b,pointer:#ff79c6
-  --color=marker:#ff79c6,spinner:#ffb86c,header:#6272a4'
+  --color=marker:#ff79c6,spinner:#ffb86c,header:#6272a4
+  --bind ctrl-space:toggle-out,ctrl-a:toggle-all'
 
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
@@ -99,7 +101,7 @@ export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
 #|   ❯ sudo mv ~/.fzf /opt/fzf
 #|   ❯ /opt/fzf/install --bin
 path=(/opt/fzf/bin $path)
-eval "$(fzf --zsh)"
+# eval "$(fzf --zsh)"
 
 #|-- Zoxide --
 eval "$(zoxide init --cmd cd zsh)"
