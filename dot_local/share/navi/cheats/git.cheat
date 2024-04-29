@@ -1,14 +1,22 @@
-% git
+% git, changes
 
-# Skip commit hooks
-git commit --no-verify
+# Delete file(s) and stage the removal(s) for commit
+git rm <files>
 
-# Untrack a file
-git rm --cached <file>
+# Untrack file(s)
+git rm --cached <files>
+
+# Move file and stage the movement for commit
+git mv <file> <new_file_path>
+
+$ new_file_path: find * -type d -not -iwholename '*.git*' --- --preview 'eza -T -D'
+$ file: git ls-files --- --preview 'eza -T -D'
+$ files: git ls-files --- --multi --expand
 
 
 
 % git, diff
+@ git, changes
 
 # View changes of a file between commits
 git diff <commit_hash1> <commit_hash2> -- <file>
@@ -18,7 +26,6 @@ git diff --staged
 
 $ commit_hash1: git log --format=format:%h | awk '{print $NF}' --- --preview 'git lg'
 $ commit_hash2: git log --format=format:%h | awk '{print $NF}' --- --preview 'git lg'
-$ file: git ls-files
 
 
 
@@ -31,6 +38,9 @@ git branch <branch_name>
 
 # Create new branch based on a specific commit
 git branch <branch_name> <commit_hash>
+
+# Rename branch
+git branch -m <branch> <new_name>
 
 # Create and change/switch to a new branch
 git switch -c <branch_name>
@@ -78,8 +88,11 @@ $ old_remote_name: git remote
 
 % git, edit
 
-# Change last commit message
+# Change last commit contents and/or message
 git commit --amend -m "<commit_msg>"
+
+# Change last commit contents but not the commit message
+git commit --amend --no-edit
 
 # Change author while committing
 git commit -m "<commit_msg>" --author="<author_name> <<author_email>>"
@@ -95,9 +108,19 @@ git commit --amend --author="<author_name> <<author_email>>" --no-edit
 
 
 % git, restore
+@ git, changes
+
+# Discard changes in working directory
+git restore <files>
 
 # Restore file to a specific point
 git restore -s <reference> <file>
+
+$ reference: git branch | awk '{print $NF}';git tag | awk '{print $NF}';git log --format=format:%h | awk '{print $NF}' --- --preview 'git lg'
+
+
+
+% git, reset
 
 # Remove commits from local repository (stage changes)
 git reset --soft <commit_hash>
@@ -111,7 +134,6 @@ git reset --hard <commit_hash>
 # Recover from a git action
 git reset <reflog_head>
 
-$ reference: git branch | awk '{print $NF}';git tag | awk '{print $NF}';git log --format=format:%h | awk '{print $NF}' --- --preview 'git lg'
 $ commit_hash: git log --format=format:%h | awk '{print $NF}' --- --preview 'git lg'
 $ reflog_head: git reflog | awk '{print substr($2, 1, length($2) - 1)}' --- --preview 'git reflog'
 
@@ -119,6 +141,11 @@ $ reflog_head: git reflog | awk '{print substr($2, 1, length($2) - 1)}' --- --pr
 
 ;;;; Revert ;;;;
 ; TODO: https://git-scm.com/docs/git-stash
+
+
+
+;;;; Merge ;;;;
+; TODO: https://git-scm.com/docs/git-merge
 
 
 
@@ -151,4 +178,11 @@ $ up_to: git log --format=format:%h | awk '{print $NF}' --- --preview 'git lg'
 
 
 ;;;; Cherry pick ;;;;
-https://git-scm.com/docs/git-cherry-pick
+https://git-scm.com/docs/git-cherry-
+
+
+
+% git, hooks
+
+# Skip `pre-commit`, `pre-merge-commit`, `commit-msg`, `p4-changelist` and `p4-pre-submit` hooks
+git commit --no-verify
