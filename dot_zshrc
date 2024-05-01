@@ -108,8 +108,7 @@ eval "$(zoxide init --cmd cd zsh)"
 
 #|-- Navi --
 #| Installation:
-#|   ❯ BIN_DIR="$HOME/.local/bin"
-#|   ❯ bash <(curl -sL https://raw.githubusercontent.com/denisidoro/navi/master/scripts/install)
+#|   ❯ BIN_DIR="$HOME/.local/bin" bash <(curl -sL https://raw.githubusercontent.com/denisidoro/navi/master/scripts/install)
 eval "$(navi widget zsh)"
 
 #|-- rbenv --
