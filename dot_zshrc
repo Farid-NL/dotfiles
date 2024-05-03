@@ -136,21 +136,26 @@ export SDKMAN_DIR="$HOME/.sdkman"
 export VOLTA_HOME="$HOME/.volta"
 path=($VOLTA_HOME/bin $path)
 
+#|---------------
+#| Load plugins
+#|---------------
+
+#z4h source Farid-NL/zsh-nvm/zsh-nvm.plugin.zsh
+#z4h load   ohmyzsh/ohmyzsh/plugins/emoji-clock
+
+#|------------------------------
+#| Source files
+#|------------------------------
+
+z4h source ~/.config/zsh/functions.zsh
+z4h source ~/.config/zsh/lazy-loadings.zsh # sdkman, miniconda
+
 #|--------------
 #| Extend PATH
 #|--------------
 
 path=(~/.local/bin $path)
 fpath=(~/.config/zsh/completion $fpath)
-
-#|------------------------------
-#| Source files & load plugins
-#|------------------------------
-
-z4h source ~/.config/zsh/functions.zsh
-z4h source ~/.config/zsh/lazy-loadings.zsh # sdkman, miniconda
-#z4h source Farid-NL/zsh-nvm/zsh-nvm.plugin.zsh
-#z4h load   ohmyzsh/ohmyzsh/plugins/emoji-clock
 
 #|----------------------
 #| Define key bindings
