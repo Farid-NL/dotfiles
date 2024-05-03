@@ -134,7 +134,7 @@ export SDKMAN_DIR="$HOME/.sdkman"
 #| Installation:
 #|   ❯ curl -s "https://get.volta.sh" | bash -s -- --skip-setup
 export VOLTA_HOME="$HOME/.volta"
-path=($VOLTA_HOME/bin $path)
+path+=($VOLTA_HOME/bin)
 
 #|---------------
 #| Load plugins
@@ -154,7 +154,7 @@ z4h source ~/.config/zsh/lazy-loadings.zsh # sdkman, miniconda
 #| Extend PATH
 #|--------------
 
-path=(~/.local/bin $path)
+path+=(~/.local/bin)
 fpath=(~/.config/zsh/completion $fpath)
 
 #|----------------------
