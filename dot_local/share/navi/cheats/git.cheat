@@ -63,6 +63,9 @@ $ branch: git branch --format='%(refname:short)'
 
 % git, remote
 
+# List/Show remotes with their respective url
+git remote -v
+
 # Add remote
 git remote add <remote_name> <remote_url>
 
@@ -102,8 +105,45 @@ git commit --amend --author="<author_name> <<author_email>>" --no-edit
 
 
 
-;;;; Stash ;;;;
-; TODO: https://git-scm.com/docs/git-stash
+% git, stash
+
+# List the stash entries that you currently have
+git stash list
+
+# Save local modifications to a new stash entry
+git stash push
+
+# Save local modifications to a new stash entry with a description
+git stash push -m <description>
+
+# Save specific local modifications to a new stash entry
+git stash push -p
+
+# Apply and remove the last stash entry
+git stash pop
+
+# Apply and remove a specific stash entry
+git stash pop --index <stash_index>
+
+# Apply the last stash entry
+git stash apply
+
+# Apply a specific stash entry
+git stash apply --index <stash_index>
+
+# Show diff of a specific stash entry
+git stash show -p <stash_index>
+
+# Create branch from a specific stash entry
+git stash branch <branch_name> <stash_index>
+
+# Remove a specific stash entry
+git stash drop <stash_index>
+
+# Remove all stash entries
+git stash clear
+
+$ stash_index: git stash list --format='format:%gd' --- --expand --preview "git stash list --format='format:%gd %s (%cr)'"
 
 
 
@@ -139,20 +179,37 @@ $ reflog_head: git reflog --format=format:%gd --- --preview 'git reflog'
 
 
 
+% git, revert
+@ git, cherry-pick
+
+# Revert a (range of) commit(s)
+git revert <commit_hash>
+
+# Revert a (range of) commit(s) without specifying a commit message
+git revert <commit_hash> --no-edit
+
+# Revert a (range of) commit(s) without creating commits (staging them)
+git revert <commit_hash> --no-commit
 
 
-;;;; Revert ;;;;
-; TODO: https://git-scm.com/docs/git-stash
 
+% git, merge
+@ git, branch
 
+# Merge a branch into the current one
+git merge <branch>
 
-;;;; Merge ;;;;
-; TODO: https://git-scm.com/docs/git-merge
+# Merge a branch into the current one creating a merge commit
+git merge <branch> --no-ff
+
+# Merge a branch into the current one as a fast-forward
+git merge <branch> --ff-only
 
 
 
 % git, rebase
 @ git, branch
+@ git, reset
 
 # Rebase current branch on top of another one
 git rebase <new_base>
@@ -166,7 +223,8 @@ git rebase --onto <new_base> <old_base>
 # Rebase a range of commits in the current branch onto a new base
 git rebase --onto <new_base> <old_base> <up_to>
 
-; TODO: https://git-scm.com/docs/git-rebase#Documentation/git-rebase.txt---interactive
+# Rebase multiple commits interactively
+git rebase --interactive <commit_hash>
 
 $ new_base: git branch --format='%(refname:short)';git tag --format='%(refname:short)';git log --format=format:%h --- --preview 'git lg'
 $ old_base: git branch --format='%(refname:short)';git tag --format='%(refname:short)';git log --format=format:%h --- --preview 'git lg'
