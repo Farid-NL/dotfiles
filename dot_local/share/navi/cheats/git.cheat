@@ -24,8 +24,8 @@ git diff <commit_hash1> <commit_hash2> -- <file>
 # View changes in the staging area
 git diff --staged
 
-$ commit_hash1: git log --format=format:%h | awk '{print $NF}' --- --preview 'git lg'
-$ commit_hash2: git log --format=format:%h | awk '{print $NF}' --- --preview 'git lg'
+$ commit_hash1: git log --format=format:%h --- --preview 'git lg'
+$ commit_hash2: git log --format=format:%h --- --preview 'git lg'
 
 
 
@@ -57,7 +57,7 @@ git branch -D <branch>
 # Delete a remote branch
 git push <remote_name> --delete <branch_name>
 
-$ branch: git branch | awk '{print $NF}'
+$ branch: git branch --format='%(refname:short)'
 
 
 
@@ -116,7 +116,7 @@ git restore <files>
 # Restore file to a specific point
 git restore -s <reference> <file>
 
-$ reference: git branch | awk '{print $NF}';git tag | awk '{print $NF}';git log --format=format:%h | awk '{print $NF}' --- --preview 'git lg'
+$ reference: git branch --format='%(refname:short)';git tag --format='%(refname:short)';git log --format=format:%h --- --preview 'git lg'
 
 
 
@@ -134,8 +134,10 @@ git reset --hard <commit_hash>
 # Recover from a git action
 git reset <reflog_head>
 
-$ commit_hash: git log --format=format:%h | awk '{print $NF}' --- --preview 'git lg'
-$ reflog_head: git reflog | awk '{print substr($2, 1, length($2) - 1)}' --- --preview 'git reflog'
+$ commit_hash: git log --format=format:%h --- --preview 'git lg'
+$ reflog_head: git reflog --format=format:%gd --- --preview 'git reflog'
+
+
 
 
 
@@ -166,9 +168,9 @@ git rebase --onto <new_base> <old_base> <up_to>
 
 ; TODO: https://git-scm.com/docs/git-rebase#Documentation/git-rebase.txt---interactive
 
-$ new_base: git branch | awk '{print $NF}';git tag | awk '{print $NF}';git log --format=format:%h | awk '{print $NF}' --- --preview 'git lg'
-$ old_base: git branch | awk '{print $NF}';git tag | awk '{print $NF}';git log --format=format:%h | awk '{print $NF}' --- --preview 'git lg'
-$ up_to: git log --format=format:%h | awk '{print $NF}' --- --preview 'git lg'
+$ new_base: git branch --format='%(refname:short)';git tag --format='%(refname:short)';git log --format=format:%h --- --preview 'git lg'
+$ old_base: git branch --format='%(refname:short)';git tag --format='%(refname:short)';git log --format=format:%h --- --preview 'git lg'
+$ up_to: git log --format=format:%h --- --preview 'git lg'
 
 
 
@@ -217,7 +219,7 @@ git cherry-pick <commit_hash> --edit
 # Stage the changes introduced by some existing commits
 git cherry-pick <commit_hash> --no-commit
 
-$ commit_hash: git log --format=format:%h | awk '{print $NF}' --- --multi --expand --preview 'git lg'
+$ commit_hash: git log --format=format:%h --- --multi --expand --preview 'git lg'
 
 
 
