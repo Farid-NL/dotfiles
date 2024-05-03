@@ -157,7 +157,7 @@ z4h source ~/.config/zsh/lazy-loadings.zsh # sdkman, miniconda
 #|--------------
 
 path+=(~/.local/bin)
-fpath=(~/.config/zsh/completion $fpath)
+fpath=(~/.config/zsh/completion ~/.rbenv/completions $fpath)
 
 #|----------------------
 #| Define key bindings
