@@ -15,8 +15,8 @@
     file-added-label = "+"
     file-modified-label = "Δ"
     file-removed-label = "-"
-    file-renamed-label = "⇄ "
-    right-arrow = "⟶"
+    file-renamed-label = "⇄"
+    right-arrow = "→"
     hunk-header-decoration-style = "#6272a4" box
     hunk-header-line-number-style = bold "#6272a4"
     line-numbers = true
