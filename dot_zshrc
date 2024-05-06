@@ -65,8 +65,8 @@ z4h init || return
 #| Environment variables
 #|------------------------
 
-export EDITOR=nvim # nvim if installed
-export VISUAL=nvim # nvim if installed
+export EDITOR=nvim
+export VISUAL=nvim
 
 export GPG_TTY=$TTY
 
@@ -203,6 +203,7 @@ alias dss="export DELTA_FEATURES='+side-by-side'"
 alias dn='unset DELTA_FEATURES'
 alias bwu='export BW_SESSION=$(bw unlock --raw)'
 alias ls='eza --group-directories-first --color=auto --icons=auto'
+alias v='nvim'
 
 # Add flags to existing aliases.
 #alias ls="${aliases[ls]:-ls} --group-directories-first -v"
