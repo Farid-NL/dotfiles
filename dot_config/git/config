@@ -1,135 +1,134 @@
 [core]
-    # Default editor. Make sure to have the editor in PATH
-    editor = nvim
-    #editor = code --wait ;`--wait` Wait for window to be closed before returning
+  # Default editor. Make sure to have the editor in PATH
+  editor = nvim
+  #editor = code --wait ;`--wait` Wait for window to be closed before returning
 
-    # Pager
-    pager = delta
+  # Pager
+  pager = delta
 
 [include]
-    path = delta
+  path = delta
 
 [user]
-    # Author and commiter info
-    email = 34426099+Farid-NL@users.noreply.github.com
-    name = Farid NL
+  # Author and commiter info
+  email = 34426099+Farid-NL@users.noreply.github.com
+  name = Farid NL
 
-    # Default GPG key to use when creating signed tags and commits
-    signingkey = 34426099+Farid-NL@users.noreply.github.com
+  # Default GPG key to use when creating signed tags and commits
+  signingkey = 34426099+Farid-NL@users.noreply.github.com
 
 [merge]
-    # Tool used during merges
-    tool = vscode
+  # Tool used during merges
+  tool = vscode
 
-    # Style used for conflicted hunks
-    conflictstyle = zdiff3
+  # Style used for conflicted hunks
+  conflictstyle = zdiff3
 
 [mergetool]
-    # Whether or not to prompt before each invocation
-    #prompt = false
+  # Whether or not to prompt before each invocation
+  #prompt = false
 
 [mergetool "vscode"]
-    # Command to invoke
-    cmd = code --wait $REMOTE $LOCAL $BASE $MERGED
+  # Command to invoke
+  cmd = code --wait $REMOTE $LOCAL $BASE $MERGED
 
 [diff]
-    # Tool used during diff
-    tool = vscode
+  # Tool used during diff
+  tool = vscode
 
-    # Moved lines of code are colored differently
-    colormoved = zebra
+  # Moved lines of code are colored differently
+  colormoved = zebra
 
-    # Use different prefixes = (i)ndex | (c)ommit | (w)orking tree | (o)bject
-    mnemonicprefix = true
+  # Use different prefixes = (i)ndex | (c)ommit | (w)orking tree | (o)bject
+  mnemonicprefix = true
 
 [difftool]
-    # Whether or not to prompt before each invocation
-    prompt = false
+  # Whether or not to prompt before each invocation
+  prompt = false
 
 [difftool "vscode"]
-    # Command to invoke
-    cmd = code --wait --diff $LOCAL $REMOTE
+  # Command to invoke
+  cmd = code --wait --diff $LOCAL $REMOTE
 
 [pull]
-    # Only update to the new history if there is no divergent local history
-    ff = only
+  # Only update to the new history if there is no divergent local history
+  ff = only
 
     #rebase = true
 
 [init]
-    # Default branch name
-    defaultBranch = main
+  # Default branch name
+  defaultBranch = main
 
 [commit]
-    # Whether or not to always GPG-sign commits
-    gpgsign = true
+  # Whether or not to always GPG-sign commits
+  gpgsign = true
 
 [tag]
-    # Whether or not to always GPG-sign tags
-    gpgsign = true
+  # Whether or not to always GPG-sign tags
+  gpgsign = true
 
 [fetch]
-    # Cleans up unreachable or orphaned git objects on fetch
-    prune = true
+  # Cleans up unreachable or orphaned git objects on fetch
+  prune = true
 
-# Useful aliases
 [alias]
-    s = status
-    Acm = !git add -A && git commit -m
-    acm = !git add . && git commit -m
-    ch = checkout
-    fd = !git fetch && git difftool
-    sw = switch
-    diffstash = difftool stash@{0}^!
-    aliases = !git config --get-regexp ^alias\\. | less
+  s = status
+  Acm = !git add -A && git commit -m
+  acm = !git add . && git commit -m
+  ch = checkout
+  fd = !git fetch && git difftool
+  sw = switch
+  diffstash = difftool stash@{0}^!
+  aliases = !git config --get-regexp ^alias\\. | less
 
-    # Values for log:
-        # Color => %C(attribute color) => Colors: normal, black, red, green, yellow, blue, magenta, cyan, white. | Attributes: bold, dim, ul, blink, reverse, italic, strike
-        # Color_reset => %C(reset)
-        # %n  => New_line
+  # Values for log:
+    # Color => %C(attribute color) => Colors: normal, black, red, green, yellow, blue, magenta, cyan, white. | Attributes: bold, dim, ul, blink, reverse, italic, strike
+    # Color_reset => %C(reset)
+    # %n  => New_line
 
-        # %H  => Commit hash
-        # %h  => Commit hash, abbreviated
+    # %H  => Commit hash
+    # %h  => Commit hash, abbreviated
 
-        # %an => Author name
-        # %ae => Author email
+    # %an => Author name
+    # %ae => Author email
 
-        # %ad => Author date (format respects the --date=option)
-        # %ar => Author date, relative
-        # %as => Author date, short format (YYYY-MM-DD)
-        # %ah => Author date, human style
+    # %ad => Author date (format respects the --date=option)
+    # %ar => Author date, relative
+    # %as => Author date, short format (YYYY-MM-DD)
+    # %ah => Author date, human style
 
-        # %cn => Committer name
-        # %ce => Committer email
+    # %cn => Committer name
+    # %ce => Committer email
 
-        # %cd => Committer date
-        # %cr => Committer date, relative
-        # %cs => Committer date, short format (YYYY-MM-DD)
-        # %ch => Committer date, human style
+    # %cd => Committer date
+    # %cr => Committer date, relative
+    # %cs => Committer date, short format (YYYY-MM-DD)
+    # %ch => Committer date, human style
 
-        # %s  => Subject (Message)
-        # %d  => Ref names
-        # %D  => Ref names without the ` ()` wrapping.
+    # %s  => Subject (Message)
+    # %d  => Ref names
+    # %D  => Ref names without the ` ()` wrapping.
 
-    # %h - (%d) %s
-    lg  = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) -%C(auto)%d%C(reset) %C(white)%s%C(reset)'"
+  # %h - (%d) %s
+  lg  = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) -%C(auto)%d%C(reset) %C(white)%s%C(reset)'"
 
-    # %h - (%ar) %s - %an (%d)
-    lg2  = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(#696969)- %an%C(reset)%C(auto)%d%C(reset)'"
+  # %h - (%ar) %s - %an (%d)
+  lg2  = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(#696969)- %an%C(reset)%C(auto)%d%C(reset)'"
 
-    # %h - %aD (%ar) (%d)
-    #      %s - %an
-    lg3 = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(auto)%d%C(reset)%n''          %C(white)%s%C(reset) %C(#696969)- %an%C(reset)'"
+  # %h - %aD (%ar) (%d)
+  #      %s - %an
+  lg3 = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(auto)%d%C(reset)%n''          %C(white)%s%C(reset) %C(#696969)- %an%C(reset)'"
 
-    # %h - [A] %aD (%ar) [C] %cD (%d)
-    #      %s
-    #      [A] %an <%ae>
-    #      [C] %cn <%ce>
-    lg4 = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)[A] %aD%C(reset) %C(bold green)(%ar)%C(reset) %C(bold cyan)[C] %cD%C(reset)%C(auto)%d%C(reset)%n''          %C(white)%s%C(reset)%n''          %C(#696969)[A] %an <%ae>%C(reset)%n''          %C(#696969)[C] %cn <%ce>%C(reset)'"
+  # %h - [A] %aD (%ar) [C] %cD (%d)
+  #      %s
+  #      [A] %an <%ae>
+  #      [C] %cn <%ce>
+  lg4 = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)[A] %aD%C(reset) %C(bold green)(%ar)%C(reset) %C(bold cyan)[C] %cD%C(reset)%C(auto)%d%C(reset)%n''          %C(white)%s%C(reset)%n''          %C(#696969)[A] %an <%ae>%C(reset)%n''          %C(#696969)[C] %cn <%ce>%C(reset)'"
 
 
 [color]
-    ui = auto
+  ui = auto
 
 [include]
-    path = dracula-theme
+  path = dracula-theme
