@@ -132,7 +132,7 @@ eval "$(navi widget zsh)"
 #|   ❯ git clone https://github.com/rbenv/rbenv.git ~/.rbenv
 #|   ❯ exec zsh
 #|   ❯ git clone https://github.com/rbenv/ruby-build.git "$(rbenv root)"/plugins/ruby-build
-#|   ❯ sudo apt install libz-dev libffi-dev libssl-dev libcurl4-openssl-dev libyaml-dev
+#|   ❯ sudo apt install libz-dev libffi-dev libssl-dev libcurl4-openssl-dev libyaml-dev libsqlite3-dev
 eval "$(~/.rbenv/bin/rbenv init - zsh)"
 
 #|-- Conda --
