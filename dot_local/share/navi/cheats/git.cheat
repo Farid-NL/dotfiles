@@ -9,8 +9,8 @@ git rm --cached <files>
 # Move file and stage the movement for commit
 git mv <file> <new_file_path>
 
-$ new_file_path: find * -type d -not -iwholename '*.git*' --- --preview 'eza -TD --icons=auto'
-$ file: git ls-files --- --preview 'eza -T --icons=auto'
+$ new_file_path: find * -type d -not -iwholename '*.git*' --- --preview 'eza -TD --color=always --icons=always'
+$ file: git ls-files --- --preview 'eza -T --color=always --icons=always'
 $ files: git ls-files --- --multi --expand
 
 
@@ -24,8 +24,8 @@ git diff <commit_hash1> <commit_hash2> -- <file>
 # View changes in the staging area
 git diff --staged
 
-$ commit_hash1: git log --format=format:%h --- --preview 'git lg'
-$ commit_hash2: git log --format=format:%h --- --preview 'git lg'
+$ commit_hash1: git log --format=%h --- --preview 'git lg --color=always'
+$ commit_hash2: git log --format=%h --- --preview 'git lg --color=always'
 
 
 
@@ -143,7 +143,7 @@ git stash drop <stash_index>
 # Remove all stash entries
 git stash clear
 
-$ stash_index: git stash list --format='format:%gd' --- --expand --preview "git stash list --format='format:%gd %s (%cr)'"
+$ stash_index: git stash list --format=%gd --- --expand --preview "git stash list --format='%gd %s (%cr)'"
 
 
 
@@ -156,7 +156,7 @@ git restore <files>
 # Restore file to a specific point
 git restore -s <reference> <file>
 
-$ reference: git branch --format='%(refname:short)';git tag --format='%(refname:short)';git log --format=format:%h --- --preview 'git lg'
+$ reference: git branch --format='%(refname:short)';git tag --format='%(refname:short)';git log --format=%h --- --preview 'git lg --color=always'
 
 
 
@@ -174,8 +174,8 @@ git reset --hard <commit_hash>
 # Recover from a git action
 git reset <reflog_head>
 
-$ commit_hash: git log --format=format:%h --- --preview 'git lg'
-$ reflog_head: git reflog --format=format:%gd --- --preview 'git reflog'
+$ commit_hash: git log --format=%h --- --preview 'git lg --color=always'
+$ reflog_head: git reflog --format=%gd --- --preview 'git reflog'
 
 
 
@@ -226,9 +226,9 @@ git rebase --onto <new_base> <old_base> <up_to>
 # Rebase multiple commits interactively
 git rebase --interactive <commit_hash>
 
-$ new_base: git branch --format='%(refname:short)';git tag --format='%(refname:short)';git log --format=format:%h --- --preview 'git lg'
-$ old_base: git branch --format='%(refname:short)';git tag --format='%(refname:short)';git log --format=format:%h --- --preview 'git lg'
-$ up_to: git log --format=format:%h --- --preview 'git lg'
+$ new_base: git branch --format='%(refname:short)';git tag --format='%(refname:short)';git log --format=%h --- --preview 'git lg --color=always'
+$ old_base: git branch --format='%(refname:short)';git tag --format='%(refname:short)';git log --format=%h --- --preview 'git lg --color=always'
+$ up_to: git log --format=%h --- --preview 'git lg --color=always'
 
 
 
@@ -261,7 +261,7 @@ git apply <patch_path> --no-add
 # Apply patch excluding files matching the given path pattern
 git apply <patch_path> --exclude=<path_pattern>
 
-$ path_pattern: git ls-files --- --preview 'eza -T --icons=auto'
+$ path_pattern: git ls-files --- --preview 'eza -T --color=always --icons=always'
 $ patch_path: ls | egrep '.diff$|.patch$'
 
 
@@ -277,7 +277,7 @@ git cherry-pick <commit_hash> --edit
 # Stage the changes introduced by some existing commits
 git cherry-pick <commit_hash> --no-commit
 
-$ commit_hash: git log --format=format:%h --- --multi --expand --preview 'git lg'
+$ commit_hash: git log --format=%h --- --multi --expand --preview 'git lg --color=always'
 
 
 
