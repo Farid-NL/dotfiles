@@ -1,0 +1,12 @@
+% git, cherry-pick
+
+# Apply the changes introduced by some existing commits
+git cherry-pick <commit_hash>
+
+# Edit the commit message prior to cherry pick.
+git cherry-pick <commit_hash> --edit
+
+# Stage the changes introduced by some existing commits
+git cherry-pick <commit_hash> --no-commit
+
+$ commit_hash: git log --format=%h --- --multi --expand --preview 'git lg --color=always'

@@ -1,0 +1,22 @@
+% git, rebase
+
+# Rebase current branch on top of another one
+git rebase <new_base>
+
+# Rebase a branch on top of another one
+git rebase <new_base> <branch>
+
+# Rebase current branch onto a new base
+git rebase --onto <new_base> <old_base>
+
+# Rebase a range of commits in the current branch onto a new base
+git rebase --onto <new_base> <old_base> <up_to>
+
+# Rebase up to certain commit interactively
+git rebase --interactive <commit_hash>~
+
+$ new_base: git branch --format='%(refname:short)';git tag --format='%(refname:short)';git log --format=%h --- --preview 'git lg --color=always'
+$ old_base: git branch --format='%(refname:short)';git tag --format='%(refname:short)';git log --format=%h --- --preview 'git lg --color=always'
+$ up_to: git log --format=%h --- --preview 'git lg --color=always'
+$ branch: git branch --format='%(refname:short)'
+$ commit_hash: git log --format=%h --- --preview 'git lg --color=always'

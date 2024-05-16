@@ -1,0 +1,10 @@
+% git, restore
+@ git, file-management
+
+# Discard changes in working directory
+git restore <files>
+
+# Restore file to a specific point
+git restore -s <reference> <file>
+
+$ reference: git branch --format='%(refname:short)';git tag --format='%(refname:short)';git log --format=%h --- --preview 'git lg --color=always'

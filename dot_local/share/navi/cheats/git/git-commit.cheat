@@ -1,0 +1,13 @@
+% git, commit
+
+# Change last commit contents and/or message
+git commit --amend -m "<commit_msg>"
+
+# Change last commit contents but not the commit message
+git commit --amend --no-edit
+
+# Change author while committing
+git commit -m "<commit_msg>" --author="<author_name> <<author_email>>"
+
+# Change author of the last commit
+git commit --amend --author="<author_name> <<author_email>>" --no-edit

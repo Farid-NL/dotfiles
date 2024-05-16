@@ -1,0 +1,16 @@
+% git, reset
+
+# Remove commits from local repository (stage changes)
+git reset --soft <commit_hash>
+
+# Remove commits from local repository (unstage changes)
+git reset <commit_hash>
+
+# Remove commits from local repository (discard changes)
+git reset --hard <commit_hash>
+
+# Recover from a git action
+git reset <reflog_head>
+
+$ commit_hash: git log --format=%h --- --preview 'git lg --color=always'
+$ reflog_head: git reflog --format=%gd --- --preview 'git reflog'

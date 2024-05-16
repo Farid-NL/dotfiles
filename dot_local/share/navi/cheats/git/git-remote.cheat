@@ -1,0 +1,25 @@
+% git, remote
+
+# List/Show remotes with their respective url
+git remote -v
+
+# Add remote
+git remote add <remote_name> <remote_url>
+
+# Remove remote
+git remote remove <remote_name>
+
+# Change remote name
+git remote rename <old_remote_name> <new_remote_name>
+
+# Change URL of a remote
+git remote set-url <remote_name> <new_remote_url>
+
+# Add URL to a remote
+git remote set-url --add <remote_name> <remote_url>
+
+# Delete URL of a remote
+git remote set-url --delete <remote_name> <remote_url>
+
+$ remote_name: git remote
+$ old_remote_name: git remote

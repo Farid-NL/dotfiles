@@ -1,0 +1,12 @@
+% git, revert
+
+# Revert a (range of) commit(s)
+git revert <commit_hash>
+
+# Revert a (range of) commit(s) without specifying a commit message
+git revert <commit_hash> --no-edit
+
+# Revert a (range of) commit(s) without creating commits (staging them)
+git revert <commit_hash> --no-commit
+
+$ commit_hash: git log --format=%h --- --multi --expand --preview 'git lg --color=always'

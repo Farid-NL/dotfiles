@@ -1,0 +1,14 @@
+% git, diff
+
+# Show changes of a file between commits
+git diff <commit_hash1> <commit_hash2> -- <file>
+
+# Show only names of changed files
+git diff --name-only <commit_hash1> <commit_hash2>
+
+# Show changes in the staging area
+git diff --staged
+
+$ commit_hash1: git log --format=%h --- --preview 'git lg --color=always'
+$ commit_hash2: git log --format=%h --- --preview 'git lg --color=always'
+$ file: git ls-files --- --preview 'eza -T --color=always --icons=always'

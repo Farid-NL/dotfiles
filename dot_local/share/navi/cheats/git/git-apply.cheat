@@ -1,0 +1,31 @@
+% git, apply
+
+# Create patch
+git diff > <file_name>.patch
+
+# Apply patch to the working directory
+git apply <patch_path>
+
+# Apply patch to the working directory and staging area
+git apply <patch_path> --index
+
+# Apply patch only to the staging area
+git apply <patch_path> --cached
+
+# Check patch before applying (dry run)
+git apply <patch_path> --check
+
+# See file statistics before applying the patch
+git apply <patch_path> --stat
+
+# Fix trailing whitespace errors
+git apply <patch_path> --whitespace=fix
+
+# Apply patch ignoring additions (just removals)
+git apply <patch_path> --no-add
+
+# Apply patch excluding files matching the given path pattern
+git apply <patch_path> --exclude=<path_pattern>
+
+$ path_pattern: git ls-files --- --preview 'eza -T --color=always --icons=always'
+$ patch_path: ls | egrep '.diff$|.patch$'

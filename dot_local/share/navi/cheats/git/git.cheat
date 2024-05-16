@@ -1,0 +1,18 @@
+% git, file-management
+
+# Delete file(s) and stage the removal(s) for commit
+git rm <files>
+
+# Untrack file(s)
+git rm --cached <files>
+
+# Move file and stage the movement for commit
+git mv <file> <new_file_path>
+
+$ file: git ls-files --- --preview 'eza -T --color=always --icons=always'
+$ files: git ls-files --- --multi --expand
+
+% git, hooks
+
+# Skip `pre-commit`, `pre-merge-commit`, `commit-msg`, `p4-changelist` and `p4-pre-submit` hooks
+git commit --no-verify

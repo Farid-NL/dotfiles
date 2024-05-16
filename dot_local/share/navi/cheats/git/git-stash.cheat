@@ -1,0 +1,39 @@
+% git, stash
+
+# List the stash entries that you currently have
+git stash list
+
+# Save local modifications to a new stash entry
+git stash push
+
+# Save local modifications to a new stash entry with a description
+git stash push -m <description>
+
+# Save specific local modifications to a new stash entry
+git stash push -p
+
+# Apply and remove the last stash entry
+git stash pop
+
+# Apply and remove a specific stash entry
+git stash pop --index <stash_index>
+
+# Apply the last stash entry
+git stash apply
+
+# Apply a specific stash entry
+git stash apply --index <stash_index>
+
+# Show diff of a specific stash entry
+git stash show -p <stash_index>
+
+# Create branch from a specific stash entry
+git stash branch <branch_name> <stash_index>
+
+# Remove a specific stash entry
+git stash drop <stash_index>
+
+# Remove all stash entries
+git stash clear
+
+$ stash_index: git stash list --format=%gd --- --expand --preview "git stash list --format='%gd %s (%cr)'"

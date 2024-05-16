@@ -1,0 +1,12 @@
+% git, merge
+
+# Merge a branch into the current one
+git merge <branch>
+
+# Merge a branch into the current one creating a merge commit
+git merge <branch> --no-ff
+
+# Merge a branch into the current one as a fast-forward
+git merge <branch> --ff-only
+
+$ branch: git branch --format='%(refname:short)'
