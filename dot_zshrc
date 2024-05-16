@@ -164,7 +164,7 @@ path+=($VOLTA_HOME/bin)
 #|------------------------------
 
 z4h source ~/.config/zsh/functions.zsh
-z4h source ~/.config/zsh/lazy-loadings.zsh # sdkman, miniconda
+#z4h source ~/.config/zsh/lazy-loadings.zsh # sdkman, miniconda
 
 #|--------------
 #| Extend PATH
