@@ -1,6 +1,6 @@
 # dotfiles
 
-![custom-terminal](https://gist.githubusercontent.com/Farid-NL/522ee6558294dd4ca3040242bb3c19c4/raw/a2671e3e540d65d51e8a51edc8b7d8a22f09aeec/terminal.png)
+![custom-terminal](https://gist.githubusercontent.com/Farid-NL/522ee6558294dd4ca3040242bb3c19c4/raw/767c3cf82830448c459de31e898e9ba0eafc6d84/terminal.png)
 
 This repository contains my dotfiles which are shared between my kubuntu machines.
 
