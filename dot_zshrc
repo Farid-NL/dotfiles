@@ -51,6 +51,7 @@ zstyle ':z4h:ssh:*'                   enable 'no'
 #| Clone repositories from GitHub
 #|---------------------------------
 #z4h install Farid-NL/zsh-nvm || return
+z4h install olets/zsh-abbr || return
 
 #|-------------------------------------------------------
 #| Install or update core components and initialize Zsh
@@ -156,8 +157,25 @@ path+=($VOLTA_HOME/bin)
 #| Load plugins
 #|---------------
 
+z4h load olets/zsh-abbr
 #z4h source Farid-NL/zsh-nvm/zsh-nvm.plugin.zsh
 #z4h load   ohmyzsh/ohmyzsh/plugins/emoji-clock
+
+#|-------------------
+#| Plugins settings
+#|-------------------
+
+#|-- zsh-abbr --
+ABBR_SET_EXPANSION_CURSOR=1
+
+#|-- zsh-syntax-highlighting --
+#| zsh-abbr:
+(( ${#ABBR_REGULAR_USER_ABBREVIATIONS} )) && {
+  typeset -A ZSH_HIGHLIGHT_REGEXP
+  ZSH_HIGHLIGHT_HIGHLIGHTERS+=(regexp)
+  ZSH_HIGHLIGHT_REGEXP+=('^[[:blank:][:space:]]*('${(j:|:)${(Qk)ABBR_REGULAR_USER_ABBREVIATIONS}}')$' fg=blue,bold,underline)
+  ZSH_HIGHLIGHT_REGEXP+=('\<('${(j:|:)${(Qk)ABBR_GLOBAL_USER_ABBREVIATIONS}}')$' fg=blue,bold,underline)
+}
 
 #|------------------------------
 #| Source files
