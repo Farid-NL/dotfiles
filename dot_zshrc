@@ -235,7 +235,8 @@ alias ls='eza --group-directories-first --color=auto --icons=auto'
 
 # Add flags to existing aliases.
 #alias ls="${aliases[ls]:-ls} --group-directories-first -v"
-alias rm="${aliases[rm]:-rm} -I"
+alias rm='rm -I'
+alias egrep='egrep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
 
 #|-----------------------------------
 #| Set shell options
