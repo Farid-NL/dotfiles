@@ -231,11 +231,7 @@ z4h bindkey z4h-cd-down    Alt+Down   # cd into a child directory
 #| Aliases
 #|---------------------
 
-alias dss="export DELTA_FEATURES='+side-by-side'"
-alias dn='unset DELTA_FEATURES'
-alias bwu='export BW_SESSION=$(bw unlock --raw)'
 alias ls='eza --group-directories-first --color=auto --icons=auto'
-alias v='nvim'
 
 # Add flags to existing aliases.
 #alias ls="${aliases[ls]:-ls} --group-directories-first -v"
