@@ -212,11 +212,11 @@ z4h bindkey z4h-cd-down    Alt+Down   # cd into a child directory
 #|---------------------
 
 alias ls='eza --group-directories-first --color=auto --icons=auto'
+alias rm='rm -I'
+alias egrep='egrep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
 
 # Add flags to existing aliases.
 #alias ls="${aliases[ls]:-ls} --group-directories-first -v"
-alias rm='rm -I'
-alias egrep='egrep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
 
 #|-----------------------------------
 #| Set shell options
@@ -228,6 +228,6 @@ setopt glob_dots     # no special treatment for file names with a leading dot
 setopt auto_menu     # just one TAB press to open the completion menu
 
 # Tmux on startup
-# if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
-#   exec tmux new-session -A -s main
-# fi
+#if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+#  exec tmux new-session -A -s main
+#fi
