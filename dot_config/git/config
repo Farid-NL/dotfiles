@@ -6,6 +6,9 @@
   # Pager
   pager = delta
 
+  # Global gitignore
+  excludesFile = ~/.gitignore_global
+
 [include]
   path = delta
 
