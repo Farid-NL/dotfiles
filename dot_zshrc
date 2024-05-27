@@ -169,7 +169,7 @@ z4h source ~/.config/zsh/theme_opts.zsh
 #|--------------
 
 path+=(~/.local/bin)
-fpath=(~/.config/zsh/completion ~/.rbenv/completions $fpath)
+fpath=(~/.local/share/zsh/completions ~/.rbenv/completions $fpath)
 
 #|----------------------
 #| Define key bindings
