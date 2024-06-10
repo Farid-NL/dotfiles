@@ -78,6 +78,10 @@
 # CHANGELOG
 # ---------
 #
+# * v0.12
+#
+#    * Conda info: removed arg package (#61 Hanspe-3019)
+#
 # * v0.11
 #
 #    * fix repo url in doc (esc)
@@ -531,7 +535,6 @@ case $state in
                       '(-l --license)'{-l,--license}'[display information about local conda licenses list]' \
                       '(-s --system)'{-s,--system}'[list environment variables]' \
                       '--root[display root environment path]' \
-                      '*:packages:__describe_conda_package_available' \
         ;;
     (help)
         _arguments -C $help_opts \
