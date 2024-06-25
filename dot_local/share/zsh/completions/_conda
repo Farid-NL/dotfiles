@@ -39,6 +39,12 @@
 #
 #     zstyle ':completion::complete:*' use-cache 1
 #
+# Note: this is IMPORTANT to activate! Otherwise the completion will appear to
+# hang when attempting to complete package names when using `conda install` as
+# the completion will attempt to fetch the list of ALL available packages from
+# anaconda.org. This may take 10s of seconds and the completion looks like it
+# 'hangs' while doing so.
+#
 # To display subcommand completion in groups, please add the following to your
 # '.zshrc':
 #
@@ -80,6 +86,7 @@
 #
 # * v0.12
 #
+#    * update conda search completion (#62 esc)
 #    * Conda info: removed arg package (#61 Hanspe-3019)
 #
 # * v0.11
@@ -561,6 +568,7 @@ case $state in
                       '(-v --verbose)'{-v,--verbose}'[Show available packages as blocks of data]' \
                       '--platform[Search the given platform.]' \
                       '--spec[Treat regex argument as a package specification]' \
+                      '(-i --info)'{-v,--verbose}'[Provide detailed information about each package.]' \
                       '*:regex:' \
         ;;
     (create)
