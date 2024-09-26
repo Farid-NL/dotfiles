@@ -91,6 +91,8 @@ export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
 #| Software
 #|-----------
 
+###| Utilities |###
+
 #|-- fzf --
 #| Installation:
 #|   ❯ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
@@ -107,30 +109,24 @@ eval "$(zoxide init --cmd cd zsh)"
 #|   ❯ BIN_DIR="$HOME/.local/bin" bash <(curl -sL https://raw.githubusercontent.com/denisidoro/navi/master/scripts/install)
 eval "$(navi widget zsh)"
 
-#|-- rbenv --
-#| Installation:
-#|   ❯ git clone https://github.com/rbenv/rbenv.git ~/.rbenv
-#|   ❯ exec zsh
-#|   ❯ git clone https://github.com/rbenv/ruby-build.git "$(rbenv root)"/plugins/ruby-build
-#|   ❯ sudo apt install libz-dev libffi-dev libssl-dev libcurl4-openssl-dev libyaml-dev libsqlite3-dev
-eval "$(~/.rbenv/bin/rbenv init - zsh)"
+###| Dev tools |###
 
-#|-- Conda --
+#|-- mise --
 #| Installation:
-#|   ❯ wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/miniconda.sh
-#|   ❯ /tmp/miniconda.sh -b -u -p "$CONDA_DIR"
-export CONDA_DIR="$HOME/.miniconda"
+#|   ❯ curl https://mise.run | sh
+#eval "$(~/.local/bin/mise activate zsh)"
+#|   ❯ echo 'export PATH="$HOME/.local/share/mise/shims:$PATH"' >> ~/.zprofile
 
-#|-- sdkman --
+#|-- Poetry --
 #| Installation:
-#|   ❯ curl -s "https://get.sdkman.io?rcupdate=false" | bash
-export SDKMAN_DIR="$HOME/.sdkman"
+#|   ❯ curl -sSL https://install.python-poetry.org | python3 -
+#|   ❯ poetry config settings.virtualenvs.in-project true
 
 #|-- Volta --
 #| Installation:
 #|   ❯ curl -s "https://get.volta.sh" | bash -s -- --skip-setup
-export VOLTA_HOME="$HOME/.volta"
-path+=($VOLTA_HOME/bin)
+#export VOLTA_HOME="$HOME/.volta"
+#path+=($VOLTA_HOME/bin)
 
 #|---------------
 #| Load plugins
