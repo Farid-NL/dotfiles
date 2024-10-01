@@ -99,13 +99,13 @@ export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
 
 #|-- fzf --
 #| Installation:
-#|   ❯ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-#|   ❯ sudo mv ~/.fzf /opt/fzf
-#|   ❯ /opt/fzf/install --bin
-path=(/opt/fzf/bin $path)
-# eval "$(fzf --zsh)"
+#|   ❯ sudo dnf install fzf
+#|   ❯ z4h update
+#source <(fzf --zsh)
 
 #|-- Zoxide --
+#| Installation:
+#|   ❯ curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
 eval "$(zoxide init --cmd cd zsh)"
 
 #|-- Navi --
@@ -115,16 +115,24 @@ eval "$(navi widget zsh)"
 
 ###| Dev tools |###
 
+#|-- direnv --
+#| Installation:
+#|   ❯ bin_path="$HOME/.local/bin" bash <(curl -sfL https://direnv.net/install.sh)
+eval "$(direnv hook zsh)"
+export DIRENV_LOG_FORMAT=
+
 #|-- mise --
 #| Installation:
 #|   ❯ curl https://mise.run | sh
-#eval "$(~/.local/bin/mise activate zsh)"
 #|   ❯ echo 'export PATH="$HOME/.local/share/mise/shims:$PATH"' >> ~/.zprofile
+#|   ❯ mise settings set experimental true
+eval "$(mise activate zsh)"
 
 #|-- Poetry --
 #| Installation:
 #|   ❯ curl -sSL https://install.python-poetry.org | python3 -
 #|   ❯ poetry config settings.virtualenvs.in-project true
+#|   ❯ poetry config virtualenvs.prefer-active-python true
 
 #|-- Volta --
 #| Installation:
