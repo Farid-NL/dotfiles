@@ -7,7 +7,7 @@
   pager = delta
 
   # Global gitignore
-  excludesFile = ~/.gitignore_global
+  excludesFile = ~/.config/git/ignore
 
 [include]
   path = delta
