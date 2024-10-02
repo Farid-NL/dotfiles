@@ -118,8 +118,8 @@ eval "$(navi widget zsh)"
 #|-- direnv --
 #| Installation:
 #|   ❯ bin_path="$HOME/.local/bin" bash <(curl -sfL https://direnv.net/install.sh)
-eval "$(direnv hook zsh)"
-export DIRENV_LOG_FORMAT=
+# eval "$(direnv hook zsh)"
+# export DIRENV_LOG_FORMAT=
 
 #|-- mise --
 #| Installation:
@@ -128,11 +128,17 @@ export DIRENV_LOG_FORMAT=
 #|   ❯ mise settings set experimental true
 eval "$(mise activate zsh)"
 
+#|-- Taskfile --
+#| Installation:
+#|   ❯ sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b ~/.local/bin
+#|   ❯ task --completion zsh > "$HOME/.local/share/zsh/completions/_task"
+
 #|-- Poetry --
 #| Installation:
 #|   ❯ curl -sSL https://install.python-poetry.org | python3 -
 #|   ❯ poetry config settings.virtualenvs.in-project true
 #|   ❯ poetry config virtualenvs.prefer-active-python true
+#|   ❯ poetry completions zsh > "$HOME/.local/share/zsh/completions/_poetry"
 
 #|-- Volta --
 #| Installation:
