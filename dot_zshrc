@@ -209,8 +209,8 @@ z4h bindkey z4h-cd-down    Alt+Down   # cd into a child directory
 #| Define functions and completions
 #|-----------------------------------
 
-#function md() { [[ $# == 1 ]] && mkdir -p -- "$1" && cd -- "$1" }
-#compdef _directories md
+function md() { [[ $# == 1 ]] && mkdir -p -- "$1" && cd -- "$1" }
+compdef _directories md
 
 #|---------------------------
 #| Define named directories
