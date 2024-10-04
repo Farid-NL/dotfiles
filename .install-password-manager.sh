@@ -9,4 +9,5 @@ echo -e '\nInstalling Bitwarden CLI'
 wget -q --show-progress "${bw_url}" -O '/tmp/bw.zip'
 
 sudo unzip -oq '/tmp/bw.zip' -d '/usr/local/bin'
+sudo chmod +x /usr/local/bin/bw
 echo -e 'Bitwarden CLI installed\n'
