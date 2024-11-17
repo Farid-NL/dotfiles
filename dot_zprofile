@@ -1,5 +1,19 @@
-# Stuff
+_src_etc_profile() {
+    #  Make /etc/profile happier, and have possible ~/.zshenv options like
+    # NOMATCH ignored.
+    #
+    emulate -L ksh
 
+    # source profile
+    if [ -f /etc/profile ]; then
+        source /etc/profile
+    fi
+}
+
+_src_etc_profile
+unset -f _src_etc_profile
+
+export PATH="$HOME/.local/share/mise/shims:$PATH"
 
 # Added by Toolbox App
 export PATH="$PATH:$HOME/.local/share/JetBrains/Toolbox/scripts"
