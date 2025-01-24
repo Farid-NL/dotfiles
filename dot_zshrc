@@ -74,6 +74,29 @@ zstyle :z4h:olets/zsh-abbr postinstall z4h-postinstall:replace-with-github-clone
 
 z4h init || return
 
+#|---------------
+#| Load plugins
+#|---------------
+
+z4h load olets/zsh-abbr
+#z4h load   ohmyzsh/ohmyzsh/plugins/emoji-clock
+
+#|-------------------
+#| Plugins settings
+#|-------------------
+
+#|-- zsh-abbr --
+ABBR_SET_EXPANSION_CURSOR=1
+
+#|-- zsh-syntax-highlighting --
+#| zsh-abbr:
+(( ${#ABBR_REGULAR_USER_ABBREVIATIONS} )) && {
+  typeset -A ZSH_HIGHLIGHT_REGEXP
+  ZSH_HIGHLIGHT_HIGHLIGHTERS+=(regexp)
+  ZSH_HIGHLIGHT_REGEXP+=('^[[:blank:][:space:]]*('${(j:|:)${(Qk)ABBR_REGULAR_USER_ABBREVIATIONS}}')$' fg=blue,bold,underline)
+  ZSH_HIGHLIGHT_REGEXP+=('\<('${(j:|:)${(Qk)ABBR_GLOBAL_USER_ABBREVIATIONS}}')$' fg=blue,bold,underline)
+}
+
 #|------------------------
 #| Environment variables
 #|------------------------
@@ -170,30 +193,6 @@ eval "$(pyenv init -)"
 #|   ❯ curl -s "https://get.volta.sh" | bash -s -- --skip-setup
 #export VOLTA_HOME="$HOME/.volta"
 #path+=($VOLTA_HOME/bin)
-
-#|---------------
-#| Load plugins
-#|---------------
-
-z4h load olets/zsh-abbr
-#z4h source Farid-NL/zsh-nvm/zsh-nvm.plugin.zsh
-#z4h load   ohmyzsh/ohmyzsh/plugins/emoji-clock
-
-#|-------------------
-#| Plugins settings
-#|-------------------
-
-#|-- zsh-abbr --
-ABBR_SET_EXPANSION_CURSOR=1
-
-#|-- zsh-syntax-highlighting --
-#| zsh-abbr:
-(( ${#ABBR_REGULAR_USER_ABBREVIATIONS} )) && {
-  typeset -A ZSH_HIGHLIGHT_REGEXP
-  ZSH_HIGHLIGHT_HIGHLIGHTERS+=(regexp)
-  ZSH_HIGHLIGHT_REGEXP+=('^[[:blank:][:space:]]*('${(j:|:)${(Qk)ABBR_REGULAR_USER_ABBREVIATIONS}}')$' fg=blue,bold,underline)
-  ZSH_HIGHLIGHT_REGEXP+=('\<('${(j:|:)${(Qk)ABBR_GLOBAL_USER_ABBREVIATIONS}}')$' fg=blue,bold,underline)
-}
 
 #|------------------------------
 #| Source files
