@@ -150,6 +150,8 @@ eval "$(navi widget zsh)"
 #|-- direnv --
 #| Installation:
 #|   ❯ bin_path="$HOME/.local/bin" bash <(curl -sfL https://direnv.net/install.sh)
+#| Usage:
+#|   Set `zstyle ':z4h:direnv' enable` to 'yes' above or uncomment the line below
 # eval "$(direnv hook zsh)"
 # export DIRENV_LOG_FORMAT=
 
