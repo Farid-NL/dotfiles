@@ -1,6 +1,6 @@
 [Appearance]
 ColorScheme=Dracula
-Font=MesloLGS NF,11,-1,5,50,0,0,0,0,0
+Font=JetBrainsMono Nerd Font,11,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
 
 [General]
 Name=Farid
