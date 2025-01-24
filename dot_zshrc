@@ -55,7 +55,15 @@ zstyle ':z4h:ssh:*'                   enable 'no'
 #| Clone repositories from GitHub
 #|---------------------------------
 #z4h install Farid-NL/zsh-nvm || return
+
+#|-- olets/zsh-abbr --
+function z4h-postinstall:replace-with-github-clone() {
+  [[ -n $Z4H_PACKAGE_DIR && -n $Z4H_PACKAGE_NAME ]] && 'command' -v git 1>/dev/null || return 1
+  'command' 'rm' -rf $Z4H_PACKAGE_DIR
+  'command' 'git' clone --quiet --recurse-submodules --single-branch --depth=1 https://github.com/$Z4H_PACKAGE_NAME $Z4H_PACKAGE_DIR
+}
 z4h install olets/zsh-abbr || return
+zstyle :z4h:olets/zsh-abbr postinstall z4h-postinstall:replace-with-github-clone || return
 
 #|-------------------------------------------------------
 #| Install or update core components and initialize Zsh
