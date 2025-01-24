@@ -207,7 +207,7 @@ z4h source ~/.config/zsh/theme_opts.zsh
 #| Extend PATH
 #|--------------
 
-path+=(~/.local/bin)
+path+=(~/.local/bin ~/.scripts)
 fpath=(~/.local/share/zsh/completions $fpath)
 
 #|----------------------
