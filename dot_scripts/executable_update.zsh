@@ -55,9 +55,9 @@ _update:bw() {
   if ! sudo -n true 2> /dev/null; then
     local password
     while true; do
-      password=$(gum input --password)
+      password=$(gum input --password --placeholder="Type sudo password")
       if [[ -z "${password}" ]]; then
-        gum style --foreground '#ed2939' '⚠️ sudo password no provided!'
+        gum style --foreground '#ed2939' '⚠️ no password was provided!'
       fi
 
       if sudo -S true 2> /dev/null <<< "${password}"; then
@@ -114,6 +114,10 @@ _update:volta() {
 
 _update:rbenv() {
   _util:pretty_text 'rbenv'
+
+  if ! _util:is_command rbenv; then
+    _util:prompt_install 'rbenv' || return 0
+  fi
 
   gum spin --spinner minidot --title "Updating..." --show-error -- \
     git -C "$(rbenv root)" pull --quiet
