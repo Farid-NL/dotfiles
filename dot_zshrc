@@ -123,6 +123,8 @@ export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
 export ANSIBLE_HOME="$XDG_DATA_HOME/ansible"
 export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
 
+export GOPATH="$HOME/go"
+
 #|-----------
 #| Software
 #|-----------
@@ -207,7 +209,7 @@ z4h source ~/.config/zsh/theme_opts.zsh
 #| Extend PATH
 #|--------------
 
-path+=(~/.local/bin ~/.scripts)
+path+=(~/.scripts $GOPATH/bin)
 fpath=(~/.local/share/zsh/completions $fpath)
 
 #|----------------------
