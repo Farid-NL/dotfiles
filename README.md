@@ -37,17 +37,19 @@ Just follow the steps [here](https://www.chezmoi.io/user-guide/setup) and read t
 
 ## Extras to be manually installed or set up
 
-### Appearance
+### zsh & zsh4humans
 
-**KDE**
+```
+sudo dnf install zsh
+sudo chsh $USER
+# Restart the computer
+```
 
-| Configuration           | Store name                                                | Config. name             |
-|-------------------------|-----------------------------------------------------------|--------------------------|
-| Global theme            |                                                           | _Breeze Dark_            |
-| Plasma style            | [Ant-Dracula KDE](https://store.kde.org/p/1370687)        | _Dracula_                |
-| Colors                  | [Ant-Dracula KDE](https://store.kde.org/p/1370679)        | _Dracula-purple_         |
-| Window Decorations      | [Ant-Dracula KDE](https://store.kde.org/p/1370682)        | _Dracula_                |
-| Icons                   | [Dracula Icons](https://store.kde.org/p/1541561)          | _Dracula_                |
-| Cursors                 | [Dracula cursors](https://store.kde.org/p/1669262)        | _Dracula-cursors_        |
-| Splash screen           | [BeautifulTreeAnimation](https://store.kde.org/p/1433200) | _BeautifulTreeAnimation_ |
-| Wallpaper & Lock screen | [Ant-Dracula wallpaper](https://store.kde.org/p/1378234)  | _dracula-purplish_       |
+### Fonts
+
+Install them with the font manager GUI
+
+```sh
+# JetBrainsMono - Nerd Fonts
+wget -q --show-progress "https://www.dropbox.com/scl/fi/fclmxayof9vhfrnrybt3h/JetBrainsMono_NF.zip?rlkey=z3ll2x4p7kqk26jglxayntoh0&st=9d2undww&dl=1" -O "$HOME/Downloads/JetBrainsMono_NF.zip"
+```
