@@ -162,22 +162,12 @@ eval "$(navi widget zsh)"
 #|   ❯ curl https://mise.run | sh
 #|   ❯ echo 'export PATH="$HOME/.local/share/mise/shims:$PATH"' >> ~/.zprofile
 #|   ❯ mise settings set experimental true
-eval "$(mise activate zsh)"
+#eval "$(mise activate zsh)"
 
 #|-- Taskfile --
 #| Installation:
 #|   ❯ sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b ~/.local/bin
 #|   ❯ task --completion zsh > "$HOME/.local/share/zsh/completions/_task"
-
-#|-- pyenv --
-#| Installation:
-#|   ❯ curl https://pyenv.run | bash
-#|   ❯ sudo dnf install make gcc patch zlib-devel bzip2 bzip2-devel readline-devel sqlite \
-#|     sqlite-devel openssl-devel tk-devel libffi-devel xz-devel libuuid-devel gdbm-libs libnsl2
-#export PYENV_ROOT="$HOME/.pyenv"
-#path+=($PYENV_ROOT/bin)
-#eval "$(pyenv init -)"
-#eval "$(pyenv virtualenv-init -)"
 
 #|-- uv --
 #| Installation:
@@ -203,6 +193,12 @@ eval "$(mise activate zsh)"
 #|   ❯ curl -s "https://get.sdkman.io?rcupdate=false" | bash
 #export SDKMAN_DIR="$HOME/.sdkman"
 #[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+# sdk() {
+#   unfunction sdk
+#   [[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
+
+#   sdk "$@"
+# }
 
 #|------------------------------
 #| Source files
