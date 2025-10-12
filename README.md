@@ -37,13 +37,32 @@ Just follow the steps [here](https://www.chezmoi.io/user-guide/setup) and read t
 
 ## Extras to be manually installed or set up
 
-### zsh & zsh4humans
+### zsh
 
 ```
 sudo dnf install zsh
 sudo chsh $USER
+# Type the following then press enter
+/bin/zsh
 # Restart the computer
 ```
+
+### Configure GPG for signing Git commits
+
+1. Download the public and private GPG keys from _bitwarden_ inside the note called "Git GPG"
+2. `cd` into the directory that contain the GPG keys
+3. Run the following commands
+   ```sh
+   gpg --import gpg-pub.asc
+   gpg --import gpg-sc.asc
+   gpg --edit-key B5845CF2A944868B
+
+   # Inside the GPG tool
+   > trust
+   > 5
+   > y
+   > save
+   ```
 
 ### Fonts
 
