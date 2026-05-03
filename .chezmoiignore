@@ -1,1 +1,5 @@
 README.md
+# If the files have not been previously generated, comment the lines below and run `chezmoi apply` to generate them
+# then uncomment the lines to ignore them in the future
+.ssh/id_ed25519_github.pub
+.ssh/id_ed25519_github
