@@ -1,0 +1,25 @@
+[53d5ec26-a8d7-47ab-927c-7793f5d2a3e7]
+Description=Brave PiP
+above=true
+aboverule=3
+title=Picture in picture
+titlematch=1
+types=1
+wmclass=brave brave
+wmclasscomplete=true
+wmclassmatch=1
+
+[General]
+count=2
+rules=53d5ec26-a8d7-47ab-927c-7793f5d2a3e7,e2fcd388-9ce6-48af-ba5a-1d98f95d7c31
+
+[e2fcd388-9ce6-48af-ba5a-1d98f95d7c31]
+Description=Meet PiP
+above=true
+aboverule=3
+title=Meet: .+
+titlematch=3
+types=1
+wmclass=brave brave-browser
+wmclasscomplete=true
+wmclassmatch=1
