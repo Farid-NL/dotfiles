@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# kwinrulesrc hash: {{ include "dot_config/private_kwinrulesrc" | sha256sum }}
+if command -v qdbus-qt6 &> /dev/null; then
+    echo "KWin rules changed. KWin reconfiguration triggered."
+    qdbus-qt6 org.kde.KWin /KWin reconfigure
+else
+    echo "Command qdbus-qt6 not found. KWin reconfiguration skipped. Please restart KWin or log out and log back in to apply the new rules."
+fi
