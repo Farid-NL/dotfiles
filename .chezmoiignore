@@ -1,5 +1,8 @@
 README.md
 
+root_etc
+root_etc/**
+
 # Once the files are generated, you can safely ignore them in the future by keeping the lines below uncommented
 #.ssh/id_ed25519_github.pub
 #.ssh/id_ed25519_github
