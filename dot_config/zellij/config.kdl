@@ -349,9 +349,9 @@ plugins {
         tab_active_fullscreen "#[bg=$surface0,fg=$peach]#[bg=$peach,fg=$crust,bold]{index} #[bg=$surface1,fg=$peach,bold] {name}{fullscreen_indicator}#[bg=$surface0,fg=$surface1]"
         tab_active_sync "#[bg=$surface0,fg=$peach]#[bg=$peach,fg=$crust,bold]{index} #[bg=$surface1,fg=$peach,bold] {name}{sync_indicator}#[bg=$surface0,fg=$surface1]"
         tab_separator "#[bg=$surface0] "
-        tab_sync_indicator " "
-        tab_fullscreen_indicator " 󰊓"
-        tab_floating_indicator " 󰹙"
+        tab_sync_indicator "  "
+        tab_fullscreen_indicator " 󰊓 "
+        tab_floating_indicator " 󰹙 "
 
         command_host_command "uname -n"
         command_host_format "{stdout}"
