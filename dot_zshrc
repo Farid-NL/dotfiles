@@ -124,7 +124,7 @@ export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
 # Uncomment for podman compatibility in lazydocker
 #export DOCKER_HOST=unix:///run/user/1000/podman/podman.sock
 
-export GOPATH="$HOME/go"
+export GOPATH="/usr/local/go"
 
 #|-----------
 #| Software
@@ -185,8 +185,8 @@ eval "$(navi widget zsh)"
 #|-- SDKMan --
 #| Installation:
 #|   ❯ curl -s "https://get.sdkman.io?rcupdate=false" | bash
-#export SDKMAN_DIR="$HOME/.sdkman"
-#[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 #|------------------------------
 #| Source files
